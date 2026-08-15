@@ -1,0 +1,32 @@
+# 构建产物 / 编译输出
+/dist/
+/downloads/
+/app/runtime/
+/app/dsh/
+/app/*.dll
+/app/whale.ico
+/app/"DeepSeek Harness.exe"
+*.exe
+*.zip
+*.nupkg
+*.old
+
+# 日志 / 数据
+*.log
+desktop.log.*
+
+# IDE / 编辑器
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# 凭据 / 临时文件
+*.pfx
+*.key
+*.env
+.env.local
