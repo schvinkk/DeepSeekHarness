@@ -1,9 +1,10 @@
 ; DeepSeek Harness 桌面版 — 安装脚本 (Inno Setup 6.7+)
 ; 编译: ISCC.exe installer.iss   (工作目录 = 本文件所在目录)
+; 版本: 2.95.27 - Enhanced with 15 plugins
 
 #define MyAppName "DeepSeek Harness"
 #define MyAppNameCN "DeepSeek Harness 桌面版"
-#define MyAppVersion "1.95.27"
+#define MyAppVersion "2.95.27"
 #define MyAppPublisher "DeepSeek AI"
 #define MyAppExeName "DeepSeek Harness.exe"
 

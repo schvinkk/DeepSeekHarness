@@ -1,12 +1,43 @@
 {
   "name": "dsh-profile-web",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@deepseek-ai/dsh-plugin-chrome": "file:../../plugins/chrome",
+    "@deepseek-ai/dsh-plugin-github": "file:../../plugins/github",
+    "@deepseek-ai/dsh-plugin-computer-use": "file:../../plugins/computer-use",
+    "@deepseek-ai/dsh-plugin-build-web-apps": "file:../../plugins/build-web-apps",
+    "@deepseek-ai/dsh-plugin-figma": "file:../../plugins/figma",
+    "@deepseek-ai/dsh-plugin-documents": "file:../../plugins/documents",
+    "@deepseek-ai/dsh-plugin-presentations": "file:../../plugins/presentations",
+    "@deepseek-ai/dsh-plugin-spreadsheets": "file:../../plugins/spreadsheets",
+    "@deepseek-ai/dsh-plugin-hyperframes": "file:../../plugins/hyperframes",
+    "@deepseek-ai/dsh-plugin-remotion": "file:../../plugins/remotion",
+    "@deepseek-ai/dsh-plugin-vision-ai": "file:../../plugins/vision-ai",
+    "@deepseek-ai/dsh-plugin-file-upload": "file:../../plugins/file-upload",
+    "@deepseek-ai/dsh-plugin-mcp-marketplace": "file:../../plugins/mcp-marketplace",
+    "@deepseek-ai/dsh-plugin-skill-market": "file:../../plugins/skill-market",
+    "@deepseek-ai/dsh-plugin-context-compression": "file:../../plugins/context-compression"
+  },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
-        "@deepseek-ai/dsh-web-app"
+        "@deepseek-ai/dsh-web-app",
+        "@deepseek-ai/dsh-plugin-chrome",
+        "@deepseek-ai/dsh-plugin-github",
+        "@deepseek-ai/dsh-plugin-computer-use",
+        "@deepseek-ai/dsh-plugin-build-web-apps",
+        "@deepseek-ai/dsh-plugin-figma",
+        "@deepseek-ai/dsh-plugin-documents",
+        "@deepseek-ai/dsh-plugin-presentations",
+        "@deepseek-ai/dsh-plugin-spreadsheets",
+        "@deepseek-ai/dsh-plugin-hyperframes",
+        "@deepseek-ai/dsh-plugin-remotion",
+        "@deepseek-ai/dsh-plugin-vision-ai",
+        "@deepseek-ai/dsh-plugin-file-upload",
+        "@deepseek-ai/dsh-plugin-mcp-marketplace",
+        "@deepseek-ai/dsh-plugin-skill-market",
+        "@deepseek-ai/dsh-plugin-context-compression"
       ]
     }
   }

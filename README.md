@@ -6,6 +6,11 @@
 
 ---
 
+## 版本
+
+- **当前源码版本：v2.95.27**（新增 15 插件系统）
+- 分支：`main` 即 v2.95.27 源码
+
 ## 功能特性
 
 - **一键安装**：无需 Node.js、无需命令行，双击 `.exe` 按向导完成；
@@ -17,14 +22,37 @@
 - **数据持久化**：会话、配置、API Key 保存在 `%USERPROFILE%\.dsh`，卸载不删除；
 - **日志轮转**：`%USERPROFILE%\.dsh\desktop.log` 超 1MB 自动轮转。
 
+## 插件系统（v2.95.27 新增）
+
+v2.95.27 集成了 **15 个内置插件**，对标 Codex / WorkBuddy / 千问办公 / Claude Code。插件源码位于 [`app/dsh/plugins/`](./app/dsh/plugins/)，完整说明见 [`app/dsh/plugins/README.md`](./app/dsh/plugins/README.md)。
+
+| 类别 | 插件 | 功能 |
+|------|------|------|
+| 核心 | 🌐 Chrome | 浏览器控制：打开网页、搜索、填表、测试站点 |
+| 核心 | 💻 GitHub | 仓库管理：查看仓库、提交 PR、处理 Issue、Review |
+| 核心 | 🖥️ Computer Use | 桌面控制：直接操作软件与窗口 |
+| 核心 | 🚀 Build Web Apps | 一句话生成 Landing Page / 管理后台 / SaaS MVP |
+| 核心 | 🎨 Figma | 设计稿转代码 |
+| 办公 | 📄 Documents | 生成 PRD、方案书、会议纪要、周报 |
+| 办公 | 📊 Presentations | 自动生成 PPT |
+| 办公 | 📈 Spreadsheets | 数据分析、图表、报表 |
+| 媒体 | 🎬 HyperFrames | 网页转演示视频 |
+| 媒体 | ⚡ Remotion | 代码批量生成视频 |
+| 媒体 | 👁️ Vision AI | 图像识别、OCR、物体检测 |
+| 媒体 | 📎 File Upload | 拖拽/粘贴/选择器上传任意文件 |
+| 集成 | 🔌 MCP Marketplace | 发现安装 8 个热门 MCP 服务器 |
+| 集成 | 🎯 Skill Market | 发现使用 12 个 Agent 技能 |
+| 集成 | 🗜️ Context Compression | 上下文满时自动压缩，任务继续执行 |
+
+> 插件通过 `app/profiles/web/package.json` 的 `file:../../plugins/*` 引用并打包，开发者可在 `app/dsh/plugins/` 下按 `package.json` + `lib/index.js` 规范新增插件。
+
 ## 快速下载
 
-| 文件 | 说明 |
-|---|---|
-| `DeepSeekHarness-Setup-1.95.27.exe` | Windows 10/11 x64 安装包（约 50MB） |
-| `DeepSeekHarness-Setup-1.95.27.exe.sha256` | SHA-256 校验文件 |
+Windows 安装包通过 [Releases](https://github.com/schvinkk/DeepSeekHarness/releases) 页面发布。
 
-请到 [Releases](https://github.com/schvinkk/DeepSeekHarness/releases) 页面下载最新安装包。
+- **源码已升级至 v2.95.27（含 15 插件）**；
+- 若需 **v2.95.27 安装包**：在本机运行 `build.ps1` 生成 `dist/DeepSeekHarness-Setup-2.95.27.exe`，或等待 Release 更新安装包；
+- 当前 Release 仍提供 v1.95.27 安装包供下载（功能较旧，不含插件系统）。
 
 ## 系统要求
 
@@ -34,7 +62,7 @@
 
 ## 安装与使用
 
-1. 下载 `DeepSeekHarness-Setup-1.95.27.exe`；
+1. 从 Releases 下载最新安装包（或自行 `build.ps1` 生成）；
 2. 双击运行，若 SmartScreen 提示"未知发布者"，点击"更多信息 → 仍要运行"；
 3. 按向导选择安装目录（默认无需管理员），可选创建桌面快捷方式、开机自启；
 4. 安装完成后点击"立即启动"，稍候弹出客户端窗口；
@@ -44,7 +72,7 @@
 
 ## 重新构建
 
-如果你希望从源码重新编译安装包：
+如果你希望从源码重新编译安装包（**Windows 环境**，需 .NET Framework 的 `csc`、Inno Setup、WebView2 SDK，构建脚本会自动下载便携版）：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\build.ps1
@@ -62,7 +90,10 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 DeepSeekHarness/
 ├── app/docs/               # 使用说明、数字签名指南
-├── app/profiles/web/       # dsh web profile 模板
+├── app/dsh/               # dsh 包（源码，不含 node_modules/lib/config/runtime 等构建产物）
+│   ├── package.json       # dsh 清单（v2.95.27，files 含 plugins）
+│   └── plugins/           # 15 个插件源码（v2.95.27 新增）
+├── app/profiles/web/       # dsh web profile 模板（集成全部插件）
 ├── icon/                   # 鲸鱼图标（多尺寸）
 ├── installer/              # Inno Setup 安装脚本
 ├── scripts/                # C# 启动器 + 图标生成脚本
@@ -86,7 +117,7 @@ DeepSeekHarness/
 
 ## 版权与许可证
 
-- 本仓库中的**打包脚本、启动器源码、安装脚本、文档**采用 [MIT License](./LICENSE)。
+- 本仓库中的**打包脚本、启动器源码、安装脚本、文档、以及 `app/dsh/plugins/` 下新增的 15 插件**采用 [MIT License](./LICENSE)。
 - 内置的 [`@deepseek-ai/dsh`](https://github.com/deepseek-ai/deepseek-harness) 及其依赖的版权与许可证归原项目方所有。
 - Node.js 运行时、WebView2 SDK、Inno Setup 等第三方组件的版权与许可证归各自所有者。
 

@@ -1,0 +1,18 @@
+{
+  "name": "@deepseek-ai/dsh-plugin-computer-use",
+  "description": "Computer Use plugin for DeepSeek Harness - directly operate computer software and windows",
+  "version": "0.1.0-rc.6",
+  "type": "module",
+  "main": "lib/index.js",
+  "dsh": {
+    "bundle": {
+      "patch": {
+        "tools": ["computer-use"]
+      }
+    }
+  },
+  "dependencies": {
+    "robotjs": "^0.6.0",
+    "node-screenshots": "^0.0.12"
+  }
+}

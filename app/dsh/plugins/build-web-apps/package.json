@@ -1,0 +1,21 @@
+{
+  "name": "@deepseek-ai/dsh-plugin-build-web-apps",
+  "description": "Build Web Apps plugin for DeepSeek Harness - generate web applications with one sentence",
+  "version": "0.1.0-rc.6",
+  "type": "module",
+  "main": "lib/index.js",
+  "dsh": {
+    "bundle": {
+      "patch": {
+        "tools": ["build-web-apps"]
+      }
+    }
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "^15.0.0",
+    "vite": "^6.0.0",
+    "typescript": "^5.7.0"
+  }
+}

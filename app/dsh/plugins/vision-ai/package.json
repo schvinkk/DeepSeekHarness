@@ -1,0 +1,22 @@
+{
+  "name": "@deepseek-ai/dsh-plugin-vision-ai",
+  "description": "Vision AI plugin for DeepSeek Harness - powerful image recognition, OCR, object detection, visual analysis",
+  "version": "0.1.0-rc.6",
+  "type": "module",
+  "main": "lib/index.js",
+  "dsh": {
+    "bundle": {
+      "patch": {
+        "tools": ["vision-ai"]
+      }
+    }
+  },
+  "dependencies": {
+    "sharp": "^0.33.0",
+    "tesseract.js": "^5.1.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "@tensorflow-models/coco-ssd": "^2.2.3",
+    "@tensorflow-models/mobilenet": "^2.1.1",
+    "pngjs": "^7.0.0"
+  }
+}

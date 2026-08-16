@@ -2,7 +2,10 @@
 /dist/
 /downloads/
 /app/runtime/
-/app/dsh/
+/app/dsh/node_modules/
+/app/dsh/lib/
+/app/dsh/config/
+/app/dsh/runtime/
 /app/*.dll
 /app/whale.ico
 /app/"DeepSeek Harness.exe"

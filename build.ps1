@@ -1,13 +1,15 @@
-# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell)
+# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell) v2.95.27
 # 用法:  powershell -ExecutionPolicy Bypass -File .\build.ps1
 # 依赖:  本机可访问网络; 已安装 Node.js(用于图标生成); 首次运行会自动下载
 #        便携 Node 运行时与 Inno Setup 编译器(下载到 .\downloads\)
+# 版本:  2.95.27 - Enhanced with 15 plugins
 $ErrorActionPreference = "Stop"
 $ROOT = Split-Path -Parent $MyInvocation.MyCommand.Path
 $APP  = Join-Path $ROOT "app"
 $ICON = Join-Path $ROOT "icon"
 $DIST = Join-Path $ROOT "dist"
 $DL   = Join-Path $ROOT "downloads"
+$VERSION = "2.95.27"
 
 # 源 dsh 安装目录(全局 npm 安装位置, 按需修改)
 $DSH_SRC = "C:\Users\skevin\AppData\Roaming\npm\node_modules\@deepseek-ai\dsh"
@@ -15,19 +17,6 @@ $DSH_SRC = "C:\Users\skevin\AppData\Roaming\npm\node_modules\@deepseek-ai\dsh"
 $NODE_VER = "v26.7.0"
 
 function Step($msg) { Write-Host "`n=== $msg ===" -ForegroundColor Cyan }
-
-# 若本地没有全局安装 dsh, 自动从 npm 下载到临时目录
-if (-not (Test-Path (Join-Path $DSH_SRC "package.json"))) {
-    Step "准备 DeepSeek Harness 运行时 (从 npm 下载 @deepseek-ai/dsh)"
-    $tmpDsh = Join-Path $DL "dsh-npm"
-    if (-not (Test-Path (Join-Path $tmpDsh "node_modules\@deepseek-ai\dsh\package.json"))) {
-        New-Item -ItemType Directory -Force -Path $tmpDsh | Out-Null
-        & npm install @deepseek-ai/dsh@0.1.0-rc.6 --prefix $tmpDsh --registry=https://registry.npmmirror.com --no-save --omit=optional
-        if ($LASTEXITCODE -ne 0) { throw "npm install @deepseek-ai/dsh 失败" }
-    }
-    $DSH_SRC = Join-Path $tmpDsh "node_modules\@deepseek-ai\dsh"
-    if (-not (Test-Path (Join-Path $DSH_SRC "package.json"))) { throw "无法从 npm 下载 @deepseek-ai/dsh, 请检查网络或先全局安装 dsh" }
-}
 
 # ---------- 1. 图标 ----------
 Step "1/6 生成鲸鱼图标 (需要本机 node + sharp)"

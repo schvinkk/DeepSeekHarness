@@ -1,0 +1,17 @@
+{
+  "name": "@deepseek-ai/dsh-plugin-context-compression",
+  "description": "Context Compression plugin for DeepSeek Harness - automatically compress context when full to continue processing",
+  "version": "0.1.0-rc.6",
+  "type": "module",
+  "main": "lib/index.js",
+  "dsh": {
+    "bundle": {
+      "patch": {
+        "tools": ["context-compression"]
+      }
+    }
+  },
+  "dependencies": {
+    "tiktoken": "^1.0.0"
+  }
+}
