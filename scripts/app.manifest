@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
-  <assemblyIdentity version="1.0.0.0" name="DeepSeekHarness.Desktop" />
+  <assemblyIdentity version="2.95.27.0" name="DeepSeekHarness.Desktop" />
 
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
     <security>

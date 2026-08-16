@@ -18,14 +18,14 @@ $NODE_VER = "v26.7.0"
 
 function Step($msg) { Write-Host "`n=== $msg ===" -ForegroundColor Cyan }
 
-# ---------- 1. 图标 ----------
-Step "1/6 生成鲸鱼图标 (需要本机 node + sharp)"
+# ---------- 1. Icon ----------
+Step "1/6 Generate whale icon (requires node + sharp)"
 $env:NODE_PATH = Join-Path $DSH_SRC "node_modules"
 & node (Join-Path $ROOT "scripts\make-icon.cjs")
-if ($LASTEXITCODE -ne 0) { throw "图标生成失败" }
+if ($LASTEXITCODE -ne 0) { throw "Icon generation failed" }
 
-# ---------- 2. 便携 Node 运行时 ----------
-Step "2/6 准备 Node 运行时 $NODE_VER"
+# ---------- 2. Portable Node Runtime ----------
+Step "2/6 Prepare Node runtime $NODE_VER"
 New-Item -ItemType Directory -Force -Path $DL | Out-Null
 $nodeZip = Join-Path $DL "node-$NODE_VER-win-x64.zip"
 if (-not (Test-Path $nodeZip)) {
@@ -39,12 +39,49 @@ New-Item -ItemType Directory -Force -Path (Join-Path $APP "runtime") | Out-Null
 Copy-Item (Join-Path $nodeDir "node.exe") (Join-Path $APP "runtime\node.exe") -Force
 Copy-Item (Join-Path $nodeDir "LICENSE") (Join-Path $APP "runtime\LICENSE") -Force
 
-# ---------- 3. dsh 完整包 ----------
-Step "3/6 复制 dsh 包 (含全部依赖)"
+# ---------- 3. Full dsh package ----------
+Step "3/6 Copy dsh package (with all dependencies)"
 robocopy $DSH_SRC (Join-Path $APP "dsh") /E /R:1 /W:1 /NFL /NDL /NP /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git | Out-Null
 
-# ---------- 4. 桌面启动器 + 原生客户端窗口 ----------
-Step "4/7 准备 WebView2 SDK 并编译启动器"
+# ---------- 3.5 Plugin Suite ----------
+Step "3.5/6 Install Plugin Suite (15 plugins) into dsh node_modules"
+$pluginSuite = Join-Path $ROOT "plugins\dsh-plugin-suite"
+$pluginDest = Join-Path $APP "dsh\node_modules\@deepseek-ai\dsh-plugin-suite"
+New-Item -ItemType Directory -Force -Path (Split-Path $pluginDest -Parent) | Out-Null
+if (Test-Path $pluginDest) { Remove-Item $pluginDest -Recurse -Force }
+Copy-Item $pluginSuite $pluginDest -Recurse -Force
+Write-Host "    Plugin suite copied to: $pluginDest"
+
+# Declare the plugin in the app manifest so the module fallback links it too,
+# and stamp the desktop version so every shipped manifest reads 2.95.27.
+$appPkg = Join-Path $APP "dsh\package.json"
+$appManifest = Get-Content $appPkg -Raw | ConvertFrom-Json
+$manifestChanged = $false
+if (-not $appManifest.dependencies."@deepseek-ai/dsh-plugin-suite") {
+    $appManifest.dependencies | Add-Member -NotePropertyName "@deepseek-ai/dsh-plugin-suite" -NotePropertyValue "^2.95.27" -Force
+    $manifestChanged = $true
+    Write-Host "    Added @deepseek-ai/dsh-plugin-suite to app dependencies"
+}
+if ($appManifest.version -ne $VERSION) {
+    $appManifest.version = $VERSION
+    $manifestChanged = $true
+    Write-Host "    Stamped app version to $VERSION"
+}
+if ($manifestChanged) {
+    $json = $appManifest | ConvertTo-Json -Depth 20
+    $utf8NoBom = New Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($appPkg, $json, $utf8NoBom)
+}
+
+# ---------- 3.6 Runtime patch (fix content.some crash) ----------
+Step "3.6/7 Patch dsh-client-runtime (content.some crash fix)"
+$clientJs = Join-Path $APP "dsh\node_modules\@deepseek-ai\dsh-client-runtime\lib\client.js"
+if (Test-Path $clientJs) {
+    & node (Join-Path $ROOT "patch-runtime.js")
+}
+
+# ---------- 4. Desktop Launcher + Native Client Window ----------
+Step "4/7 Prepare WebView2 SDK and compile launcher"
 Copy-Item (Join-Path $ICON "whale.ico") (Join-Path $APP "whale.ico") -Force
 $wvDlls = @("Microsoft.Web.WebView2.Core.dll","Microsoft.Web.WebView2.WinForms.dll","WebView2Loader.dll")
 if (-not ($wvDlls | Where-Object { Test-Path (Join-Path $APP $_) } | Select-Object -First 1)) {
@@ -64,19 +101,19 @@ if (-not ($wvDlls | Where-Object { Test-Path (Join-Path $APP $_) } | Select-Obje
 New-Item -ItemType Directory -Force -Path (Join-Path $APP "profiles") | Out-Null
 if (-not (Test-Path (Join-Path $APP "profiles\web\package.json"))) {
     New-Item -ItemType Directory -Force -Path (Join-Path $APP "profiles\web") | Out-Null
-    "# dsh web profile template — 首次启动由 dsh 自动初始化/或由启动器复制" | Out-File (Join-Path $APP "profiles\web\package.json") -Encoding utf8
+    Set-Content -Path (Join-Path $APP "profiles\web\package.json") -Value '{"name":"dsh-profile-web","private":true,"dependencies":{},"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base","@deepseek-ai/dsh-web-app"]}}}' -Encoding utf8
 }
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001 `
     "/win32manifest:$ROOT\scripts\app.manifest" `
     "/win32icon:$ICON\whale.ico" "/out:$APP\DeepSeek Harness.exe" `
-    /r:System.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll `
+    /r:System.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Web.Extensions.dll `
     "/r:$APP\Microsoft.Web.WebView2.Core.dll" "/r:$APP\Microsoft.Web.WebView2.WinForms.dll" `
     (Join-Path $ROOT "scripts\Launcher.cs") (Join-Path $ROOT "scripts\DshClient.cs")
-if ($LASTEXITCODE -ne 0) { throw "启动器编译失败" }
+if ($LASTEXITCODE -ne 0) { throw "Launcher compile failed" }
 
-# ---------- 5. Inno Setup 编译器 ----------
-Step "5/7 准备 Inno Setup 编译器"
+# ---------- 5. Inno Setup Compiler ----------
+Step "5/7 Prepare Inno Setup compiler"
 $innoDir = Join-Path $DL "inno"
 if (-not (Test-Path (Join-Path $innoDir "ISCC.exe"))) {
     $innoExe = Join-Path $DL "innosetup-6.7.3.exe"
@@ -92,13 +129,13 @@ if (-not (Test-Path (Join-Path $innoDir "ISCC.exe"))) {
     }
 }
 
-# ---------- 6. 编译安装包 ----------
-Step "6/7 编译安装包 (压缩约需几分钟)"
+# ---------- 6. Compile Installer ----------
+Step "6/7 Compile installer (may take a few minutes)"
 New-Item -ItemType Directory -Force -Path $DIST | Out-Null
 Push-Location (Join-Path $ROOT "installer")
 try {
     & (Join-Path $innoDir "ISCC.exe") "installer.iss"
-    if ($LASTEXITCODE -ne 0) { throw "安装包编译失败" }
+    if ($LASTEXITCODE -ne 0) { throw "Installer compile failed" }
 } finally { Pop-Location }
 Get-ChildItem $DIST | Select-Object Name, @{n="SizeMB";e={[math]::Round($_.Length/1MB,1)}}
-Write-Host "`n完成! 安装包位于: $DIST" -ForegroundColor Green
+Write-Host "`nDone! Installer located at: $DIST" -ForegroundColor Green

@@ -8,6 +8,8 @@
 //       /win32icon:whale.ico /out:"DeepSeek Harness.exe"
 //       /r:System.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll Launcher.cs
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -15,6 +17,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Web.Script.Serialization;
 using Microsoft.Win32;
 
 static class DshLauncher
@@ -381,7 +384,44 @@ static class DshLauncher
         string webProfile = Path.Combine(HomeDir, "profiles", "web");
         string marker = Path.Combine(webProfile, "package.json");
         if (File.Exists(marker))
+        {
+            // 升级场景: 老用户 profile 已存在, 确保 Plugin Suite bundle 在列,
+            // 否则 2.95.27 的 15 个插件不会被加载。
+            try
+            {
+                string raw = File.ReadAllText(marker);
+                if (!raw.Contains("@deepseek-ai/dsh-plugin-suite"))
+                {
+                    var ser = new JavaScriptSerializer();
+                    var manifest = ser.Deserialize<Dictionary<string, object>>(raw);
+                    object dshObj, profObj, bObj;
+                    if (manifest != null && manifest.TryGetValue("dsh", out dshObj))
+                    {
+                        var dsh = dshObj as Dictionary<string, object>;
+                        if (dsh != null && dsh.TryGetValue("profile", out profObj))
+                        {
+                            var prof = profObj as Dictionary<string, object>;
+                            if (prof != null && prof.TryGetValue("bundles", out bObj))
+                            {
+                                var bundles = bObj as ArrayList;
+                                if (bundles != null && !bundles.Contains("@deepseek-ai/dsh-plugin-suite"))
+                                {
+                                    bundles.Add("@deepseek-ai/dsh-plugin-suite");
+                                    string updated = ser.Serialize(manifest);
+                                    File.WriteAllText(marker, updated + "\n");
+                                    AppendLog("已为升级安装启用 Plugin Suite (2.95.27)");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendLog("升级 profile 更新失败(不影响启动): " + ex.Message);
+            }
             return;
+        }
         if (!Directory.Exists(ProfileTpl))
             return; // dsh 会自动初始化
         try

@@ -1,35 +1,17 @@
-# 构建产物 / 编译输出
+# 构建产物与分发二进制
 /dist/
 /downloads/
-/app/runtime/
+
+# 依赖与 vendored 代码（由 build.ps1 抓取 / 构建，不入库）
+/node_modules/
 /app/dsh/node_modules/
 /app/dsh/lib/
-/app/dsh/config/
-/app/dsh/runtime/
+
+# 随包分发的运行时与二进制（由 build.ps1 下载 / 编译，不入库）
+/app/runtime/
 /app/*.dll
-/app/whale.ico
-/app/"DeepSeek Harness.exe"
-*.exe
-*.zip
-*.nupkg
-*.old
+/app/DeepSeek Harness.exe
 
-# 日志 / 数据
-*.log
-desktop.log.*
-
-# IDE / 编辑器
-.vscode/
-.idea/
-*.suo
-*.user
-
-# Windows
+# 系统 / IDE
+.DS_Store
 Thumbs.db
-desktop.ini
-
-# 凭据 / 临时文件
-*.pfx
-*.key
-*.env
-.env.local

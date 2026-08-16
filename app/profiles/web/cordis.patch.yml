@@ -1,4 +1,8 @@
 # Your patch layer for this dsh profile, applied after every bundle layer:
 # a top-level YAML array of loader patch entries (id-targeted config
 # overrides, disables, and insert lists; `!!js` expressions allowed).
+#
+# The Plugin Suite bundle (@deepseek-ai/dsh-plugin-suite) inserts its own
+# `plugin-suite` row from its cordis.patch.yml, which registers all 40+ tools.
+# No tool list is needed here.
 []

@@ -1,0 +1,15 @@
+# DeepSeek Harness Plugin Suite v2.95.27 — profile patch layer.
+# Inserts the plugin-suite row over the composed profile; the row registers
+# every plugin tool on ctx.tools (browser, github, computer, documents,
+# presentations, spreadsheets, vision, file, webapp, video, mcp, skill, context).
+
+- insert:
+    - id: plugin-suite
+      name: '@deepseek-ai/dsh-plugin-suite'
+      config:
+        # File upload storage root (tokens: %TEMP%, %HOME% expanded at runtime).
+        uploadDir: '%TEMP%/dsh-uploads'
+        # Vision analysis maximum file size in bytes.
+        maxImageBytes: 20971520
+        # Context compression threshold (0..1) before automatic summarization.
+        contextThreshold: 0.85

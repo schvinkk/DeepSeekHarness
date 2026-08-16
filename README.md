@@ -1,127 +1,170 @@
-# DeepSeekHarness 桌面客户端（非官方第三方打包）
+# DeepSeek Harness 桌面版 — 打包工程
 
-> 这是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`@deepseek-ai/dsh`）的 **Windows 桌面客户端安装包打包工程**。将官方命令行工具封装为普通用户可直接双击安装、长期托盘常驻的原生桌面应用。
->
-> ⚠️ **本仓库及安装包为社区第三方作品，与 DeepSeek 官方无关。版权与商标归属 DeepSeek，详见 [DISCLAIMER.md](./DISCLAIMER.md)。**
-
----
-
-## 版本
-
-- **当前源码版本：v2.95.27**（新增 15 插件系统）
-- 分支：`main` 即 v2.95.27 源码
+把 DeepSeek Harness（`@deepseek-ai/dsh`）封装成**普通用户可直接安装使用的
+Windows 桌面客户端安装包**：安装包自带 Node.js 运行时与全部依赖，无需用户安装
+任何开发环境；黑色鲸鱼原图标来自 dsh 官方前端 favicon。
 
 ## 功能特性
 
-- **一键安装**：无需 Node.js、无需命令行，双击 `.exe` 按向导完成；
-- **原生桌面窗口**：系统 WebView2 内核，统一黑色鲸鱼图标，无浏览器外壳；
-- **托盘常驻**：启动后右下角托盘常驻，支持打开/重启/停止服务、开机自启；
-- **开机自启**：安装时可选，也可在托盘随时开关（写入 HKCU，卸载自动清理）；
-- **独立端口**：默认 `127.0.0.1:18632`，与 dsh CLI 的 3080 不冲突；
-- **单实例守护**：重复点击不重复启动，异常退出可一键重启；
-- **数据持久化**：会话、配置、API Key 保存在 `%USERPROFILE%\.dsh`，卸载不删除；
-- **日志轮转**：`%USERPROFILE%\.dsh\desktop.log` 超 1MB 自动轮转。
+- **桌面客户端（原生窗口）**：双击图标启动本地服务并弹出**原生客户端窗口**
+  （系统 WebView2 内核，无浏览器外壳），窗口与任务栏**统一黑色鲸鱼图标**；
+  WebView2 运行时缺失时回退到带鲸鱼图标的 Edge 应用窗口 / 默认浏览器
+- **托盘常驻**：启动后系统托盘常驻黑色鲸鱼图标 —— 打开 / 重启服务 /
+  停止服务释放内存 / 开机自启开关 / 退出
+- **开机自启**：安装时可勾选，或托盘菜单随时开关（写入 HKCU 启动项，卸载自动清理）
+- **自定义安装目录**：安装向导可自由选择目录（默认用户目录，无需管理员权限）
+- **单实例守护**：重复点击不产生多进程；服务异常退出时托盘提示并可一键重启
+- **专用端口 18632**：与 dsh 命令行版/harness 的 3080 隔离，同机共存不冲突
+- **日志轮转**：`%USERPROFILE%\.dsh\desktop.log` 超 1MB 自动轮转，不占磁盘
+- **性能友好**：托盘进程 BelowNormal 优先级不抢资源；常驻内存约 175MB；
+  冷启动约 5–10s、热启动 3–6s、常驻后客户端**秒开**
 
-## 插件系统（v2.95.27 新增）
+## 交付物
 
-v2.95.27 集成了 **15 个内置插件**，对标 Codex / WorkBuddy / 千问办公 / Claude Code。插件源码位于 [`app/dsh/plugins/`](./app/dsh/plugins/)，完整说明见 [`app/dsh/plugins/README.md`](./app/dsh/plugins/README.md)。
+| 文件 | 说明 |
+|---|---|
+| `dist\DeepSeekHarness-Setup-2.95.27.exe` | **最终安装包**（约 50MB），发给用户直接安装 |
+| `app\DeepSeek Harness.exe` | 托盘启动器 + 原生客户端窗口（无参=启动并打开窗口；`--startup`=静默常驻；`stop`=停止） |
+| `app\Microsoft.Web.WebView2.*.dll` + `WebView2Loader.dll` | WebView2 SDK（承载原生窗口，随包分发） |
+| `app\runtime\node.exe` | 内置 Node.js v26.7.0 便携运行时（随包分发） |
+| `app\dsh\` | `@deepseek-ai/dsh` 完整包 + 全部依赖（已裁剪 sourcemap 与非 Windows 预编译模块） |
+| `app\profiles\web\` | web profile 模板（首次启动自动复制到用户数据目录） |
+| `app\docs\` | 使用说明.md、数字签名指南.md（随安装包分发） |
+| `icon\whale.ico` | 多尺寸（16–256px）黑色鲸鱼图标 |
+| `installer\installer.iss` | Inno Setup 安装脚本（中文向导、自定义目录、开机自启选项、卸载程序） |
 
-| 类别 | 插件 | 功能 |
-|------|------|------|
-| 核心 | 🌐 Chrome | 浏览器控制：打开网页、搜索、填表、测试站点 |
-| 核心 | 💻 GitHub | 仓库管理：查看仓库、提交 PR、处理 Issue、Review |
-| 核心 | 🖥️ Computer Use | 桌面控制：直接操作软件与窗口 |
-| 核心 | 🚀 Build Web Apps | 一句话生成 Landing Page / 管理后台 / SaaS MVP |
-| 核心 | 🎨 Figma | 设计稿转代码 |
-| 办公 | 📄 Documents | 生成 PRD、方案书、会议纪要、周报 |
-| 办公 | 📊 Presentations | 自动生成 PPT |
-| 办公 | 📈 Spreadsheets | 数据分析、图表、报表 |
-| 媒体 | 🎬 HyperFrames | 网页转演示视频 |
-| 媒体 | ⚡ Remotion | 代码批量生成视频 |
-| 媒体 | 👁️ Vision AI | 图像识别、OCR、物体检测 |
-| 媒体 | 📎 File Upload | 拖拽/粘贴/选择器上传任意文件 |
-| 集成 | 🔌 MCP Marketplace | 发现安装 8 个热门 MCP 服务器 |
-| 集成 | 🎯 Skill Market | 发现使用 12 个 Agent 技能 |
-| 集成 | 🗜️ Context Compression | 上下文满时自动压缩，任务继续执行 |
+## 工作方式
 
-> 插件通过 `app/profiles/web/package.json` 的 `file:../../plugins/*` 引用并打包，开发者可在 `app/dsh/plugins/` 下按 `package.json` + `lib/index.js` 规范新增插件。
+```
+DeepSeek Harness.exe
+  ├─ 单实例互斥（重复启动 → 通知托盘实例打开窗口/退出）
+  ├─ 确保 %USERPROFILE%\.dsh\profiles\web 存在（缺失时从内置模板复制）
+  ├─ 若 127.0.0.1:18632 已有服务 → 直接接管
+  ├─ 否则后台启动 runtime\node.exe app\dsh\lib\bin.js --profile web --port 18632
+  │     （日志 → desktop.log 轮转, PID → desktop.pid）
+  ├─ 等待服务就绪（最多 150 秒）→ 消息循环启动后弹出原生 WebView2 窗口（鲸鱼图标）
+  └─ 托盘常驻：监护进程、重启/停止服务、开机自启开关、退出
 
-## 快速下载
+DeepSeek Harness.exe stop  → 停止服务并退出托盘（开始菜单快捷方式）
+DeepSeek Harness.exe --startup → 开机自启模式（只起服务+托盘，不弹窗口）
+```
 
-Windows 安装包通过 [Releases](https://github.com/schvinkk/DeepSeekHarness/releases) 页面发布。
-
-- **源码已升级至 v2.95.27（含 15 插件）**；
-- 若需 **v2.95.27 安装包**：在本机运行 `build.ps1` 生成 `dist/DeepSeekHarness-Setup-2.95.27.exe`，或等待 Release 更新安装包；
-- 当前 Release 仍提供 v1.95.27 安装包供下载（功能较旧，不含插件系统）。
-
-## 系统要求
-
-- Windows 10 / Windows 11 64 位
-- 已安装或随 Edge 自带的 WebView2 运行时（缺失时自动回退浏览器）
-- 无需管理员权限（默认安装到用户目录）
-
-## 安装与使用
-
-1. 从 Releases 下载最新安装包（或自行 `build.ps1` 生成）；
-2. 双击运行，若 SmartScreen 提示"未知发布者"，点击"更多信息 → 仍要运行"；
-3. 按向导选择安装目录（默认无需管理员），可选创建桌面快捷方式、开机自启；
-4. 安装完成后点击"立即启动"，稍候弹出客户端窗口；
-5. 进入左侧**设置 → 模型**，填入你的 DeepSeek / OpenAI 兼容 API Key，选择模型即可使用。
-
-详细说明见 [`app/docs/使用说明.md`](./app/docs/使用说明.md)。
+用户数据（会话、配置、API 密钥）保存在 `%USERPROFILE%\.dsh`，卸载不删除。
 
 ## 重新构建
 
-如果你希望从源码重新编译安装包（**Windows 环境**，需 .NET Framework 的 `csc`、Inno Setup、WebView2 SDK，构建脚本会自动下载便携版）：
+一键构建（需要网络，用于下载 Node 运行时与 Inno Setup 编译器）：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 
-构建脚本会自动下载：
-- Node.js v26.7.0 便携运行时
-- WebView2 SDK（NuGet 包）
-- Inno Setup 6.7 便携编译器
+分步命令（手动流程）：
+1. 图标：`$env:NODE_PATH=<dsh 的 node_modules>; node scripts\make-icon.cjs`
+   （生成 `icon\whale.ico`，并复制到 `app\whale.ico` 供托盘使用）
+2. 运行时：下载 `https://nodejs.org/dist/v26.7.0/node-v26.7.0-win-x64.zip`，
+   把 `node.exe` 与 `LICENSE` 放入 `app\runtime\`
+3. dsh 包：`robocopy <全局 dsh 安装目录> app\dsh /E /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git`
+4. 启动器 + 客户端窗口：`csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001
+   /win32icon:icon\whale.ico /out:"app\DeepSeek Harness.exe"
+   /r:System.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll
+   /r:"app\Microsoft.Web.WebView2.Core.dll" /r:"app\Microsoft.Web.WebView2.WinForms.dll"
+   scripts\Launcher.cs scripts\DshClient.cs`
+   （WebView2 SDK 从 NuGet 的 `Microsoft.Web.WebView2` 包提取 net462 三个 DLL 放入 app 根目录）
+5. 安装包：`ISCC.exe installer\installer.iss`（Inno Setup 6.7+，需 ChineseSimplified.isl）
+6. **数字签名（正式发布前）**：见 `app\docs\数字签名指南.md` —— 先签
+   `DeepSeek Harness.exe` 再编译安装包，最后签安装包
 
-> 构建脚本默认从全局 npm 安装目录复制 `@deepseek-ai/dsh`；如果未全局安装，脚本会尝试通过 npm 自动下载该包。详见脚本内 `$DSH_SRC` 配置。
+## 版本与注意事项
 
-## 目录结构
+- 桌面版版本 **2.95.27**（内置 `@deepseek-ai/dsh` 0.1.0-rc.6 + 15个插件），Node 运行时 **v26.7.0**
+  （原生模块 ABI 与构建机一致，勿随意更换版本）
+- 仅支持 **Windows 10/11 x64**（安装器已限制 `x64compatible` + `MinVersion=10.0`），
+  无需管理员权限
+- 客户端窗口需 WebView2 运行时（Win10/11 自带或随 Edge 安装），缺失时自动回退浏览器
+- 安装包未做代码签名，SmartScreen 可能提示"未知发布者"——正式分发请完成签名
+- 端口默认 **18632**（客户端专用，避开 dsh 的 3080），可用环境变量 `DSH_PORT` 覆盖
+- 测试环境变量：`DSH_NO_OPEN=1` 让启动器不弹客户端窗口（自动化验证用）
+
+## 插件系统（增强）
+
+本桌面版在官方 `@deepseek-ai/dsh` 基础上内置了 **`@deepseek-ai/dsh-plugin-suite`**
+（v2.95.27），注册 **15 个插件领域、40+ 个面向模型的工具**，把 DeepSeek Harness
+变成类似 Codex / WorkBuddy / Qwen Office / Claude Code 的一体化工作台：
+
+| # | 插件 | 功能 |
+|---|---|---|
+| 1 | 🌐 Chrome | 浏览器控制 —— 打开网页、搜索、填写表单 |
+| 2 | 💻 GitHub | 代码仓库管理 —— 查看仓库、提交 PR、处理 Issue |
+| 3 | 🖥️ Computer Use | 桌面控制 —— 直接操作软件与窗口 |
+| 4 | 🚀 Build Web Apps | 网页应用生成 —— 一句话生成 Landing Page |
+| 5 | 🎨 Figma | 设计转代码 —— 理解 Figma 设计稿生成代码 |
+| 6 | 📄 Documents | 文档生成 —— PRD、方案书、会议纪要 |
+| 7 | 📊 Presentations | PPT 生成 —— 自动生成演示文稿 |
+| 8 | 📈 Spreadsheets | 数据分析 —— 分析数据、生成图表 |
+| 9 | 🎬 HyperFrames | 网页转视频 —— 转换网页为演示视频 |
+| 10 | ⚡ Remotion | 程序化视频 —— 代码批量生成视频 |
+| 11 | 👁️ Vision AI | 视觉 AI —— 图像识别、OCR、物体检测 |
+| 12 | 📎 File Upload | 文件上传 —— 支持所有文件类型 |
+| 13 | 🔌 MCP Marketplace | MCP 服务器市场 —— 发现安装 MCP 服务器 |
+| 14 | 🎯 Skill Market | 技能市场 —— 发现使用 Agent 技能 |
+| 15 | 🗜️ Context Compression | 上下文压缩 —— 自动压缩继续处理 |
+
+**源码位置**：`plugins/dsh-plugin-suite/`
 
 ```
-DeepSeekHarness/
-├── app/docs/               # 使用说明、数字签名指南
-├── app/dsh/               # dsh 包（源码，不含 node_modules/lib/config/runtime 等构建产物）
-│   ├── package.json       # dsh 清单（v2.95.27，files 含 plugins）
-│   └── plugins/           # 15 个插件源码（v2.95.27 新增）
-├── app/profiles/web/       # dsh web profile 模板（集成全部插件）
-├── icon/                   # 鲸鱼图标（多尺寸）
-├── installer/              # Inno Setup 安装脚本
-├── scripts/                # C# 启动器 + 图标生成脚本
-├── build.ps1               # 一键打包脚本
-├── DISCLAIMER.md           # 免责声明
-├── LICENSE                 # 本打包工程的 MIT 许可证
-└── README.md               # 本文件
+plugins/dsh-plugin-suite/
+├─ package.json          # 套件元信息（name / version / peerDependencies）
+├─ cordis.patch.yml      # Cordis 注入补丁（与 web profile 合并）
+├─ lib/
+│  ├─ index.js           # 插件入口：注册 15 个领域的工具
+│  ├─ browser.js         # Chrome
+│  ├─ github.js          # GitHub
+│  ├─ computer.js        # Computer Use
+│  ├─ webapp.js          # Build Web Apps / Figma
+│  ├─ documents.js       # Documents
+│  ├─ presentations.js   # Presentations
+│  ├─ spreadsheets.js    # Spreadsheets
+│  ├─ video.js           # HyperFrames / Remotion
+│  ├─ vision.js          # Vision AI
+│  ├─ files.js           # File Upload
+│  ├─ mcp.js             # MCP Marketplace
+│  ├─ skills.js          # Skill Market
+│  └─ context.js         # Context Compression
+├─ config/               # 插件默认配置
+└─ test/run-tests.mjs    # 插件自测脚本
 ```
 
-## 安全与签名
+**如何启用 / 扩展**：插件通过 `app/profiles/web/package.json` 的
+`dependencies["@deepseek-ai/dsh-plugin-suite"]` 引用，并由 `cordis.patch.yml`
+注入到 web profile。要新增一个插件，在 `lib/` 下新建一个 `xxx.js`、在 `index.js`
+里 `import` 并 `registerXxxTools(ctx)`，再在 `package.json` 描述即可。
 
-当前安装包**未做代码签名**，Windows Defender / SmartScreen 可能提示"未知发布者"。签名步骤见 [`app/docs/数字签名指南.md`](./app/docs/数字签名指南.md)。
+## 已知问题与修复（已固化）
 
-## 免责声明
+**问题**：运行时偶发 `content.some is not a function`（JavaScript 类型错误）。
+根因是 `dsh-client-runtime` 的 `prompt()` 在某些工具调用链（如 `file_list`）中
+收到的消息 `content` 不是标准数组 `[{type,text}]`，触发 `.some()` / `.flatMap()`
+崩溃，导致对话中断。
 
-**本项目不是 DeepSeek 官方产品**。DeepSeek、DeepSeek Harness、鲸鱼 Logo 等知识产权归 DeepSeek 及其关联公司所有。本仓库仅提供安装包打包源码与构建脚本，按"原样"提供，不提供任何明示或暗示担保。
+**修复已固化到本工程**，两处同时打补丁：
+1. `prompt()` 入口把 `content` 规范化为数组（字符串 → 文本块、单 part → 包成数组、
+   null → 空数组），并给 `toAssistantBlocks` / `previewOf` / `textOf` 加 `Array.isArray`
+   防御，双保险；
+2. `patch-runtime.js` —— 幂等的补丁脚本（已打过的文件自动跳过），在 `build.ps1`
+   步骤 3.6 自动调用，**重新构建安装包时自动重打补丁**，Clone 后 `build.ps1` 也能自动修。
 
-下载、安装或使用本安装包所产生的任何风险由用户自行承担。建议优先使用 DeepSeek 官方发布的版本与渠道。
+**注意**：补丁作用于运行时的 `node_modules/@deepseek-ai/dsh-client-runtime/lib/client.js`，
+该文件由 `build.ps1` 从全局 dsh 抓取，**不入库**（见 `.gitignore`）。固化方式是
+`patch-runtime.js` + `build.ps1` 自动调用，确保每次构建出的 exe 自带修复。若您手动
+安装全局 dsh 后想立即生效，可退出 dsh 进程重新运行 `dsh web`，或在全局 dsh 处手动
+执行 `patch-runtime.js`。
 
-完整法律声明见 [`DISCLAIMER.md`](./DISCLAIMER.md)。
+## 许可证与免责
 
-## 版权与许可证
-
-- 本仓库中的**打包脚本、启动器源码、安装脚本、文档、以及 `app/dsh/plugins/` 下新增的 15 插件**采用 [MIT License](./LICENSE)。
-- 内置的 [`@deepseek-ai/dsh`](https://github.com/deepseek-ai/deepseek-harness) 及其依赖的版权与许可证归原项目方所有。
-- Node.js 运行时、WebView2 SDK、Inno Setup 等第三方组件的版权与许可证归各自所有者。
-
-## 致谢
-
-- 核心功能来自 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
-- 黑色鲸鱼图标来自 dsh 官方前端 favicon
+- 本打包工程以 **MIT** 许可证开源（见 `LICENSE`），仅覆盖本仓库中的打包脚本、安装器、
+  文档与派生图标资源；
+- 上游 `@deepseek-ai/dsh` / `@deepseek-ai/dsh-plugin-suite` 版权归各自作者，许可以其
+  官方仓库为准；
+- 本项目为**非官方第三方打包**，与 DeepSeek 无隶属关系，按原样提供、风险自担，详见
+  `DISCLAIMER.md`。
