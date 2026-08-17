@@ -69,7 +69,7 @@ if ($appManifest.version -ne $VERSION) {
 }
 if ($manifestChanged) {
     $json = $appManifest | ConvertTo-Json -Depth 20
-    $utf8NoBom = New Object System.Text.UTF8Encoding($false)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
     [System.IO.File]::WriteAllText($appPkg, $json, $utf8NoBom)
 }
 

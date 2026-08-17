@@ -24,6 +24,7 @@ Windows 桌面客户端安装包**：安装包自带 Node.js 运行时与全部�
 | 文件 | 说明 |
 |---|---|
 | `dist\DeepSeekHarness-Setup-2.95.27.exe` | **最终安装包**（约 50MB），发给用户直接安装 |
+| `start-dsh-3080.bat` | 命令行/PWA 版启动脚本：用**全局 `dsh web`** 启动 3080 端口，避免 `npx` 导致的 profile bundle 解析失败 |
 | `app\DeepSeek Harness.exe` | 托盘启动器 + 原生客户端窗口（无参=启动并打开窗口；`--startup`=静默常驻；`stop`=停止） |
 | `app\Microsoft.Web.WebView2.*.dll` + `WebView2Loader.dll` | WebView2 SDK（承载原生窗口，随包分发） |
 | `app\runtime\node.exe` | 内置 Node.js v26.7.0 便携运行时（随包分发） |
@@ -86,85 +87,18 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 - 端口默认 **18632**（客户端专用，避开 dsh 的 3080），可用环境变量 `DSH_PORT` 覆盖
 - 测试环境变量：`DSH_NO_OPEN=1` 让启动器不弹客户端窗口（自动化验证用）
 
-## 插件系统（增强）
+## 命令行/PWA 版启动（非桌面安装包）
 
-本桌面版在官方 `@deepseek-ai/dsh` 基础上内置了 **`@deepseek-ai/dsh-plugin-suite`**
-（v2.95.27），注册 **15 个插件领域、40+ 个面向模型的工具**，把 DeepSeek Harness
-变成类似 Codex / WorkBuddy / Qwen Office / Claude Code 的一体化工作台：
+如果你使用的是 Edge PWA 快捷方式或浏览器访问 `http://127.0.0.1:3080`，请用本包附带的：
 
-| # | 插件 | 功能 |
-|---|---|---|
-| 1 | 🌐 Chrome | 浏览器控制 —— 打开网页、搜索、填写表单 |
-| 2 | 💻 GitHub | 代码仓库管理 —— 查看仓库、提交 PR、处理 Issue |
-| 3 | 🖥️ Computer Use | 桌面控制 —— 直接操作软件与窗口 |
-| 4 | 🚀 Build Web Apps | 网页应用生成 —— 一句话生成 Landing Page |
-| 5 | 🎨 Figma | 设计转代码 —— 理解 Figma 设计稿生成代码 |
-| 6 | 📄 Documents | 文档生成 —— PRD、方案书、会议纪要 |
-| 7 | 📊 Presentations | PPT 生成 —— 自动生成演示文稿 |
-| 8 | 📈 Spreadsheets | 数据分析 —— 分析数据、生成图表 |
-| 9 | 🎬 HyperFrames | 网页转视频 —— 转换网页为演示视频 |
-| 10 | ⚡ Remotion | 程序化视频 —— 代码批量生成视频 |
-| 11 | 👁️ Vision AI | 视觉 AI —— 图像识别、OCR、物体检测 |
-| 12 | 📎 File Upload | 文件上传 —— 支持所有文件类型 |
-| 13 | 🔌 MCP Marketplace | MCP 服务器市场 —— 发现安装 MCP 服务器 |
-| 14 | 🎯 Skill Market | 技能市场 —— 发现使用 Agent 技能 |
-| 15 | 🗜️ Context Compression | 上下文压缩 —— 自动压缩继续处理 |
-
-**源码位置**：`plugins/dsh-plugin-suite/`
-
-```
-plugins/dsh-plugin-suite/
-├─ package.json          # 套件元信息（name / version / peerDependencies）
-├─ cordis.patch.yml      # Cordis 注入补丁（与 web profile 合并）
-├─ lib/
-│  ├─ index.js           # 插件入口：注册 15 个领域的工具
-│  ├─ browser.js         # Chrome
-│  ├─ github.js          # GitHub
-│  ├─ computer.js        # Computer Use
-│  ├─ webapp.js          # Build Web Apps / Figma
-│  ├─ documents.js       # Documents
-│  ├─ presentations.js   # Presentations
-│  ├─ spreadsheets.js    # Spreadsheets
-│  ├─ video.js           # HyperFrames / Remotion
-│  ├─ vision.js          # Vision AI
-│  ├─ files.js           # File Upload
-│  ├─ mcp.js             # MCP Marketplace
-│  ├─ skills.js          # Skill Market
-│  └─ context.js         # Context Compression
-├─ config/               # 插件默认配置
-└─ test/run-tests.mjs    # 插件自测脚本
+```batch
+start-dsh-3080.bat
 ```
 
-**如何启用 / 扩展**：插件通过 `app/profiles/web/package.json` 的
-`dependencies["@deepseek-ai/dsh-plugin-suite"]` 引用，并由 `cordis.patch.yml`
-注入到 web profile。要新增一个插件，在 `lib/` 下新建一个 `xxx.js`、在 `index.js`
-里 `import` 并 `registerXxxTools(ctx)`，再在 `package.json` 描述即可。
+或手动执行：
 
-## 已知问题与修复（已固化）
+```batch
+dsh web --host 127.0.0.1 --port 3080
+```
 
-**问题**：运行时偶发 `content.some is not a function`（JavaScript 类型错误）。
-根因是 `dsh-client-runtime` 的 `prompt()` 在某些工具调用链（如 `file_list`）中
-收到的消息 `content` 不是标准数组 `[{type,text}]`，触发 `.some()` / `.flatMap()`
-崩溃，导致对话中断。
-
-**修复已固化到本工程**，两处同时打补丁：
-1. `prompt()` 入口把 `content` 规范化为数组（字符串 → 文本块、单 part → 包成数组、
-   null → 空数组），并给 `toAssistantBlocks` / `previewOf` / `textOf` 加 `Array.isArray`
-   防御，双保险；
-2. `patch-runtime.js` —— 幂等的补丁脚本（已打过的文件自动跳过），在 `build.ps1`
-   步骤 3.6 自动调用，**重新构建安装包时自动重打补丁**，Clone 后 `build.ps1` 也能自动修。
-
-**注意**：补丁作用于运行时的 `node_modules/@deepseek-ai/dsh-client-runtime/lib/client.js`，
-该文件由 `build.ps1` 从全局 dsh 抓取，**不入库**（见 `.gitignore`）。固化方式是
-`patch-runtime.js` + `build.ps1` 自动调用，确保每次构建出的 exe 自带修复。若您手动
-安装全局 dsh 后想立即生效，可退出 dsh 进程重新运行 `dsh web`，或在全局 dsh 处手动
-执行 `patch-runtime.js`。
-
-## 许可证与免责
-
-- 本打包工程以 **MIT** 许可证开源（见 `LICENSE`），仅覆盖本仓库中的打包脚本、安装器、
-  文档与派生图标资源；
-- 上游 `@deepseek-ai/dsh` / `@deepseek-ai/dsh-plugin-suite` 版权归各自作者，许可以其
-  官方仓库为准；
-- 本项目为**非官方第三方打包**，与 DeepSeek 无隶属关系，按原样提供、风险自担，详见
-  `DISCLAIMER.md`。
+**不要执行 `npx @deepseek-ai/dsh web`**。npx 会在临时目录解析 dsh，无法找到全局安装时已经配置好的 profile 与插件，从而报 `cannot resolve profile bundle` 错误。
