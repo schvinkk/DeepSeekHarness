@@ -60,7 +60,7 @@ Step "3/8 Fetch DSH core $DSH_VER and copy package (with all dependencies)"
 $coreDir = Join-Path $DL "dsh-$DSH_VER"
 if (-not (Test-Path (Join-Path $DSH_SRC "package.json"))) {
     New-Item -ItemType Directory -Force -Path $coreDir | Out-Null
-    & npm install --prefix $coreDir "@deepseek-ai/dsh@$DSH_VER" --no-audit --no-fund
+    & npm install --prefix $coreDir "@deepseek-ai/dsh@$DSH_VER" --registry=https://registry.npmmirror.com --no-audit --no-fund
     if ($LASTEXITCODE -ne 0) { throw "Failed to install DSH core $DSH_VER" }
 }
 $installedVer = (Get-Content (Join-Path $DSH_SRC "package.json") -Raw | ConvertFrom-Json).version
@@ -68,7 +68,14 @@ if ($installedVer -ne $DSH_VER) {
     throw "DSH core version mismatch: expected $DSH_VER, got $installedVer"
 }
 Write-Host "    DSH core pinned to $installedVer"
-robocopy $DSH_SRC (Join-Path $APP "dsh") /E /R:1 /W:1 /NFL /NDL /NP /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git | Out-Null
+# 3a) 主包本体 -> app\dsh（提供 lib\bin.js 启动入口 + package.json）
+robocopy $DSH_SRC (Join-Path $APP "dsh") /E /R:1 /W:1 /NFL /NDL /NP /XF *.map /XD node_modules .cache .git | Out-Null
+if ($LASTEXITCODE -ge 8) { throw "Failed to copy dsh main package (robocopy $LASTEXITCODE)" }
+# 3b) 全量依赖（672 包 + 官方插件套件）-> app\dsh\node_modules
+#     launcher 用 NODE_PATH=app\dsh\node_modules 解析；缺这一步 dsh 启动即模块找不到。
+$nodeModulesSrc = Join-Path $coreDir "node_modules"
+robocopy $nodeModulesSrc (Join-Path $APP "dsh\node_modules") /E /R:1 /W:1 /NFL /NDL /NP /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git | Out-Null
+if ($LASTEXITCODE -ge 8) { throw "Failed to copy dsh dependencies (robocopy $LASTEXITCODE)" }
 
 # ---------- 3.5 Plugin Suite ----------
 # 善后说明：旧版本在此复制一个仓库里并不存在的 plugins\dsh-plugin-suite，
@@ -161,9 +168,10 @@ if (-not (Test-Path (Join-Path $innoDir "ISCC.exe"))) {
     }
     New-Item -ItemType Directory -Force -Path $innoDir | Out-Null
     Start-Process -FilePath $innoExe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/PORTABLE=1","/DIR=`"$innoDir`"","/NORESTART" -Wait
+    # Inno Setup portable 自带 Languages 目录；raw.githubusercontent.com 国内不可达，不强行下载。
     foreach ($f in @("ChineseSimplified.isl","ChineseTraditional.isl")) {
         if (-not (Test-Path (Join-Path $innoDir "Languages\$f"))) {
-            curl.exe -sL -o (Join-Path $innoDir "Languages\$f") "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/$f"
+            Write-Host "    WARN: missing language file $f (installer may fall back)"
         }
     }
 }
