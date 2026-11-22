@@ -69,7 +69,7 @@ namespace DeepSeekHarness
                     "Microsoft", "Edge", "Application", "msedge.exe");
                 if (File.Exists(edge))
                 {
-                    Process.Start(edge, "--app=\"" + url + "\"");
+                    System.Diagnostics.Process.Start(edge, "--app=\"" + url + "\"");
                     return;
                 }
             }
