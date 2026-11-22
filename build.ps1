@@ -32,8 +32,19 @@ if ($LASTEXITCODE -ne 0) { throw "Icon generation failed" }
 Step "2/8 Prepare Node runtime $NODE_VER"
 New-Item -ItemType Directory -Force -Path $DL | Out-Null
 $nodeZip = Join-Path $DL "node-$NODE_VER-win-x64.zip"
-if (-not (Test-Path $nodeZip)) {
-    curl.exe -L -o $nodeZip "https://nodejs.org/dist/$NODE_VER/node-$NODE_VER-win-x64.zip"
+$nodePart = "$nodeZip.part"
+$nodeUrlFast = "https://cdn.npmmirror.com/binaries/node/$NODE_VER/node-$NODE_VER-win-x64.zip"
+$nodeUrlOrig = "https://nodejs.org/dist/$NODE_VER/node-$NODE_VER-win-x64.zip"
+$nodeExpect = 37748064
+if (-not (Test-Path $nodeZip) -or (Get-Item $nodeZip).Length -ne $nodeExpect) {
+    foreach ($u in @($nodeUrlFast, $nodeUrlOrig)) {
+        curl.exe -L -C - --retry 3 --retry-delay 2 -o $nodePart $u 2>$null
+        if ((Test-Path $nodePart) -and (Get-Item $nodePart).Length -ge $nodeExpect) { break }
+    }
+    if (-not (Test-Path $nodePart) -or (Get-Item $nodePart).Length -ne $nodeExpect) {
+        throw "Node runtime download incomplete"
+    }
+    Move-Item $nodePart $nodeZip -Force
 }
 $nodeDir = Join-Path $DL "node-extract\node-$NODE_VER-win-x64"
 if (-not (Test-Path (Join-Path $nodeDir "node.exe"))) {
