@@ -38,7 +38,7 @@ $nodeUrlOrig = "https://nodejs.org/dist/$NODE_VER/node-$NODE_VER-win-x64.zip"
 $nodeExpect = 37748064
 if (-not (Test-Path $nodeZip) -or (Get-Item $nodeZip).Length -ne $nodeExpect) {
     foreach ($u in @($nodeUrlFast, $nodeUrlOrig)) {
-        curl.exe -L -C - --retry 3 --retry-delay 2 -o $nodePart $u 2>$null
+        curl.exe -sSL --retry 3 --retry-delay 2 -o $nodePart $u
         if ((Test-Path $nodePart) -and (Get-Item $nodePart).Length -ge $nodeExpect) { break }
     }
     if (-not (Test-Path $nodePart) -or (Get-Item $nodePart).Length -ne $nodeExpect) {
