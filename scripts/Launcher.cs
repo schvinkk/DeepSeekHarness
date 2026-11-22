@@ -25,13 +25,21 @@ namespace DeepSeekHarness
     {
         internal const string AppName = "DeepSeek Harness";
         internal const string MutexName = @"Local\DeepSeekHarness-SingleInstance-18632";
-        internal static string AppDir => AppDomain.CurrentDomain.BaseDirectory;
-        internal static string DataDir => Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dsh");
-        internal static string LogPath => Path.Combine(DataDir, "desktop.log");
-        internal static string PidPath => Path.Combine(DataDir, "desktop.pid");
-        internal static int Port => ParsePort(Environment.GetEnvironmentVariable("DSH_PORT"));
-        internal static bool NoOpen => Environment.GetEnvironmentVariable("DSH_NO_OPEN") == "1";
+        // 注意：build.ps1 用 .NET Framework 4.0 自带的 csc.exe（C# 5），
+        // 不支持 C# 6 表达式体属性（=>），故一律写成传统 get 访问器。
+        internal static string AppDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+        internal static string DataDir
+        {
+            get
+            {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dsh");
+            }
+        }
+        internal static string LogPath { get { return Path.Combine(DataDir, "desktop.log"); } }
+        internal static string PidPath { get { return Path.Combine(DataDir, "desktop.pid"); } }
+        internal static int Port { get { return ParsePort(Environment.GetEnvironmentVariable("DSH_PORT")); } }
+        internal static bool NoOpen { get { return Environment.GetEnvironmentVariable("DSH_NO_OPEN") == "1"; } }
 
         static int ParsePort(string s)
         {
@@ -67,7 +75,7 @@ namespace DeepSeekHarness
                 var tray = new TrayApp(args);
                 tray.Startup();
                 // 自定义消息：重复启动时已有实例收到后打开窗口
-                Application.AddMessageFilter(new WindowMessageFilter(tray));
+                Application.AddMessageFilter(new TrayApp.WindowMessageFilter(tray));
                 tray.BeginWaitAndOpen();
                 Application.Run(tray);
             }
@@ -385,7 +393,7 @@ namespace DeepSeekHarness
         }
 
         // 处理重复启动实例发来的「打开窗口」自定义消息
-        sealed class WindowMessageFilter : IMessageFilter
+        internal sealed class WindowMessageFilter : IMessageFilter
         {
             readonly TrayApp _app;
             internal WindowMessageFilter(TrayApp app) { _app = app; }
