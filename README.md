@@ -23,11 +23,11 @@ Windows 桌面客户端安装包**：安装包自带 Node.js 运行时与全部�
 
 | 文件 | 说明 |
 |---|---|
-| `dist\DeepSeekHarness-Setup-2.95.27.exe` | **最终安装包**（约 50MB），发给用户直接安装 |
+| `dist\DeepSeekHarness-Setup-3.0.0.exe` | **最终安装包**（约 50MB），发给用户直接安装 |
 | `start-dsh-3080.bat` | 命令行/PWA 版启动脚本：用**全局 `dsh web`** 启动 3080 端口，避免 `npx` 导致的 profile bundle 解析失败 |
 | `app\DeepSeek Harness.exe` | 托盘启动器 + 原生客户端窗口（无参=启动并打开窗口；`--startup`=静默常驻；`stop`=停止） |
 | `app\Microsoft.Web.WebView2.*.dll` + `WebView2Loader.dll` | WebView2 SDK（承载原生窗口，随包分发） |
-| `app\runtime\node.exe` | 内置 Node.js v26.7.0 便携运行时（随包分发） |
+| `app\runtime\node.exe` | 内置 Node.js v24.22.1 便携运行时（随包分发） |
 | `app\dsh\` | `@deepseek-ai/dsh` 完整包 + 全部依赖（已裁剪 sourcemap 与非 Windows 预编译模块） |
 | `app\profiles\web\` | web profile 模板（首次启动自动复制到用户数据目录） |
 | `app\docs\` | 使用说明.md、数字签名指南.md（随安装包分发） |
@@ -63,7 +63,7 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 分步命令（手动流程）：
 1. 图标：`$env:NODE_PATH=<dsh 的 node_modules>; node scripts\make-icon.cjs`
    （生成 `icon\whale.ico`，并复制到 `app\whale.ico` 供托盘使用）
-2. 运行时：下载 `https://nodejs.org/dist/v26.7.0/node-v26.7.0-win-x64.zip`，
+2. 运行时：下载 `https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip`，
    把 `node.exe` 与 `LICENSE` 放入 `app\runtime\`
 3. dsh 包：`robocopy <全局 dsh 安装目录> app\dsh /E /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git`
 4. 启动器 + 客户端窗口：`csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001
@@ -78,8 +78,10 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 
 ## 版本与注意事项
 
-- 桌面版版本 **2.95.27**（内置 `@deepseek-ai/dsh` 0.1.0-rc.6 + 15个插件），Node 运行时 **v26.7.0**
-  （原生模块 ABI 与构建机一致，勿随意更换版本）
+- 桌面版版本 **3.0.0**（内置 `@deepseek-ai/dsh` **0.2.2-rc.5** + 15个插件），Node 运行时 **v24.22.1**
+  - **内核与 dsh-Go 手机版统一**：两边都锁定 `@deepseek-ai/dsh` 0.2.2-rc.5（见 dsh-Go 仓库 `tooling/kernel-bump/README.md`）
+  - build.ps1 会自动 `npm install @deepseek-ai/dsh@0.2.2-rc.5` 固定内核，不依赖构建机全局 npm 版本；版本号不符会直接报错停止
+  - Node v24.22.1 是 rc.5 官方构建所用版本，原生模块 ABI 必须一致，**勿随意更换版本**
 - 仅支持 **Windows 10/11 x64**（安装器已限制 `x64compatible` + `MinVersion=10.0`），
   无需管理员权限
 - 客户端窗口需 WebView2 运行时（Win10/11 自带或随 Edge 安装），缺失时自动回退浏览器
