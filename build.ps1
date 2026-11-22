@@ -1,20 +1,24 @@
-# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell) v2.95.27
+# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell) v3.0.0
+# 内核与 dsh-Go 手机版统一为 @deepseek-ai/dsh 0.2.2-rc.5，Node v24.22.1
 # 用法:  powershell -ExecutionPolicy Bypass -File .\build.ps1
 # 依赖:  本机可访问网络; 已安装 Node.js(用于图标生成); 首次运行会自动下载
 #        便携 Node 运行时与 Inno Setup 编译器(下载到 .\downloads\)
-# 版本:  2.95.27 - Enhanced with 15 plugins
+# 版本:  3.0.0 - 内核与 dsh-Go 手机版统一为 0.2.2-rc.5
 $ErrorActionPreference = "Stop"
 $ROOT = Split-Path -Parent $MyInvocation.MyCommand.Path
 $APP  = Join-Path $ROOT "app"
 $ICON = Join-Path $ROOT "icon"
 $DIST = Join-Path $ROOT "dist"
 $DL   = Join-Path $ROOT "downloads"
-$VERSION = "2.95.27"
+$VERSION = "3.0.0"
 
-# 源 dsh 安装目录(全局 npm 安装位置, 按需修改)
-$DSH_SRC = "C:\Users\skevin\AppData\Roaming\npm\node_modules\@deepseek-ai\dsh"
-# Node 运行时版本(与 dsh 原生模块编译所用的 ABI 一致)
-$NODE_VER = "v26.7.0"
+# 内核版本: 与 dsh-Go 手机版 (tooling/kernel-bump) 保持完全一致
+$DSH_VER = "0.2.2-rc.5"
+# Node 运行时版本: rc.5 官方构建使用 v24.22.1，原生模块 ABI 必须一致
+$NODE_VER = "v24.22.1"
+
+# 源 dsh 安装目录: 优先用下载目录里我们固定版本的副本，避免依赖构建机全局 npm 版本
+$DSH_SRC = Join-Path $DL "dsh-$DSH_VER\node_modules\@deepseek-ai\dsh"
 
 function Step($msg) { Write-Host "`n=== $msg ===" -ForegroundColor Cyan }
 
@@ -40,7 +44,19 @@ Copy-Item (Join-Path $nodeDir "node.exe") (Join-Path $APP "runtime\node.exe") -F
 Copy-Item (Join-Path $nodeDir "LICENSE") (Join-Path $APP "runtime\LICENSE") -Force
 
 # ---------- 3. Full dsh package ----------
-Step "3/6 Copy dsh package (with all dependencies)"
+Step "3/6 Fetch DSH core $DSH_VER and copy package (with all dependencies)"
+# 固定版本安装：与 dsh-Go 手机版内核一致，避免构建机全局 npm 版本漂移。
+$coreDir = Join-Path $DL "dsh-$DSH_VER"
+if (-not (Test-Path (Join-Path $DSH_SRC "package.json"))) {
+    New-Item -ItemType Directory -Force -Path $coreDir | Out-Null
+    & npm install --prefix $coreDir "@deepseek-ai/dsh@$DSH_VER" --no-audit --no-fund
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install DSH core $DSH_VER" }
+}
+$installedVer = (Get-Content (Join-Path $DSH_SRC "package.json") -Raw | ConvertFrom-Json).version
+if ($installedVer -ne $DSH_VER) {
+    throw "DSH core version mismatch: expected $DSH_VER, got $installedVer"
+}
+Write-Host "    DSH core pinned to $installedVer"
 robocopy $DSH_SRC (Join-Path $APP "dsh") /E /R:1 /W:1 /NFL /NDL /NP /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git | Out-Null
 
 # ---------- 3.5 Plugin Suite ----------
@@ -53,12 +69,12 @@ Copy-Item $pluginSuite $pluginDest -Recurse -Force
 Write-Host "    Plugin suite copied to: $pluginDest"
 
 # Declare the plugin in the app manifest so the module fallback links it too,
-# and stamp the desktop version so every shipped manifest reads 2.95.27.
+# and stamp the desktop version so every shipped manifest reads 3.0.0.
 $appPkg = Join-Path $APP "dsh\package.json"
 $appManifest = Get-Content $appPkg -Raw | ConvertFrom-Json
 $manifestChanged = $false
 if (-not $appManifest.dependencies."@deepseek-ai/dsh-plugin-suite") {
-    $appManifest.dependencies | Add-Member -NotePropertyName "@deepseek-ai/dsh-plugin-suite" -NotePropertyValue "^2.95.27" -Force
+    $appManifest.dependencies | Add-Member -NotePropertyName "@deepseek-ai/dsh-plugin-suite" -NotePropertyValue "^3.0.0" -Force
     $manifestChanged = $true
     Write-Host "    Added @deepseek-ai/dsh-plugin-suite to app dependencies"
 }
