@@ -167,11 +167,22 @@ if (-not (Test-Path (Join-Path $innoDir "ISCC.exe"))) {
         curl.exe -L -o $innoExe "https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innosetup-6.7.3.exe"
     }
     New-Item -ItemType Directory -Force -Path $innoDir | Out-Null
-    Start-Process -FilePath $innoExe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/PORTABLE=1","/DIR=`"$innoDir`"","/NORESTART" -Wait
-    # Inno Setup portable 自带 Languages 目录；raw.githubusercontent.com 国内不可达，不强行下载。
+    # /CURRENTUSER: 规避系统 Temp 为 NTFS 重解析点时 Inno 的 Error 448（无法遍历不受信任装入点）
+    Start-Process -FilePath $innoExe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/CURRENTUSER","/PORTABLE=1","/DIR=`"$innoDir`"","/NORESTART" -Wait
+    # 中文语言包：raw.githubusercontent.com 国内不可达，改用 GitHub Contents API（可达）。
+    # installer.iss 硬引用 ChineseSimplified.isl，缺失会直接编译失败，必须拿到。
+    New-Item -ItemType Directory -Force -Path (Join-Path $innoDir "Languages") | Out-Null
     foreach ($f in @("ChineseSimplified.isl","ChineseTraditional.isl")) {
-        if (-not (Test-Path (Join-Path $innoDir "Languages\$f"))) {
-            Write-Host "    WARN: missing language file $f (installer may fall back)"
+        $langPath = Join-Path $innoDir "Languages\$f"
+        if (-not (Test-Path $langPath)) {
+            try {
+                $langApi = "https://api.github.com/repos/jrsoftware/issrc/contents/Files/Languages/$f"
+                $langMeta = Invoke-RestMethod -Uri $langApi -Headers @{"User-Agent"="dsh-harness-build"}
+                [System.IO.File]::WriteAllBytes($langPath, [System.Convert]::FromBase64String($langMeta.content))
+                Write-Host "    OK: fetched $f"
+            } catch {
+                Write-Host "    WARN: cannot fetch $f - $($_.Exception.Message)"
+            }
         }
     }
 }
