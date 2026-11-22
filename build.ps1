@@ -1,4 +1,4 @@
-# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell) v3.0.0
+﻿# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell) v3.0.0
 # 内核与 dsh-Go 手机版统一为 @deepseek-ai/dsh 0.2.2-rc.5，Node v24.22.1
 # 用法:  powershell -ExecutionPolicy Bypass -File .\build.ps1
 # 依赖:  本机可访问网络; 已安装 Node.js(用于图标生成); 首次运行会自动下载
