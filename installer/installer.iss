@@ -26,7 +26,7 @@ SolidCompression=yes
 WizardStyle=modern
 ; 无需管理员：安装到用户目录，只写 HKCU
 PrivilegesRequired=lowest
-ArchitecturesInstallIn64BitMode=x64 compatible
+ArchitecturesInstallIn64BitMode=x64
 MinVersion=10.0
 DisableProgramGroupPage=yes
 LicenseFile=
@@ -35,7 +35,7 @@ LicenseFile=
 Name: "cn"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "快捷方式:"; Flags: checked
+Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "快捷方式:"
 Name: "startupicon"; Description: "开机自动启动（托盘常驻）"; GroupDescription: "快捷方式:"
 
 [Files]
