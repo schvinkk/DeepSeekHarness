@@ -108,14 +108,26 @@ namespace DeepSeekHarness
                 // 异步初始化并导航（EnsureCoreWebView2Async）
                 var ensure = type.GetMethod("EnsureCoreWebView2Async");
                 var task = (System.Threading.Tasks.Task)ensure.Invoke(ctl, new object[] { null });
+                // await 之后必须回到 UI 线程再设置控件属性；Task.Run 是线程池(MTA)
+                // 线程，直接 SetValue 会抛跨线程异常并被吞掉，导致窗口打开但页面空白。
                 System.Threading.Tasks.Task.Run(async () =>
                 {
                     try
                     {
                         await task;
-                        var srcProp = type.GetProperty("Source");
-                        if (srcProp != null && srcProp.PropertyType == typeof(Uri))
-                            srcProp.SetValue(ctl, new Uri(url), null);
+                        // 用控件所属的 UI 线程同步上下文执行设置
+                        Action navigate = () =>
+                        {
+                            try
+                            {
+                                var srcProp = type.GetProperty("Source");
+                                if (srcProp != null && srcProp.PropertyType == typeof(Uri))
+                                    srcProp.SetValue(ctl, new Uri(url), null);
+                            }
+                            catch (Exception ex) { Program.Log("WebView2 设置 Source 失败: " + ex.Message); }
+                        };
+                        if (ctl.InvokeRequired) ctl.BeginInvoke(navigate);
+                        else navigate();
                     }
                     catch (Exception ex) { Program.Log("WebView2 导航失败: " + ex.Message); }
                 });

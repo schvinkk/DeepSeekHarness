@@ -148,6 +148,9 @@ namespace DeepSeekHarness
     {
         readonly NotifyIcon _tray;
         readonly bool _startupOnly;
+        // UI 线程锚点：在 STA 主线程构造，OpenWindow 从后台线程经它切回 UI 线程，
+        // 保证 WebView2/WinForms 控件始终在 STA 线程创建（否则 MTA 线程建窗体失败或空白）。
+        readonly Control _uiAnchor;
         Process _service;
         bool _stopping;
         int _restartFailures;
@@ -174,6 +177,9 @@ namespace DeepSeekHarness
             menu.Items.Add("退出", null, (s, e) => ExitApp());
             _tray.ContextMenuStrip = menu;
             _tray.DoubleClick += (s, e) => OpenWindow();
+            // 锚点控件在 STA 主线程创建，供后台线程 Invoke 回 UI 线程开窗
+            _uiAnchor = new Control();
+            _uiAnchor.CreateControl();
         }
 
         static Icon LoadIcon()
@@ -318,6 +324,23 @@ namespace DeepSeekHarness
         }
 
         void OpenWindow()
+        {
+            // WebView2/WinForms 窗体必须在 STA UI 线程创建。若当前是 ThreadPool(MTA)
+            // 线程，则经锚点控件切回主线程执行；否则直接开窗。
+            try
+            {
+                if (_uiAnchor != null && _uiAnchor.InvokeRequired)
+                {
+                    try { _uiAnchor.BeginInvoke(new Action(OpenWindowOnUiThread)); }
+                    catch (Exception ex) { Program.Log("切回UI线程失败，尝试直接开窗: " + ex.Message); OpenWindowOnUiThread(); }
+                    return;
+                }
+                OpenWindowOnUiThread();
+            }
+            catch (Exception ex) { Program.Log("打开窗口失败: " + ex.Message); }
+        }
+
+        void OpenWindowOnUiThread()
         {
             try { DshClient.OpenWindow("http://127.0.0.1:" + Program.Port, Program.AppName, LoadIcon()); }
             catch (Exception ex) { Program.Log("打开窗口失败: " + ex.Message); }
