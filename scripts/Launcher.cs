@@ -241,7 +241,8 @@ namespace DeepSeekHarness
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = "\"" + bin + "\" --profile web --port " + Program.Port
+                    // --no-open: 由本启动器用 WebView2 开原生窗口，禁止 dsh 再弹默认浏览器（否则双窗口）
+                    Arguments = "\"" + bin + "\" --profile web --no-open --port " + Program.Port
                 };
                 psi.EnvironmentVariables["NODE_PATH"] = Path.Combine(Program.AppDir, "dsh", "node_modules");
                 _service = new Process { StartInfo = psi, EnableRaisingEvents = true };
