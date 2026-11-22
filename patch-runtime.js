@@ -1,1 +1,116 @@
-LyoKICogRGVlcFNlZWsgSGFybmVzcyAtIGRzaCAwLjIuMi1yYy41IOi/kOihjOaXtuiHquaEiOihpeS4gQogKgogKiDlloTlkI4v6Ieq5oSI55uu5qCH77yaCiAqICAgcmMuNSDnmoQgZHNoLWFwaS1zZXNzaW9uLWNvbnRyb2xsZXIg6YeM5pyJ5LiA5aSE6KO45Y+Y6YeP6LCD55SoCiAqICAgICBlbHNlIGlmIChjb250ZW50LnNvbWUocGFydCA9PiBwYXJ0LnR5cGUgPT09IGBmaWxlYCkpIC4uLgogKiAgIOiLpeS4iua4uOS8oOWFpeeahCBjb250ZW50IOS4jeaYr+aVsOe7hO+8iOWtl+espuS4siAvIOWvueixoSAvIG51bGzvvInvvIwKICogICBjb250ZW50LnNvbWUgaXMgbm90IGEgZnVuY3Rpb24g5Lya6K6p5pW05Liq5Lya6K+d5bSp5rqD44CCCiAqCiAqIOS/ruazle+8iOacgOWwj+OAgeacgOWuieWFqOOAgeihqOi+vuW8j+e6p++8ie+8mgogKiAgIOWPquaKiuOAjOijuOWPmOmHjyBjb250ZW50LnNvbWUo44CN5pu/5o2i5Li6CiAqICAgICAoQXJyYXkuaXNBcnJheShjb250ZW50KT9jb250ZW50OltdKS5zb21lKAogKiAgIOi/meaYr+e6r+ihqOi+vuW8j+abv+aNou+8jOS4jeaPkuWFpeivreWPpeOAgeS4jeeisCBibG9jay5jb250ZW50LnNvbWUgLyBub2RlLmNvbnRlbnQuc29tZQogKiAgIOi/meexu+aIkOWRmOiuv+mXru+8iOmCo+S6m+WPguaVsOacrOadpeWwseaYr+aVsOe7hO+8ie+8jOWboOatpOS4jeS8muegtOWdjyBtaW5pZnkg5ZCO55qE5Y2V6KGM5paH5Lu244CCCiAqCiAqIOiHquaEiC/lloTlkI7nibnmgKfvvJoKICogICAtIOW5guetie+8muW4piBbRFNILUhBUk5FU1MtUEFUQ0hdIOagh+iusOWNs+i3s+i/h++8m+mHjeWkjeabv+aNouS5n+S4jeS8muWPoOWKoAogKiAgIC0g57K+5YeG77ya5Y+q5Yy56YWN6KO45Y+Y6YeP6LCD55So77yM57ud5LiN5Yy56YWNIG9iai5jb250ZW50LnNvbWUKICogICAtIOivreazleiHquajgO+8muWGmeWFpeWJjeeUqCBub2RlIC0tY2hlY2sg5qCh6aqM77yM5qCh6aqM5LiN6L+H5bCx5Zue5rua44CB57ud5LiN6JC955uYCiAqICAgLSDlpLHotKXlronlhajvvJrku7vkvZXljZXngrnlpLHotKXlj6ogU0tJUO+8jOaVtOS9k+S7pSAwIOmAgOWHuu+8jOe7neS4jeWboOihpeS4gemYu+aWreWQr+WKqAogKgogKiDnlKjms5U6IG5vZGUgcGF0Y2gtcnVudGltZS5qcyAgICjku5PlupPmoLnnm67lvZXvvJvlhbzlrrnml6cgcGFja2FnaW5nLyDnm67lvZUpCiAqLwondXNlIHN0cmljdCc7CmNvbnN0IGZzID0gcmVxdWlyZSgnZnMnKTsKY29uc3QgcGF0aCA9IHJlcXVpcmUoJ3BhdGgnKTsKY29uc3QgeyBleGVjRmlsZVN5bmMgfSA9IHJlcXVpcmUoJ2NoaWxkX3Byb2Nlc3MnKTsKCmNvbnN0IE1BUksgPSAnW0RTSC1IQVJORVNTLVBBVENIXSc7CgovLyDlj6rlpITnkIYgcmMuNSDph4zlj6/og73mlLbliLDoo7ggY29udGVudCDnmoQgYXBpLXNlc3Npb24tY29udHJvbGxlcuOAggovLyDlhbbkvZnljIXnmoQgLnNvbWUg6YO95pivIGJsb2NrLmNvbnRlbnQgLyBub2RlLmNvbnRlbnQg5oiQ5ZGY6K6/6Zeu77yM5Y+C5pWw5Y2z5pWw57uE77yM5peg6ZyA6KGl5LiB44CCCmNvbnN0IFRBUkdFVFMgPSBbCiAgJ2RzaC1hcGktc2Vzc2lvbi1jb250cm9sbGVyL2xpYi9jbGllbnQuanMnLApdOwoKZnVuY3Rpb24gZmluZERzaFJvb3QoKSB7CiAgY29uc3QgY2FuZGlkYXRlcyA9IFsKICAgIHBhdGguam9pbihfX2Rpcm5hbWUsICdhcHAnLCAnZHNoJywgJ25vZGVfbW9kdWxlcycsICdAZGVlcHNlZWstYWknKSwKICAgIHBhdGguam9pbihfX2Rpcm5hbWUsICdwYWNrYWdpbmcnLCAnYXBwJywgJ2RzaCcsICdub2RlX21vZHVsZXMnLCAnQGRlZXBzZWVrLWFpJyksCiAgICBwYXRoLmpvaW4oX19kaXJuYW1lLCAnbm9kZV9tb2R1bGVzJywgJ0BkZWVwc2Vlay1haScpLAogIF07CiAgZm9yIChjb25zdCBjIG9mIGNhbmRpZGF0ZXMpIGlmIChmcy5leGlzdHNTeW5jKGMpKSByZXR1cm4gYzsKICByZXR1cm4gY2FuZGlkYXRlc1swXTsKfQoKLy8g5Yik5pat5Yy56YWN54K55YmN5piv5LiN5piv5oiQ5ZGY6K6/6Zeu77yI5YmN6Z2i57Sn6YK76Z2e56m655m95a2X56ym5pivICcuJyDmiJbmoIfor4bnrKblrZfnrKbvvInjgIIKLy8g6KO45Y+Y6YeP6LCD55So55qE5YmN5LiA5Liq5a2X56ym6YCa5bi45pivICcoJyAnOycgJz0nICcsJyAneycg5oiW56m655m944CCCmZ1bmN0aW9uIGlzQmFyZUNhbGwoc291cmNlLCBpbmRleCkgewogIGxldCBqID0gaW5kZXggLSAxOwogIHdoaWxlIChqID49IDAgJiYgL1xzLy50ZXN0KHNvdXJjZVtqXSkpIGotLTsKICBpZiAoaiA8IDApIHJldHVybiB0cnVlOwogIGNvbnN0IGMgPSBzb3VyY2Vbal07CiAgLy8g5YmN6Z2i5pivICcuJyDihpIgb2JqLmNvbnRlbnQuc29tZe+8m+WJjemdouaYr+agh+ivhuespi/mlbDlrZcvJ10nLycpJyDihpIg5Lmf5Y+v6IO95piv5oiQ5ZGY6ZO+CiAgaWYgKGMgPT09ICcuJyB8fCAvW0EtWmEtejAtOV8kXF1cKV0vLnRlc3QoYykpIHJldHVybiBmYWxzZTsKICByZXR1cm4gdHJ1ZTsKfQoKZnVuY3Rpb24gYXBwbHlUbyhmaWxlKSB7CiAgY29uc3QgbGFiZWwgPSBwYXRoLmJhc2VuYW1lKHBhdGguZGlybmFtZShmaWxlKSkgKyAnLycgKyBwYXRoLmJhc2VuYW1lKGZpbGUpOwogIGlmICghZnMuZXhpc3RzU3luYyhmaWxlKSkgewogICAgY29uc29sZS5sb2coJ1NLSVAgKG1pc3NpbmcpOicsIGxhYmVsKTsKICAgIHJldHVybjsKICB9CiAgbGV0IHMgPSBmcy5yZWFkRmlsZVN5bmMoZmlsZSwgJ3V0ZjgnKTsKICBpZiAocy5pbmNsdWRlcyhNQVJLKSkgewogICAgY29uc29sZS5sb2coJ0FMUkVBRFkgUEFUQ0hFRDonLCBsYWJlbCk7CiAgICByZXR1cm47CiAgfQogIGNvbnN0IG9yaWcgPSBzOwoKICAvLyDooajovr7lvI/nuqfmm7/mjaLvvJpjb250ZW50LnNvbWUoICAtPiAgKEFycmF5LmlzQXJyYXkoY29udGVudCk/Y29udGVudDpbXSkuc29tZSgKICAvLyDnlKjlh73mlbDlm57osIPpgJDkuKrliKTmlq3vvIzot7Pov4fmiJDlkZjorr/pl67kuI7pnZ7oo7jlj5jph4/jgIIKICBzID0gcy5yZXBsYWNlKC9jb250ZW50XC5zb21lXCgvZywgKG1hdGNoLCBvZmZzZXQpID0+IHsKICAgIGlmICghaXNCYXJlQ2FsbChvcmlnLCBvZmZzZXQpKSByZXR1cm4gbWF0Y2g7CiAgICByZXR1cm4gJyhBcnJheS5pc0FycmF5KGNvbnRlbnQpP2NvbnRlbnQ6W10pLnNvbWUoJzsKICB9KTsKCiAgaWYgKHMgPT09IG9yaWcpIHsKICAgIGNvbnNvbGUubG9nKCdOTyBDSEFOR0UgKG5vIGJhcmUgY29udGVudC5zb21lKTonLCBsYWJlbCk7CiAgICByZXR1cm47CiAgfQogIC8vIOagh+iusOW/hemhu+aYr+azqOmHiuW9ouW8j++8m+ijuOaLvCBbWF0g5ZCO6Lef5qCH6K+G56ym5Lya6YCg5oiQ6K+t5rOV6ZSZ6K+v44CCCiAgaWYgKCFzLmluY2x1ZGVzKE1BUkspKSBzID0gJy8qICcgKyBNQVJLICsgJyAqL1xuJyArIHM7CgogIC8vIOiHquaEiOWFs+mUru+8muWGmeebmOWJjeWBmuivreazleiHquajgO+8jOS4jei/h+WImeaUvuW8g++8iOS4jeWItumAoOW0qea6g++8ieOAggogIC8vIOazqOaEj++8mm5vZGUgLS1jaGVjayDlr7npnZ4gLmpzIOWQjue8gOS8muaMiSBFU00g6Kej5p6Q5a+86Ie06K+v5Yik77yM5Li05pe25paH5Lu25b+F6aG755SoIC5qcyDlkI7nvIDjgIIKICBjb25zdCBkaXIgPSBwYXRoLmRpcm5hbWUoZmlsZSk7CiAgY29uc3QgYmFzZSA9IHBhdGguYmFzZW5hbWUoZmlsZSk7CiAgY29uc3QgdG1wID0gcGF0aC5qb2luKGRpciwgYmFzZSArICcuZHNocGF0Y2gudG1wLmpzJyk7CiAgdHJ5IHsKICAgIGZzLndyaXRlRmlsZVN5bmModG1wLCBzLCAndXRmOCcpOwogICAgZXhlY0ZpbGVTeW5jKHByb2Nlc3MuZXhlY1BhdGgsIFsnLS1jaGVjaycsIHRtcF0sIHsgc3RkaW86ICdpZ25vcmUnIH0pOwogICAgZnMucmVuYW1lU3luYyh0bXAsIGZpbGUpOwogICAgY29uc29sZS5sb2coJ1BBVENIRUQgKHN5bnRheCB2ZXJpZmllZCk6JywgbGFiZWwpOwogIH0gY2F0Y2ggKGUpIHsKICAgIHRyeSB7IGZzLnVubGlua1N5bmModG1wKTsgfSBjYXRjaCAoXykge30KICAgIGNvbnNvbGUubG9nKCdTS0lQIChzeW50YXggY2hlY2sgZmFpbGVkLCByb2xsZWQgYmFjayk6JywgbGFiZWwsICctJywgU3RyaW5nKGUubWVzc2FnZSkuc3BsaXQoJ1xuJylbMF0pOwogIH0KfQoKZnVuY3Rpb24gbWFpbigpIHsKICBjb25zdCByb290ID0gZmluZERzaFJvb3QoKTsKICBjb25zb2xlLmxvZygnW0RTSC1IQVJORVNTLVBBVENIXSBkc2ggcnVudGltZSBzZWxmLWhlYWwgcGF0Y2gnKTsKICBjb25zb2xlLmxvZygnZHNoIG5vZGVfbW9kdWxlcyByb290OicsIHJvb3QpOwogIGZvciAoY29uc3QgcmVsIG9mIFRBUkdFVFMpIHsKICAgIHRyeSB7CiAgICAgIGFwcGx5VG8ocGF0aC5qb2luKHJvb3QsIHJlbCkpOwogICAgfSBjYXRjaCAoZSkgewogICAgICBjb25zb2xlLmxvZygnU0tJUCAoZXJyb3IpOicsIHJlbCwgJy0nLCBlLm1lc3NhZ2UpOwogICAgfQogIH0KICBjb25zb2xlLmxvZygnW0RTSC1IQVJORVNTLVBBVENIXSBkb25lIChub24tZmF0YWwgYnkgZGVzaWduKS4nKTsKfQoKbWFpbigpOwo=
+/*
+ * DeepSeek Harness - dsh 0.2.2-rc.5 运行时自愈补丁
+ *
+ * 善后/自愈目标：
+ *   rc.5 的 dsh-api-session-controller 里有一处裸变量调用
+ *     else if (content.some(part => part.type === `file`)) ...
+ *   若上游传入的 content 不是数组（字符串 / 对象 / null），
+ *   content.some is not a function 会让整个会话崩溃。
+ *
+ * 修法（最小、最安全、表达式级）：
+ *   只把「裸变量 content.some(」替换为
+ *     (Array.isArray(content)?content:[]).some(
+ *   这是纯表达式替换，不插入语句、不碰 block.content.some / node.content.some
+ *   这类成员访问（那些参数本来就是数组），因此不会破坏 minify 后的单行文件。
+ *
+ * 自愈/善后特性：
+ *   - 幂等：带 [DSH-HARNESS-PATCH] 标记即跳过；重复替换也不会叠加
+ *   - 精准：只匹配裸变量调用，绝不匹配 obj.content.some
+ *   - 语法自检：写入前用 node --check 校验，校验不过就回滚、绝不落盘
+ *   - 失败安全：任何单点失败只 SKIP，整体以 0 退出，绝不因补丁阻断启动
+ *
+ * 用法: node patch-runtime.js   (仓库根目录；兼容旧 packaging/ 目录)
+ */
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const { execFileSync } = require('child_process');
+
+const MARK = '[DSH-HARNESS-PATCH]';
+
+// 只处理 rc.5 里可能收到裸 content 的 api-session-controller。
+// 其余包的 .some 都是 block.content / node.content 成员访问，参数即数组，无需补丁。
+const TARGETS = [
+  'dsh-api-session-controller/lib/client.js',
+];
+
+function findDshRoot() {
+  const candidates = [
+    path.join(__dirname, 'app', 'dsh', 'node_modules', '@deepseek-ai'),
+    path.join(__dirname, 'packaging', 'app', 'dsh', 'node_modules', '@deepseek-ai'),
+    path.join(__dirname, 'node_modules', '@deepseek-ai'),
+  ];
+  for (const c of candidates) if (fs.existsSync(c)) return c;
+  return candidates[0];
+}
+
+// 判断匹配点前是不是成员访问（前面紧邻非空白字符是 '.' 或标识符字符）。
+// 裸变量调用的前一个字符通常是 '(' ';' '=' ',' '{' 或空白。
+function isBareCall(source, index) {
+  let j = index - 1;
+  while (j >= 0 && /\s/.test(source[j])) j--;
+  if (j < 0) return true;
+  const c = source[j];
+  // 前面是 '.' → obj.content.some；前面是标识符/数字/']'/')' → 也可能是成员链
+  if (c === '.' || /[A-Za-z0-9_$\]\)]/.test(c)) return false;
+  return true;
+}
+
+function applyTo(file) {
+  const label = path.basename(path.dirname(file)) + '/' + path.basename(file);
+  if (!fs.existsSync(file)) {
+    console.log('SKIP (missing):', label);
+    return;
+  }
+  let s = fs.readFileSync(file, 'utf8');
+  if (s.includes(MARK)) {
+    console.log('ALREADY PATCHED:', label);
+    return;
+  }
+  const orig = s;
+
+  // 表达式级替换：content.some(  ->  (Array.isArray(content)?content:[]).some(
+  // 用函数回调逐个判断，跳过成员访问与非裸变量。
+  s = s.replace(/content\.some\(/g, (match, offset) => {
+    if (!isBareCall(orig, offset)) return match;
+    return '(Array.isArray(content)?content:[]).some(';
+  });
+
+  if (s === orig) {
+    console.log('NO CHANGE (no bare content.some):', label);
+    return;
+  }
+  // 标记必须是注释形式；裸拼 [X] 后跟标识符会造成语法错误。
+  if (!s.includes(MARK)) s = '/* ' + MARK + ' */\n' + s;
+
+  // 自愈关键：写盘前做语法自检，不过则放弃（不制造崩溃）。
+  // 注意：node --check 对非 .js 后缀会按 ESM 解析导致误判，临时文件必须用 .js 后缀。
+  const dir = path.dirname(file);
+  const base = path.basename(file);
+  const tmp = path.join(dir, base + '.dshpatch.tmp.js');
+  try {
+    fs.writeFileSync(tmp, s, 'utf8');
+    execFileSync(process.execPath, ['--check', tmp], { stdio: 'ignore' });
+    fs.renameSync(tmp, file);
+    console.log('PATCHED (syntax verified):', label);
+  } catch (e) {
+    try { fs.unlinkSync(tmp); } catch (_) {}
+    console.log('SKIP (syntax check failed, rolled back):', label, '-', String(e.message).split('\n')[0]);
+  }
+}
+
+function main() {
+  const root = findDshRoot();
+  console.log('[DSH-HARNESS-PATCH] dsh runtime self-heal patch');
+  console.log('dsh node_modules root:', root);
+  for (const rel of TARGETS) {
+    try {
+      applyTo(path.join(root, rel));
+    } catch (e) {
+      console.log('SKIP (error):', rel, '-', e.message);
+    }
+  }
+  console.log('[DSH-HARNESS-PATCH] done (non-fatal by design).');
+}
+
+main();

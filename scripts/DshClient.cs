@@ -1,1 +1,125 @@
-Ly8gRGVlcFNlZWsgSGFybmVzcyDmoYzpnaLniYgg4oCU4oCUIOWOn+eUn+WuouaIt+err+eql+WPoyAoV2ViVmlldzIpCi8vIOe8luivke+8muingSBidWlsZC5wczEg56ysIDQg5q2l44CC5LiOIExhdW5jaGVyLmNzIOS4gOi1t+e8luivkei/myAiRGVlcFNlZWsgSGFybmVzcy5leGUi44CCCi8vIOiBjOi0o++8muaJv+i9vSBodHRwOi8vMTI3LjAuMC4xOjxwb3J0PiDnmoTljp/nlJ/nqpflj6PvvIznu5/kuIDpsrjpsbzlm77moIfvvJsKLy8gICAgICAgV2ViVmlldzIg6L+Q6KGM5pe257y65aSx5pe25Zue6YCA5YiwIEVkZ2Ug5bqU55So56qX5Y+jIC8g6buY6K6k5rWP6KeI5Zmo44CCCnVzaW5nIFN5c3RlbTsKdXNpbmcgU3lzdGVtLkRyYXdpbmc7CnVzaW5nIFN5c3RlbS5JTzsKdXNpbmcgU3lzdGVtLldpbmRvd3MuRm9ybXM7CgpuYW1lc3BhY2UgRGVlcFNlZWtIYXJuZXNzCnsKICAgIGludGVybmFsIHN0YXRpYyBjbGFzcyBEc2hDbGllbnQKICAgIHsKICAgICAgICAvLyDnlLEgTGF1bmNoZXIg5Lyg5YWlIFVSTCAvIOagh+mimCAvIOWbvuagh++8jOmBv+WFjei3qOaWh+S7tumdmeaAgeiApuWQiOOAggogICAgICAgIGludGVybmFsIHN0YXRpYyB2b2lkIE9wZW5XaW5kb3coc3RyaW5nIHVybCwgc3RyaW5nIHRpdGxlLCBJY29uIGljb24pCiAgICAgICAgewogICAgICAgICAgICAvLyDlpoLmnpzlt7Lnu4/mnInkuIDkuKrnqpflj6PlvIDnnYDvvIznm7TmjqXmv4DmtLvlroPvvIzkuI3ph43lpI3lvIAKICAgICAgICAgICAgdmFyIGV4aXN0aW5nID0gQXBwbGljYXRpb24uT3BlbkZvcm1zWyJEc2hXaW5kb3ciXTsKICAgICAgICAgICAgaWYgKGV4aXN0aW5nICE9IG51bGwpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIHRyeSB7IGV4aXN0aW5nLkFjdGl2YXRlKCk7IH0gY2F0Y2ggeyB9CiAgICAgICAgICAgICAgICByZXR1cm47CiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIHRyeQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBpZiAoV2ViVmlldzJBdmFpbGFibGUoKSkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICB2YXIgZiA9IG5ldyBXZWJWaWV3MkZvcm0odXJsLCB0aXRsZSwgaWNvbik7CiAgICAgICAgICAgICAgICAgICAgZi5TaG93KCk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhdGNoIChFeGNlcHRpb24gZXgpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIFByb2dyYW0uTG9nKCJXZWJWaWV3MiDliJ3lp4vljJblpLHotKXvvIzlm57pgIDmtY/op4jlmag6ICIgKyBleC5NZXNzYWdlKTsKICAgICAgICAgICAgfQogICAgICAgICAgICBGYWxsYmFja1RvQnJvd3Nlcih1cmwpOwogICAgICAgIH0KCiAgICAgICAgLy8g5qOA5rWLIFdlYlZpZXcyIOi/kOihjOaXtuaYr+WQpuW3suWuieijhe+8iOazqOWGjOihqCBDYXVzZVZlcnNpb27vvInjgIIKICAgICAgICBzdGF0aWMgYm9vbCBXZWJWaWV3MkF2YWlsYWJsZSgpCiAgICAgICAgewogICAgICAgICAgICB0cnkKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgdXNpbmcgKHZhciBrID0gTWljcm9zb2Z0LldpbjMyLlJlZ2lzdHJ5LkN1cnJlbnRVc2VyLk9wZW5TdWJLZXkoCiAgICAgICAgICAgICAgICAgICAgQCJTb2Z0d2FyZVxNaWNyb3NvZnRcRWRnZVdlYlZpZXdcQXBwbGljYXRpb24iKSkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpZiAoayAhPSBudWxsICYmIGsuR2V0U3ViS2V5TmFtZXMoKS5MZW5ndGggPiAwKSByZXR1cm4gdHJ1ZTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIHVzaW5nICh2YXIgayA9IE1pY3Jvc29mdC5XaW4zMi5SZWdpc3RyeS5Mb2NhbE1hY2hpbmUuT3BlblN1YktleSgKICAgICAgICAgICAgICAgICAgICBAIlNPRlRXQVJFXE1pY3Jvc29mdFxFZGdlV2ViVmlld1xBcHBsaWNhdGlvbiIpKQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGlmIChrICE9IG51bGwgJiYgay5HZXRTdWJLZXlOYW1lcygpLkxlbmd0aCA+IDApIHJldHVybiB0cnVlOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgLy8g6ZqP5YyF5YiG5Y+R55qEIFdlYlZpZXcyTG9hZGVyLmRsbCDlnKjvvIzkuZ/lj6/lsJ3or5XvvJvnnJ/mraPlpLHotKXkvJrooqvkuIrlsYIgY2F0Y2gg5Zue6YCACiAgICAgICAgICAgICAgICByZXR1cm4gRmlsZS5FeGlzdHMoUGF0aC5Db21iaW5lKFByb2dyYW0uQXBwRGlyLCAiV2ViVmlldzJMb2FkZXIuZGxsIikpOwogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhdGNoIHsgcmV0dXJuIGZhbHNlOyB9CiAgICAgICAgfQoKICAgICAgICBzdGF0aWMgdm9pZCBGYWxsYmFja1RvQnJvd3NlcihzdHJpbmcgdXJsKQogICAgICAgIHsKICAgICAgICAgICAgdHJ5CiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIC8vIOS8mOWFiCBFZGdlIOW6lOeUqOeql+WPo++8iOaXoOa1j+iniOWZqOagh+etvuagj++8ie+8jOayoeacieWImeeUqOm7mOiupOa1j+iniOWZqAogICAgICAgICAgICAgICAgc3RyaW5nIGVkZ2UgPSBQYXRoLkNvbWJpbmUoCiAgICAgICAgICAgICAgICAgICAgRW52aXJvbm1lbnQuR2V0Rm9sZGVyUGF0aChFbnZpcm9ubWVudC5TcGVjaWFsRm9sZGVyLlByb2dyYW1GaWxlc1g4NiksCiAgICAgICAgICAgICAgICAgICAgIk1pY3Jvc29mdCIsICJFZGdlIiwgIkFwcGxpY2F0aW9uIiwgIm1zZWRnZS5leGUiKTsKICAgICAgICAgICAgICAgIGlmIChGaWxlLkV4aXN0cyhlZGdlKSkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBQcm9jZXNzLlN0YXJ0KGVkZ2UsICItLWFwcD1cIiIgKyB1cmwgKyAiXCIiKTsKICAgICAgICAgICAgICAgICAgICByZXR1cm47CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICAgICAgY2F0Y2ggeyB9CiAgICAgICAgICAgIHRyeSB7IFN5c3RlbS5EaWFnbm9zdGljcy5Qcm9jZXNzLlN0YXJ0KHVybCk7IH0KICAgICAgICAgICAgY2F0Y2ggKEV4Y2VwdGlvbiBleCkgeyBQcm9ncmFtLkxvZygi5omT5byA5rWP6KeI5Zmo5aSx6LSlOiAiICsgZXguTWVzc2FnZSk7IH0KICAgICAgICB9CgogICAgICAgIHNlYWxlZCBjbGFzcyBXZWJWaWV3MkZvcm0gOiBGb3JtCiAgICAgICAgewogICAgICAgICAgICBpbnRlcm5hbCBXZWJWaWV3MkZvcm0oc3RyaW5nIHVybCwgc3RyaW5nIHRpdGxlLCBJY29uIGljb24pCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIE5hbWUgPSAiRHNoV2luZG93IjsKICAgICAgICAgICAgICAgIFRleHQgPSB0aXRsZTsKICAgICAgICAgICAgICAgIEljb24gPSBpY29uOwogICAgICAgICAgICAgICAgU3RhcnRQb3NpdGlvbiA9IEZvcm1TdGFydFBvc2l0aW9uLkNlbnRlclNjcmVlbjsKICAgICAgICAgICAgICAgIFdpZHRoID0gMTI4MDsKICAgICAgICAgICAgICAgIEhlaWdodCA9IDgwMDsKICAgICAgICAgICAgICAgIE1pbmltdW1TaXplID0gbmV3IFNpemUoOTAwLCA2MDApOwoKICAgICAgICAgICAgICAgIC8vIOmAmui/h+WPjeWwhOS9v+eUqCBXZWJWaWV3MiBXaW5Gb3JtcyDmjqfku7bvvIzpgb/lhY3nvJbor5HmnJ/lvLrlvJXnlKjniYjmnKzlt67lvILjgIIKICAgICAgICAgICAgICAgIC8vIOS7juW3suWKoOi9veeoi+W6j+mbhuaMieWQjeWtl+aJvuexu+Wei++8iGJ1aWxkLnBzMSDlt7Lmioror6UgRExMIOS9nOS4uiAvciDlvJXnlKjvvInjgIIKICAgICAgICAgICAgICAgIFR5cGUgdHlwZSA9IG51bGw7CiAgICAgICAgICAgICAgICBmb3JlYWNoICh2YXIgYXNtIGluIEFwcERvbWFpbi5DdXJyZW50RG9tYWluLkdldEFzc2VtYmxpZXMoKSkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICB0eXBlID0gYXNtLkdldFR5cGUoIk1pY3Jvc29mdC5XZWIuV2ViVmlldzIuV2luRm9ybXMuV2ViVmlldzIiKTsKICAgICAgICAgICAgICAgICAgICBpZiAodHlwZSAhPSBudWxsKSBicmVhazsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIC8vIOiLpeWwmuacquWKoOi9ve+8jOaMieWQjeWtl+inpuWPkeWKoOi9vQogICAgICAgICAgICAgICAgaWYgKHR5cGUgPT0gbnVsbCkKICAgICAgICAgICAgICAgICAgICB0eXBlID0gVHlwZS5HZXRUeXBlKCJNaWNyb3NvZnQuV2ViLldlYlZpZXcyLldpbkZvcm1zLldlYlZpZXcyLCBNaWNyb3NvZnQuV2ViLldlYlZpZXcyLldpbkZvcm1zIiwgdHJ1ZSk7CiAgICAgICAgICAgICAgICB2YXIgY3RsID0gKENvbnRyb2wpQWN0aXZhdG9yLkNyZWF0ZUluc3RhbmNlKHR5cGUpOwogICAgICAgICAgICAgICAgY3RsLkRvY2sgPSBEb2NrU3R5bGUuRmlsbDsKICAgICAgICAgICAgICAgIENvbnRyb2xzLkFkZChjdGwpOwoKICAgICAgICAgICAgICAgIC8vIOW8guatpeWIneWni+WMluW5tuWvvOiIqu+8iEVuc3VyZUNvcmVXZWJWaWV3MkFzeW5j77yJCiAgICAgICAgICAgICAgICB2YXIgZW5zdXJlID0gdHlwZS5HZXRNZXRob2QoIkVuc3VyZUNvcmVXZWJWaWV3MkFzeW5jIik7CiAgICAgICAgICAgICAgICB2YXIgdGFzayA9IChTeXN0ZW0uVGhyZWFkaW5nLlRhc2tzLlRhc2spZW5zdXJlLkludm9rZShjdGwsIG5ldyBvYmplY3RbXSB7IG51bGwgfSk7CiAgICAgICAgICAgICAgICBTeXN0ZW0uVGhyZWFkaW5nLlRhc2tzLlRhc2suUnVuKGFzeW5jICgpID0+CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgdHJ5CiAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICBhd2FpdCB0YXNrOwogICAgICAgICAgICAgICAgICAgICAgICB2YXIgc3JjUHJvcCA9IHR5cGUuR2V0UHJvcGVydHkoIlNvdXJjZSIpOwogICAgICAgICAgICAgICAgICAgICAgICBpZiAoc3JjUHJvcCAhPSBudWxsICYmIHNyY1Byb3AuUHJvcGVydHlUeXBlID09IHR5cGVvZihVcmkpKQogICAgICAgICAgICAgICAgICAgICAgICAgICAgc3JjUHJvcC5TZXRWYWx1ZShjdGwsIG5ldyBVcmkodXJsKSwgbnVsbCk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIGNhdGNoIChFeGNlcHRpb24gZXgpIHsgUHJvZ3JhbS5Mb2coIldlYlZpZXcyIOWvvOiIquWksei0pTogIiArIGV4Lk1lc3NhZ2UpOyB9CiAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQo=
+// DeepSeek Harness 桌面版 —— 原生客户端窗口 (WebView2)
+// 编译：见 build.ps1 第 4 步。与 Launcher.cs 一起编译进 "DeepSeek Harness.exe"。
+// 职责：承载 http://127.0.0.1:<port> 的原生窗口，统一鲸鱼图标；
+//       WebView2 运行时缺失时回退到 Edge 应用窗口 / 默认浏览器。
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+
+namespace DeepSeekHarness
+{
+    internal static class DshClient
+    {
+        // 由 Launcher 传入 URL / 标题 / 图标，避免跨文件静态耦合。
+        internal static void OpenWindow(string url, string title, Icon icon)
+        {
+            // 如果已经有一个窗口开着，直接激活它，不重复开
+            var existing = Application.OpenForms["DshWindow"];
+            if (existing != null)
+            {
+                try { existing.Activate(); } catch { }
+                return;
+            }
+
+            try
+            {
+                if (WebView2Available())
+                {
+                    var f = new WebView2Form(url, title, icon);
+                    f.Show();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.Log("WebView2 初始化失败，回退浏览器: " + ex.Message);
+            }
+            FallbackToBrowser(url);
+        }
+
+        // 检测 WebView2 运行时是否已安装（注册表 CauseVersion）。
+        static bool WebView2Available()
+        {
+            try
+            {
+                using (var k = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
+                    @"Software\Microsoft\EdgeWebView\Application"))
+                {
+                    if (k != null && k.GetSubKeyNames().Length > 0) return true;
+                }
+                using (var k = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"SOFTWARE\Microsoft\EdgeWebView\Application"))
+                {
+                    if (k != null && k.GetSubKeyNames().Length > 0) return true;
+                }
+                // 随包分发的 WebView2Loader.dll 在，也可尝试；真正失败会被上层 catch 回退
+                return File.Exists(Path.Combine(Program.AppDir, "WebView2Loader.dll"));
+            }
+            catch { return false; }
+        }
+
+        static void FallbackToBrowser(string url)
+        {
+            try
+            {
+                // 优先 Edge 应用窗口（无浏览器标签栏），没有则用默认浏览器
+                string edge = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+                    "Microsoft", "Edge", "Application", "msedge.exe");
+                if (File.Exists(edge))
+                {
+                    Process.Start(edge, "--app=\"" + url + "\"");
+                    return;
+                }
+            }
+            catch { }
+            try { System.Diagnostics.Process.Start(url); }
+            catch (Exception ex) { Program.Log("打开浏览器失败: " + ex.Message); }
+        }
+
+        sealed class WebView2Form : Form
+        {
+            internal WebView2Form(string url, string title, Icon icon)
+            {
+                Name = "DshWindow";
+                Text = title;
+                Icon = icon;
+                StartPosition = FormStartPosition.CenterScreen;
+                Width = 1280;
+                Height = 800;
+                MinimumSize = new Size(900, 600);
+
+                // 通过反射使用 WebView2 WinForms 控件，避免编译期强引用版本差异。
+                // 从已加载程序集按名字找类型（build.ps1 已把该 DLL 作为 /r 引用）。
+                Type type = null;
+                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    type = asm.GetType("Microsoft.Web.WebView2.WinForms.WebView2");
+                    if (type != null) break;
+                }
+                // 若尚未加载，按名字触发加载
+                if (type == null)
+                    type = Type.GetType("Microsoft.Web.WebView2.WinForms.WebView2, Microsoft.Web.WebView2.WinForms", true);
+                var ctl = (Control)Activator.CreateInstance(type);
+                ctl.Dock = DockStyle.Fill;
+                Controls.Add(ctl);
+
+                // 异步初始化并导航（EnsureCoreWebView2Async）
+                var ensure = type.GetMethod("EnsureCoreWebView2Async");
+                var task = (System.Threading.Tasks.Task)ensure.Invoke(ctl, new object[] { null });
+                System.Threading.Tasks.Task.Run(async () =>
+                {
+                    try
+                    {
+                        await task;
+                        var srcProp = type.GetProperty("Source");
+                        if (srcProp != null && srcProp.PropertyType == typeof(Uri))
+                            srcProp.SetValue(ctl, new Uri(url), null);
+                    }
+                    catch (Exception ex) { Program.Log("WebView2 导航失败: " + ex.Message); }
+                });
+            }
+        }
+    }
+}

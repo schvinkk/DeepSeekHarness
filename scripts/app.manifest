@@ -1,1 +1,23 @@
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8YXNzZW1ibHkgeG1sbnM9InVybjpzY2hlbWFzLW1pY3Jvc29mdC1jb206YXNtLnYxIiBtYW5pZmVzdFZlcnNpb249IjEuMCI+CiAgPGFzc2VtYmx5SWRlbnRpdHkKICAgIHZlcnNpb249IjMuMC4wLjAiCiAgICBwcm9jZXNzb3JBcmNoaXRlY3R1cmU9ImFtZDY0IgogICAgbmFtZT0iRGVlcFNlZWsuSGFybmVzcy5EZXNrdG9wIgogICAgdHlwZT0id2luMzIiIC8+CiAgPGRlc2NyaXB0aW9uPkRlZXBTZWVrIEhhcm5lc3MgRGVza3RvcCBDbGllbnQ8L2Rlc2NyaXB0aW9uPgogIDwhLS0gV2luZG93cyAxMC8xMSDlhbzlrrnmgKcgR1VJRCAtLT4KICA8Y29tcGF0aWJpbGl0eSB4bWxucz0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTpjb21wYXRpYmlsaXR5LnYxIj4KICAgIDxhcHBsaWNhdGlvbj4KICAgICAgPCEtLSBXaW5kb3dzIDEwIC8gMTEgLS0+CiAgICAgIDxzdXBwb3J0ZWRPUyBJZD0iezhlMGY3YTEyLWJmYjMtNGZlOC1iOWE1LTQ4ZmQ1MGExNWE5YX0iIC8+CiAgICA8L2FwcGxpY2F0aW9uPgogIDwvY29tcGF0aWJpbGl0eT4KICA8IS0tIERQSSDmhJ/nn6XvvJrpq5jliIblsY/kuI3mqKHns4ogLS0+CiAgPGFwcGxpY2F0aW9uIHhtbG5zPSJ1cm46c2NoZW1hcy1taWNyb3NvZnQtY29tOmFzbS52MyI+CiAgICA8d2luZG93c1NldHRpbmdzPgogICAgICA8ZHBpQXdhcmUgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vU01JLzIwMDUvV2luZG93c1NldHRpbmdzIj50cnVlL3BtPC9kcGlBd2FyZT4KICAgICAgPGRwaUF3YXJlbmVzcyB4bWxucz0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9TTUkvMjAxNi9XaW5kb3dzU2V0dGluZ3MiPnBlcm1vbml0b3J2MjwvZHBpQXdhcmVuZXNzPgogICAgPC93aW5kb3dzU2V0dGluZ3M+CiAgPC9hcHBsaWNhdGlvbj4KPC9hc3NlbWJseT4K
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity
+    version="3.0.0.0"
+    processorArchitecture="amd64"
+    name="DeepSeek.Harness.Desktop"
+    type="win32" />
+  <description>DeepSeek Harness Desktop Client</description>
+  <!-- Windows 10/11 兼容性 GUID -->
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- Windows 10 / 11 -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
+    </application>
+  </compatibility>
+  <!-- DPI 感知：高分屏不模糊 -->
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/pm</dpiAware>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">permonitorv2</dpiAwareness>
+    </windowsSettings>
+  </application>
+</assembly>

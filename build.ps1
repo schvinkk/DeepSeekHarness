@@ -1,1 +1,169 @@
-IyBEZWVwU2VlayBIYXJuZXNzIOahjOmdoueJiCDigJQg5LiA6ZSu5omT5YyF6ISa5pysIChQb3dlclNoZWxsKSB2My4wLjAKIyDlhoXmoLjkuI4gZHNoLUdvIOaJi+acuueJiOe7n+S4gOS4uiBAZGVlcHNlZWstYWkvZHNoIDAuMi4yLXJjLjXvvIxOb2RlIHYyNC4yMi4xCiMg55So5rOVOiAgcG93ZXJzaGVsbCAtRXhlY3V0aW9uUG9saWN5IEJ5cGFzcyAtRmlsZSAuXGJ1aWxkLnBzMQojIOS+nei1ljogIOacrOacuuWPr+iuv+mXrue9kee7nDsg5bey5a6J6KOFIE5vZGUuanMo55So5LqO5Zu+5qCH55Sf5oiQKTsg6aaW5qyh6L+Q6KGM5Lya6Ieq5Yqo5LiL6L29CiMgICAgICAgIOS+v+aQuiBOb2RlIOi/kOihjOaXtuS4jiBJbm5vIFNldHVwIOe8luivkeWZqCjkuIvovb3liLAgLlxkb3dubG9hZHNcKQojIOeJiOacrDogIDMuMC4wIC0g5YaF5qC45LiOIGRzaC1HbyDmiYvmnLrniYjnu5/kuIDkuLogMC4yLjItcmMuNQokRXJyb3JBY3Rpb25QcmVmZXJlbmNlID0gIlN0b3AiCiRST09UID0gU3BsaXQtUGF0aCAtUGFyZW50ICRNeUludm9jYXRpb24uTXlDb21tYW5kLlBhdGgKJEFQUCAgPSBKb2luLVBhdGggJFJPT1QgImFwcCIKJElDT04gPSBKb2luLVBhdGggJFJPT1QgImljb24iCiRESVNUID0gSm9pbi1QYXRoICRST09UICJkaXN0IgokREwgICA9IEpvaW4tUGF0aCAkUk9PVCAiZG93bmxvYWRzIgokVkVSU0lPTiA9ICIzLjAuMCIKCiMg5YaF5qC454mI5pysOiDkuI4gZHNoLUdvIOaJi+acuueJiCAodG9vbGluZy9rZXJuZWwtYnVtcCkg5L+d5oyB5a6M5YWo5LiA6Ie0CiREU0hfVkVSID0gIjAuMi4yLXJjLjUiCiMgTm9kZSDov5DooYzml7bniYjmnKw6IHJjLjUg5a6Y5pa55p6E5bu65L2/55SoIHYyNC4yMi4x77yM5Y6f55Sf5qih5Z2XIEFCSSDlv4XpobvkuIDoh7QKJE5PREVfVkVSID0gInYyNC4yMi4xIgoKIyDmupAgZHNoIOWuieijheebruW9lTog5LyY5YWI55So5LiL6L2955uu5b2V6YeM5oiR5Lus5Zu65a6a54mI5pys55qE5Ymv5pys77yM6YG/5YWN5L6d6LWW5p6E5bu65py65YWo5bGAIG5wbSDniYjmnKwKJERTSF9TUkMgPSBKb2luLVBhdGggJERMICJkc2gtJERTSF9WRVJcbm9kZV9tb2R1bGVzXEBkZWVwc2Vlay1haVxkc2giCgpmdW5jdGlvbiBTdGVwKCRtc2cpIHsgV3JpdGUtSG9zdCAiYG49PT0gJG1zZyA9PT0iIC1Gb3JlZ3JvdW5kQ29sb3IgQ3lhbiB9CgojIC0tLS0tLS0tLS0gMS4gSWNvbiAtLS0tLS0tLS0tClN0ZXAgIjEvOCBHZW5lcmF0ZSB3aGFsZSBpY29uICh6ZXJvLWRlcGVuZGVuY3kgSUNPIGdlbmVyYXRvcikiCiRlbnY6Tk9ERV9QQVRIID0gSm9pbi1QYXRoICREU0hfU1JDICJub2RlX21vZHVsZXMiCiYgbm9kZSAoSm9pbi1QYXRoICRST09UICJzY3JpcHRzXG1ha2UtaWNvbi5janMiKQppZiAoJExBU1RFWElUQ09ERSAtbmUgMCkgeyB0aHJvdyAiSWNvbiBnZW5lcmF0aW9uIGZhaWxlZCIgfQoKIyAtLS0tLS0tLS0tIDIuIFBvcnRhYmxlIE5vZGUgUnVudGltZSAtLS0tLS0tLS0tClN0ZXAgIjIvOCBQcmVwYXJlIE5vZGUgcnVudGltZSAkTk9ERV9WRVIiCk5ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlIC1QYXRoICRETCB8IE91dC1OdWxsCiRub2RlWmlwID0gSm9pbi1QYXRoICRETCAibm9kZS0kTk9ERV9WRVItd2luLXg2NC56aXAiCmlmICgtbm90IChUZXN0LVBhdGggJG5vZGVaaXApKSB7CiAgICBjdXJsLmV4ZSAtTCAtbyAkbm9kZVppcCAiaHR0cHM6Ly9ub2RlanMub3JnL2Rpc3QvJE5PREVfVkVSL25vZGUtJE5PREVfVkVSLXdpbi14NjQuemlwIgp9CiRub2RlRGlyID0gSm9pbi1QYXRoICRETCAibm9kZS1leHRyYWN0XG5vZGUtJE5PREVfVkVSLXdpbi14NjQiCmlmICgtbm90IChUZXN0LVBhdGggKEpvaW4tUGF0aCAkbm9kZURpciAibm9kZS5leGUiKSkpIHsKICAgIEV4cGFuZC1BcmNoaXZlIC1QYXRoICRub2RlWmlwIC1EZXN0aW5hdGlvblBhdGggKEpvaW4tUGF0aCAkREwgIm5vZGUtZXh0cmFjdCIpIC1Gb3JjZQp9Ck5ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlIC1QYXRoIChKb2luLVBhdGggJEFQUCAicnVudGltZSIpIHwgT3V0LU51bGwKQ29weS1JdGVtIChKb2luLVBhdGggJG5vZGVEaXIgIm5vZGUuZXhlIikgKEpvaW4tUGF0aCAkQVBQICJydW50aW1lXG5vZGUuZXhlIikgLUZvcmNlCkNvcHktSXRlbSAoSm9pbi1QYXRoICRub2RlRGlyICJMSUNFTlNFIikgKEpvaW4tUGF0aCAkQVBQICJydW50aW1lXExJQ0VOU0UiKSAtRm9yY2UKCiMgLS0tLS0tLS0tLSAzLiBGdWxsIGRzaCBwYWNrYWdlIC0tLS0tLS0tLS0KU3RlcCAiMy84IEZldGNoIERTSCBjb3JlICREU0hfVkVSIGFuZCBjb3B5IHBhY2thZ2UgKHdpdGggYWxsIGRlcGVuZGVuY2llcykiCiMg5Zu65a6a54mI5pys5a6J6KOF77ya5LiOIGRzaC1HbyDmiYvmnLrniYjlhoXmoLjkuIDoh7TvvIzpgb/lhY3mnoTlu7rmnLrlhajlsYAgbnBtIOeJiOacrOa8guenu+OAggokY29yZURpciA9IEpvaW4tUGF0aCAkREwgImRzaC0kRFNIX1ZFUiIKaWYgKC1ub3QgKFRlc3QtUGF0aCAoSm9pbi1QYXRoICREU0hfU1JDICJwYWNrYWdlLmpzb24iKSkpIHsKICAgIE5ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlIC1QYXRoICRjb3JlRGlyIHwgT3V0LU51bGwKICAgICYgbnBtIGluc3RhbGwgLS1wcmVmaXggJGNvcmVEaXIgIkBkZWVwc2Vlay1haS9kc2hAJERTSF9WRVIiIC0tbm8tYXVkaXQgLS1uby1mdW5kCiAgICBpZiAoJExBU1RFWElUQ09ERSAtbmUgMCkgeyB0aHJvdyAiRmFpbGVkIHRvIGluc3RhbGwgRFNIIGNvcmUgJERTSF9WRVIiIH0KfQokaW5zdGFsbGVkVmVyID0gKEdldC1Db250ZW50IChKb2luLVBhdGggJERTSF9TUkMgInBhY2thZ2UuanNvbiIpIC1SYXcgfCBDb252ZXJ0RnJvbS1Kc29uKS52ZXJzaW9uCmlmICgkaW5zdGFsbGVkVmVyIC1uZSAkRFNIX1ZFUikgewogICAgdGhyb3cgIkRTSCBjb3JlIHZlcnNpb24gbWlzbWF0Y2g6IGV4cGVjdGVkICREU0hfVkVSLCBnb3QgJGluc3RhbGxlZFZlciIKfQpXcml0ZS1Ib3N0ICIgICAgRFNIIGNvcmUgcGlubmVkIHRvICRpbnN0YWxsZWRWZXIiCnJvYm9jb3B5ICREU0hfU1JDIChKb2luLVBhdGggJEFQUCAiZHNoIikgL0UgL1I6MSAvVzoxIC9ORkwgL05ETCAvTlAgL1hGICoubWFwIC9YRCBkYXJ3aW4tYXJtNjQgZGFyd2luLXg2NCB3aW4zMi1hcm02NCBsaW51eC14NjQgbGludXgtYXJtNjQgLmNhY2hlIC5naXQgfCBPdXQtTnVsbAoKIyAtLS0tLS0tLS0tIDMuNSBQbHVnaW4gU3VpdGUgLS0tLS0tLS0tLQojIOWWhOWQjuivtOaYju+8muaXp+eJiOacrOWcqOatpOWkjeWItuS4gOS4quS7k+W6k+mHjOW5tuS4jeWtmOWcqOeahCBwbHVnaW5zXGRzaC1wbHVnaW4tc3VpdGXvvIwKIyDov5jlvoAgbWFuaWZlc3Qg5rOo5YWl5LiA5Liq5LiN5a2Y5Zyo55qE5L6d6LWWICJAZGVlcHNlZWstYWkvZHNoLXBsdWdpbi1zdWl0ZSLvvIwKIyDlr7zoh7TmnoTlu7rlpLHotKUgLyDlkK/liqjml7bmqKHlnZfop6PmnpDltKnmuoPjgIJyYy41IOWGheaguOW3suiHquW4puWumOaWueaPkuS7tuWll+S7tgojIO+8iGRzaC1wbHVnaW4tbWFuYWdlcuOAgWRzaC1wbHVnaW4tbWFya2V044CBZHNoLXBsdWdpbi1yZWNvbW1lbmRhdGlvbnPjgIEKIyAgZHNoLWNsaWVudC11aS1wbHVnaW4tKiDnrYnljYHkvZnkuKrvvInvvIzml6DpnIDkuZ/kuI3lupTlho3ms6jlhaXomZrmnoTljIXjgIIKU3RlcCAiNC84IFZlcmlmeSBidWlsdC1pbiBwbHVnaW4gc3VpdGUgc2hpcHBlZCB3aXRoIGRzaCAkRFNIX1ZFUiIKJHBsdWdpblJvb3QgPSBKb2luLVBhdGggJEFQUCAiZHNoXG5vZGVfbW9kdWxlc1xAZGVlcHNlZWstYWkiCiRidWlsdGluUGx1Z2lucyA9IEAoCiAgImRzaC1wbHVnaW4tbWFuYWdlciIsICJkc2gtcGx1Z2luLW1hcmtldCIsICJkc2gtcGx1Z2luLXJlY29tbWVuZGF0aW9ucyIsCiAgImRzaC1jbGllbnQtdWktcGx1Z2luLW1hbmFnZXIiLCAiZHNoLWNsaWVudC11aS1wbHVnaW4tbWFya2V0IiwKICAiZHNoLWhvc3QtcGx1Z2luLWludmVudG9yeSIsICJkc2gtcGx1Z2luLW1hcmtldC1pbmRleCIsCiAgImNvcmRpcy1wbHVnaW4tbG9hZGVyIiwgImNvcmRpcy1wbHVnaW4taW5jbHVkZSIsICJjb3JkaXMtcGx1Z2luLXRpbWVyIgopCiRmb3VuZCA9IDAKZm9yZWFjaCAoJHAgaW4gJGJ1aWx0aW5QbHVnaW5zKSB7IGlmIChUZXN0LVBhdGggKEpvaW4tUGF0aCAkcGx1Z2luUm9vdCAkcCkpIHsgJGZvdW5kKysgfSB9CldyaXRlLUhvc3QgIiAgICBCdWlsdC1pbiBwbHVnaW5zIHByZXNlbnQ6ICRmb3VuZCAvICQoJGJ1aWx0aW5QbHVnaW5zLkNvdW50KSIKaWYgKCRmb3VuZCAtbHQgNSkgewogIHRocm93ICJkc2ggY29yZSBwbHVnaW4gc3VpdGUgbG9va3MgaW5jb21wbGV0ZSAob25seSAkZm91bmQgZm91bmQpOyByZWZ1c2UgdG8gc2hpcCBhIGJyb2tlbiBidWlsZCIKfQoKIyDlj6rmiLPniYjmnKzlj7fvvJvnu53kuI3ms6jlhaXkuI3lrZjlnKjnmoTkvp3otZbvvIjpgqPmmK/lkK/liqjltKnmuoPnmoTmnaXmupDvvInjgIIKJGFwcFBrZyA9IEpvaW4tUGF0aCAkQVBQICJkc2hccGFja2FnZS5qc29uIgokYXBwTWFuaWZlc3QgPSBHZXQtQ29udGVudCAkYXBwUGtnIC1SYXcgfCBDb252ZXJ0RnJvbS1Kc29uCiRtYW5pZmVzdENoYW5nZWQgPSAkZmFsc2UKaWYgKCRhcHBNYW5pZmVzdC52ZXJzaW9uIC1uZSAkVkVSU0lPTikgewogICAgJGFwcE1hbmlmZXN0LnZlcnNpb24gPSAkVkVSU0lPTgogICAgJG1hbmlmZXN0Q2hhbmdlZCA9ICR0cnVlCiAgICBXcml0ZS1Ib3N0ICIgICAgU3RhbXBlZCBhcHAgdmVyc2lvbiB0byAkVkVSU0lPTiIKfQojIOa4heeQhuWOhuWPsumBl+eVmeeahOiZmuaehOS+nei1lu+8jOmBv+WFjeaXp+WuieijheWMheWNh+e6p+WQjuS7jeW4puW0qea6g+a6kOOAggppZiAoJGFwcE1hbmlmZXN0LmRlcGVuZGVuY2llcy5QU09iamVjdC5Qcm9wZXJ0aWVzLk5hbWUgLWNvbnRhaW5zICJAZGVlcHNlZWstYWkvZHNoLXBsdWdpbi1zdWl0ZSIpIHsKICAgICRhcHBNYW5pZmVzdC5kZXBlbmRlbmNpZXMuUFNPYmplY3QuUHJvcGVydGllcy5SZW1vdmUoIkBkZWVwc2Vlay1haS9kc2gtcGx1Z2luLXN1aXRlIikKICAgICRtYW5pZmVzdENoYW5nZWQgPSAkdHJ1ZQogICAgV3JpdGUtSG9zdCAiICAgIFJlbW92ZWQgc3RhbGUgZmljdGlvbmFsIGRlcGVuZGVuY3kgZHNoLXBsdWdpbi1zdWl0ZSIKfQppZiAoJG1hbmlmZXN0Q2hhbmdlZCkgewogICAgJGpzb24gPSAkYXBwTWFuaWZlc3QgfCBDb252ZXJ0VG8tSnNvbiAtRGVwdGggMjAKICAgICR1dGY4Tm9Cb20gPSBOZXctT2JqZWN0IFN5c3RlbS5UZXh0LlVURjhFbmNvZGluZygkZmFsc2UpCiAgICBbU3lzdGVtLklPLkZpbGVdOjpXcml0ZUFsbFRleHQoJGFwcFBrZywgJGpzb24sICR1dGY4Tm9Cb20pCn0KCiMgLS0tLS0tLS0tLSAzLjYgUnVudGltZSBzZWxmLWhlYWwgcGF0Y2ggLS0tLS0tLS0tLQpTdGVwICI1LzggUGF0Y2ggZHNoIHJ1bnRpbWUgKGNvbnRlbnQuc29tZSBjcmFzaCBzZWxmLWhlYWwpIgojIHBhdGNoLXJ1bnRpbWUuanMg6Ieq5bim55uu5qCH5Y+R546w77yIcmMuNSDph4zmmK8gZHNoLWFwaS1zZXNzaW9uLWNvbnRyb2xsZXIvbGliL2NsaWVudC5qc++8ie+8jAojIOW5tuWGhee9ruivreazleiHquajgCArIOW5guetiSArIOWksei0peWbnua7mu+8m+atpOWkhOaXoOadoeS7tuiwg+eUqO+8jOeUseiEmuacrOWGhemDqOWGs+WumuaJk+S4jeaJk+OAggomIG5vZGUgKEpvaW4tUGF0aCAkUk9PVCAicGF0Y2gtcnVudGltZS5qcyIpCmlmICgkTEFTVEVYSVRDT0RFIC1uZSAwKSB7IFdyaXRlLUhvc3QgIiAgICBXQVJOOiBydW50aW1lIHBhdGNoIHNjcmlwdCBleGl0ZWQgJExBU1RFWElUQ09ERSAobm9uLWZhdGFsIGJ5IGRlc2lnbikiIH0KCiMgLS0tLS0tLS0tLSA0LiBEZXNrdG9wIExhdW5jaGVyICsgTmF0aXZlIENsaWVudCBXaW5kb3cgLS0tLS0tLS0tLQpTdGVwICI2LzggUHJlcGFyZSBXZWJWaWV3MiBTREsgYW5kIGNvbXBpbGUgbGF1bmNoZXIiCkNvcHktSXRlbSAoSm9pbi1QYXRoICRJQ09OICJ3aGFsZS5pY28iKSAoSm9pbi1QYXRoICRBUFAgIndoYWxlLmljbyIpIC1Gb3JjZQokd3ZEbGxzID0gQCgiTWljcm9zb2Z0LldlYi5XZWJWaWV3Mi5Db3JlLmRsbCIsIk1pY3Jvc29mdC5XZWIuV2ViVmlldzIuV2luRm9ybXMuZGxsIiwiV2ViVmlldzJMb2FkZXIuZGxsIikKaWYgKC1ub3QgKCR3dkRsbHMgfCBXaGVyZS1PYmplY3QgeyBUZXN0LVBhdGggKEpvaW4tUGF0aCAkQVBQICRfKSB9IHwgU2VsZWN0LU9iamVjdCAtRmlyc3QgMSkpIHsKICAgICR3dklkeCA9IChjdXJsLmV4ZSAtc0wgImh0dHBzOi8vYXBpLm51Z2V0Lm9yZy92My1mbGF0Y29udGFpbmVyL21pY3Jvc29mdC53ZWIud2VidmlldzIvaW5kZXguanNvbiIpIHwgQ29udmVydEZyb20tSnNvbgogICAgJHd2VmVyID0gJHd2SWR4LnZlcnNpb25zIHwgV2hlcmUtT2JqZWN0IHsgJF8gLW5vdG1hdGNoICItIiB9IHwgU2VsZWN0LU9iamVjdCAtTGFzdCAxCiAgICAkd3ZOdXBrZyA9IEpvaW4tUGF0aCAkREwgIndlYnZpZXcyLSR3dlZlci5udXBrZyIKICAgIGlmICgtbm90IChUZXN0LVBhdGggJHd2TnVwa2cpKSB7CiAgICAgICAgY3VybC5leGUgLXNMIC1vICR3dk51cGtnICJodHRwczovL2FwaS5udWdldC5vcmcvdjMtZmxhdGNvbnRhaW5lci9taWNyb3NvZnQud2ViLndlYnZpZXcyLyR3dlZlci9taWNyb3NvZnQud2ViLndlYnZpZXcyLiR3dlZlci5udXBrZyIKICAgIH0KICAgICR3dkV4ID0gSm9pbi1QYXRoICRETCAid2VidmlldzItZXh0cmFjdCIKICAgIENvcHktSXRlbSAkd3ZOdXBrZyAiJHd2RXguemlwIiAtRm9yY2UKICAgIEV4cGFuZC1BcmNoaXZlICIkd3ZFeC56aXAiICR3dkV4IC1Gb3JjZQogICAgQ29weS1JdGVtIChKb2luLVBhdGggJHd2RXggImxpYlxuZXQ0NjJcTWljcm9zb2Z0LldlYi5XZWJWaWV3Mi5Db3JlLmRsbCIpICRBUFAgLUZvcmNlCiAgICBDb3B5LUl0ZW0gKEpvaW4tUGF0aCAkd3ZFeCAibGliXG5ldDQ2MlxNaWNyb3NvZnQuV2ViLldlYlZpZXcyLldpbkZvcm1zLmRsbCIpICRBUFAgLUZvcmNlCiAgICBDb3B5LUl0ZW0gKEpvaW4tUGF0aCAkd3ZFeCAicnVudGltZXNcd2luLXg2NFxuYXRpdmVcV2ViVmlldzJMb2FkZXIuZGxsIikgJEFQUCAtRm9yY2UKfQpOZXctSXRlbSAtSXRlbVR5cGUgRGlyZWN0b3J5IC1Gb3JjZSAtUGF0aCAoSm9pbi1QYXRoICRBUFAgInByb2ZpbGVzIikgfCBPdXQtTnVsbAppZiAoLW5vdCAoVGVzdC1QYXRoIChKb2luLVBhdGggJEFQUCAicHJvZmlsZXNcd2ViXHBhY2thZ2UuanNvbiIpKSkgewogICAgTmV3LUl0ZW0gLUl0ZW1UeXBlIERpcmVjdG9yeSAtRm9yY2UgLVBhdGggKEpvaW4tUGF0aCAkQVBQICJwcm9maWxlc1x3ZWIiKSB8IE91dC1OdWxsCiAgICBTZXQtQ29udGVudCAtUGF0aCAoSm9pbi1QYXRoICRBUFAgInByb2ZpbGVzXHdlYlxwYWNrYWdlLmpzb24iKSAtVmFsdWUgJ3sibmFtZSI6ImRzaC1wcm9maWxlLXdlYiIsInByaXZhdGUiOnRydWUsImRlcGVuZGVuY2llcyI6e30sImRzaCI6eyJwcm9maWxlIjp7ImJ1bmRsZXMiOlsiQGRlZXBzZWVrLWFpL2RzaC1iYXNlIiwiQGRlZXBzZWVrLWFpL2RzaC13ZWItYXBwIl19fX0nIC1FbmNvZGluZyB1dGY4Cn0KJGNzYyA9ICJDOlxXaW5kb3dzXE1pY3Jvc29mdC5ORVRcRnJhbWV3b3JrNjRcdjQuMC4zMDMxOVxjc2MuZXhlIgomICRjc2MgL25vbG9nbyAvdGFyZ2V0OndpbmV4ZSAvb3B0aW1pemUrIC9wbGF0Zm9ybTp4NjQgL2NvZGVwYWdlOjY1MDAxIGAKICAgICIvd2luMzJtYW5pZmVzdDokUk9PVFxzY3JpcHRzXGFwcC5tYW5pZmVzdCIgYAogICAgIi93aW4zMmljb246JElDT05cd2hhbGUuaWNvIiAiL291dDokQVBQXERlZXBTZWVrIEhhcm5lc3MuZXhlIiBgCiAgICAvcjpTeXN0ZW0uZGxsIC9yOlN5c3RlbS5XaW5kb3dzLkZvcm1zLmRsbCAvcjpTeXN0ZW0uRHJhd2luZy5kbGwgL3I6U3lzdGVtLldlYi5FeHRlbnNpb25zLmRsbCBgCiAgICAiL3I6JEFQUFxNaWNyb3NvZnQuV2ViLldlYlZpZXcyLkNvcmUuZGxsIiAiL3I6JEFQUFxNaWNyb3NvZnQuV2ViLldlYlZpZXcyLldpbkZvcm1zLmRsbCIgYAogICAgKEpvaW4tUGF0aCAkUk9PVCAic2NyaXB0c1xMYXVuY2hlci5jcyIpIChKb2luLVBhdGggJFJPT1QgInNjcmlwdHNcRHNoQ2xpZW50LmNzIikKaWYgKCRMQVNURVhJVENPREUgLW5lIDApIHsgdGhyb3cgIkxhdW5jaGVyIGNvbXBpbGUgZmFpbGVkIiB9CgojIC0tLS0tLS0tLS0gNS4gSW5ubyBTZXR1cCBDb21waWxlciAtLS0tLS0tLS0tClN0ZXAgIjcvOCBQcmVwYXJlIElubm8gU2V0dXAgY29tcGlsZXIiCiRpbm5vRGlyID0gSm9pbi1QYXRoICRETCAiaW5ubyIKaWYgKC1ub3QgKFRlc3QtUGF0aCAoSm9pbi1QYXRoICRpbm5vRGlyICJJU0NDLmV4ZSIpKSkgewogICAgJGlubm9FeGUgPSBKb2luLVBhdGggJERMICJpbm5vc2V0dXAtNi43LjMuZXhlIgogICAgaWYgKC1ub3QgKFRlc3QtUGF0aCAkaW5ub0V4ZSkpIHsKICAgICAgICBjdXJsLmV4ZSAtTCAtbyAkaW5ub0V4ZSAiaHR0cHM6Ly9naXRodWIuY29tL2pyc29mdHdhcmUvaXNzcmMvcmVsZWFzZXMvZG93bmxvYWQvaXMtNl83XzMvaW5ub3NldHVwLTYuNy4zLmV4ZSIKICAgIH0KICAgIE5ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlIC1QYXRoICRpbm5vRGlyIHwgT3V0LU51bGwKICAgIFN0YXJ0LVByb2Nlc3MgLUZpbGVQYXRoICRpbm5vRXhlIC1Bcmd1bWVudExpc3QgIi9WRVJZU0lMRU5UIiwiL1NVUFBSRVNTTVNHQk9YRVMiLCIvUE9SVEFCTEU9MSIsIi9ESVI9YCIkaW5ub0RpcmAiIiwiL05PUkVTVEFSVCIgLVdhaXQKICAgIGZvcmVhY2ggKCRmIGluIEAoIkNoaW5lc2VTaW1wbGlmaWVkLmlzbCIsIkNoaW5lc2VUcmFkaXRpb25hbC5pc2wiKSkgewogICAgICAgIGlmICgtbm90IChUZXN0LVBhdGggKEpvaW4tUGF0aCAkaW5ub0RpciAiTGFuZ3VhZ2VzXCRmIikpKSB7CiAgICAgICAgICAgIGN1cmwuZXhlIC1zTCAtbyAoSm9pbi1QYXRoICRpbm5vRGlyICJMYW5ndWFnZXNcJGYiKSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2pyc29mdHdhcmUvaXNzcmMvcmVmcy9oZWFkcy9tYWluL0ZpbGVzL0xhbmd1YWdlcy8kZiIKICAgICAgICB9CiAgICB9Cn0KCiMgLS0tLS0tLS0tLSA2LiBDb21waWxlIEluc3RhbGxlciAtLS0tLS0tLS0tClN0ZXAgIjgvOCBDb21waWxlIGluc3RhbGxlciAobWF5IHRha2UgYSBmZXcgbWludXRlcykiCk5ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlIC1QYXRoICRESVNUIHwgT3V0LU51bGwKUHVzaC1Mb2NhdGlvbiAoSm9pbi1QYXRoICRST09UICJpbnN0YWxsZXIiKQp0cnkgewogICAgJiAoSm9pbi1QYXRoICRpbm5vRGlyICJJU0NDLmV4ZSIpICJpbnN0YWxsZXIuaXNzIgogICAgaWYgKCRMQVNURVhJVENPREUgLW5lIDApIHsgdGhyb3cgIkluc3RhbGxlciBjb21waWxlIGZhaWxlZCIgfQp9IGZpbmFsbHkgeyBQb3AtTG9jYXRpb24gfQpHZXQtQ2hpbGRJdGVtICRESVNUIHwgU2VsZWN0LU9iamVjdCBOYW1lLCBAe249IlNpemVNQiI7ZT17W21hdGhdOjpSb3VuZCgkXy5MZW5ndGgvMU1CLDEpfX0KV3JpdGUtSG9zdCAiYG5Eb25lISBJbnN0YWxsZXIgbG9jYXRlZCBhdDogJERJU1QiIC1Gb3JlZ3JvdW5kQ29sb3IgR3JlZW4K
+# DeepSeek Harness 桌面版 — 一键打包脚本 (PowerShell) v3.0.0
+# 内核与 dsh-Go 手机版统一为 @deepseek-ai/dsh 0.2.2-rc.5，Node v24.22.1
+# 用法:  powershell -ExecutionPolicy Bypass -File .\build.ps1
+# 依赖:  本机可访问网络; 已安装 Node.js(用于图标生成); 首次运行会自动下载
+#        便携 Node 运行时与 Inno Setup 编译器(下载到 .\downloads\)
+# 版本:  3.0.0 - 内核与 dsh-Go 手机版统一为 0.2.2-rc.5
+$ErrorActionPreference = "Stop"
+$ROOT = Split-Path -Parent $MyInvocation.MyCommand.Path
+$APP  = Join-Path $ROOT "app"
+$ICON = Join-Path $ROOT "icon"
+$DIST = Join-Path $ROOT "dist"
+$DL   = Join-Path $ROOT "downloads"
+$VERSION = "3.0.0"
+
+# 内核版本: 与 dsh-Go 手机版 (tooling/kernel-bump) 保持完全一致
+$DSH_VER = "0.2.2-rc.5"
+# Node 运行时版本: rc.5 官方构建使用 v24.22.1，原生模块 ABI 必须一致
+$NODE_VER = "v24.22.1"
+
+# 源 dsh 安装目录: 优先用下载目录里我们固定版本的副本，避免依赖构建机全局 npm 版本
+$DSH_SRC = Join-Path $DL "dsh-$DSH_VER\node_modules\@deepseek-ai\dsh"
+
+function Step($msg) { Write-Host "`n=== $msg ===" -ForegroundColor Cyan }
+
+# ---------- 1. Icon ----------
+Step "1/8 Generate whale icon (zero-dependency ICO generator)"
+$env:NODE_PATH = Join-Path $DSH_SRC "node_modules"
+& node (Join-Path $ROOT "scripts\make-icon.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Icon generation failed" }
+
+# ---------- 2. Portable Node Runtime ----------
+Step "2/8 Prepare Node runtime $NODE_VER"
+New-Item -ItemType Directory -Force -Path $DL | Out-Null
+$nodeZip = Join-Path $DL "node-$NODE_VER-win-x64.zip"
+if (-not (Test-Path $nodeZip)) {
+    curl.exe -L -o $nodeZip "https://nodejs.org/dist/$NODE_VER/node-$NODE_VER-win-x64.zip"
+}
+$nodeDir = Join-Path $DL "node-extract\node-$NODE_VER-win-x64"
+if (-not (Test-Path (Join-Path $nodeDir "node.exe"))) {
+    Expand-Archive -Path $nodeZip -DestinationPath (Join-Path $DL "node-extract") -Force
+}
+New-Item -ItemType Directory -Force -Path (Join-Path $APP "runtime") | Out-Null
+Copy-Item (Join-Path $nodeDir "node.exe") (Join-Path $APP "runtime\node.exe") -Force
+Copy-Item (Join-Path $nodeDir "LICENSE") (Join-Path $APP "runtime\LICENSE") -Force
+
+# ---------- 3. Full dsh package ----------
+Step "3/8 Fetch DSH core $DSH_VER and copy package (with all dependencies)"
+# 固定版本安装：与 dsh-Go 手机版内核一致，避免构建机全局 npm 版本漂移。
+$coreDir = Join-Path $DL "dsh-$DSH_VER"
+if (-not (Test-Path (Join-Path $DSH_SRC "package.json"))) {
+    New-Item -ItemType Directory -Force -Path $coreDir | Out-Null
+    & npm install --prefix $coreDir "@deepseek-ai/dsh@$DSH_VER" --no-audit --no-fund
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install DSH core $DSH_VER" }
+}
+$installedVer = (Get-Content (Join-Path $DSH_SRC "package.json") -Raw | ConvertFrom-Json).version
+if ($installedVer -ne $DSH_VER) {
+    throw "DSH core version mismatch: expected $DSH_VER, got $installedVer"
+}
+Write-Host "    DSH core pinned to $installedVer"
+robocopy $DSH_SRC (Join-Path $APP "dsh") /E /R:1 /W:1 /NFL /NDL /NP /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git | Out-Null
+
+# ---------- 3.5 Plugin Suite ----------
+# 善后说明：旧版本在此复制一个仓库里并不存在的 plugins\dsh-plugin-suite，
+# 还往 manifest 注入一个不存在的依赖 "@deepseek-ai/dsh-plugin-suite"，
+# 导致构建失败 / 启动时模块解析崩溃。rc.5 内核已自带官方插件套件
+# （dsh-plugin-manager、dsh-plugin-market、dsh-plugin-recommendations、
+#  dsh-client-ui-plugin-* 等十余个），无需也不应再注入虚构包。
+Step "4/8 Verify built-in plugin suite shipped with dsh $DSH_VER"
+$pluginRoot = Join-Path $APP "dsh\node_modules\@deepseek-ai"
+$builtinPlugins = @(
+  "dsh-plugin-manager", "dsh-plugin-market", "dsh-plugin-recommendations",
+  "dsh-client-ui-plugin-manager", "dsh-client-ui-plugin-market",
+  "dsh-host-plugin-inventory", "dsh-plugin-market-index",
+  "cordis-plugin-loader", "cordis-plugin-include", "cordis-plugin-timer"
+)
+$found = 0
+foreach ($p in $builtinPlugins) { if (Test-Path (Join-Path $pluginRoot $p)) { $found++ } }
+Write-Host "    Built-in plugins present: $found / $($builtinPlugins.Count)"
+if ($found -lt 5) {
+  throw "dsh core plugin suite looks incomplete (only $found found); refuse to ship a broken build"
+}
+
+# 只戳版本号；绝不注入不存在的依赖（那是启动崩溃的来源）。
+$appPkg = Join-Path $APP "dsh\package.json"
+$appManifest = Get-Content $appPkg -Raw | ConvertFrom-Json
+$manifestChanged = $false
+if ($appManifest.version -ne $VERSION) {
+    $appManifest.version = $VERSION
+    $manifestChanged = $true
+    Write-Host "    Stamped app version to $VERSION"
+}
+# 清理历史遗留的虚构依赖，避免旧安装包升级后仍带崩溃源。
+if ($appManifest.dependencies.PSObject.Properties.Name -contains "@deepseek-ai/dsh-plugin-suite") {
+    $appManifest.dependencies.PSObject.Properties.Remove("@deepseek-ai/dsh-plugin-suite")
+    $manifestChanged = $true
+    Write-Host "    Removed stale fictional dependency dsh-plugin-suite"
+}
+if ($manifestChanged) {
+    $json = $appManifest | ConvertTo-Json -Depth 20
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($appPkg, $json, $utf8NoBom)
+}
+
+# ---------- 3.6 Runtime self-heal patch ----------
+Step "5/8 Patch dsh runtime (content.some crash self-heal)"
+# patch-runtime.js 自带目标发现（rc.5 里是 dsh-api-session-controller/lib/client.js），
+# 并内置语法自检 + 幂等 + 失败回滚；此处无条件调用，由脚本内部决定打不打。
+& node (Join-Path $ROOT "patch-runtime.js")
+if ($LASTEXITCODE -ne 0) { Write-Host "    WARN: runtime patch script exited $LASTEXITCODE (non-fatal by design)" }
+
+# ---------- 4. Desktop Launcher + Native Client Window ----------
+Step "6/8 Prepare WebView2 SDK and compile launcher"
+Copy-Item (Join-Path $ICON "whale.ico") (Join-Path $APP "whale.ico") -Force
+$wvDlls = @("Microsoft.Web.WebView2.Core.dll","Microsoft.Web.WebView2.WinForms.dll","WebView2Loader.dll")
+if (-not ($wvDlls | Where-Object { Test-Path (Join-Path $APP $_) } | Select-Object -First 1)) {
+    $wvIdx = (curl.exe -sL "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/index.json") | ConvertFrom-Json
+    $wvVer = $wvIdx.versions | Where-Object { $_ -notmatch "-" } | Select-Object -Last 1
+    $wvNupkg = Join-Path $DL "webview2-$wvVer.nupkg"
+    if (-not (Test-Path $wvNupkg)) {
+        curl.exe -sL -o $wvNupkg "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/$wvVer/microsoft.web.webview2.$wvVer.nupkg"
+    }
+    $wvEx = Join-Path $DL "webview2-extract"
+    Copy-Item $wvNupkg "$wvEx.zip" -Force
+    Expand-Archive "$wvEx.zip" $wvEx -Force
+    Copy-Item (Join-Path $wvEx "lib\net462\Microsoft.Web.WebView2.Core.dll") $APP -Force
+    Copy-Item (Join-Path $wvEx "lib\net462\Microsoft.Web.WebView2.WinForms.dll") $APP -Force
+    Copy-Item (Join-Path $wvEx "runtimes\win-x64\native\WebView2Loader.dll") $APP -Force
+}
+New-Item -ItemType Directory -Force -Path (Join-Path $APP "profiles") | Out-Null
+if (-not (Test-Path (Join-Path $APP "profiles\web\package.json"))) {
+    New-Item -ItemType Directory -Force -Path (Join-Path $APP "profiles\web") | Out-Null
+    Set-Content -Path (Join-Path $APP "profiles\web\package.json") -Value '{"name":"dsh-profile-web","private":true,"dependencies":{},"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base","@deepseek-ai/dsh-web-app"]}}}' -Encoding utf8
+}
+$csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+& $csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001 `
+    "/win32manifest:$ROOT\scripts\app.manifest" `
+    "/win32icon:$ICON\whale.ico" "/out:$APP\DeepSeek Harness.exe" `
+    /r:System.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Web.Extensions.dll `
+    "/r:$APP\Microsoft.Web.WebView2.Core.dll" "/r:$APP\Microsoft.Web.WebView2.WinForms.dll" `
+    (Join-Path $ROOT "scripts\Launcher.cs") (Join-Path $ROOT "scripts\DshClient.cs")
+if ($LASTEXITCODE -ne 0) { throw "Launcher compile failed" }
+
+# ---------- 5. Inno Setup Compiler ----------
+Step "7/8 Prepare Inno Setup compiler"
+$innoDir = Join-Path $DL "inno"
+if (-not (Test-Path (Join-Path $innoDir "ISCC.exe"))) {
+    $innoExe = Join-Path $DL "innosetup-6.7.3.exe"
+    if (-not (Test-Path $innoExe)) {
+        curl.exe -L -o $innoExe "https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innosetup-6.7.3.exe"
+    }
+    New-Item -ItemType Directory -Force -Path $innoDir | Out-Null
+    Start-Process -FilePath $innoExe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/PORTABLE=1","/DIR=`"$innoDir`"","/NORESTART" -Wait
+    foreach ($f in @("ChineseSimplified.isl","ChineseTraditional.isl")) {
+        if (-not (Test-Path (Join-Path $innoDir "Languages\$f"))) {
+            curl.exe -sL -o (Join-Path $innoDir "Languages\$f") "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/$f"
+        }
+    }
+}
+
+# ---------- 6. Compile Installer ----------
+Step "8/8 Compile installer (may take a few minutes)"
+New-Item -ItemType Directory -Force -Path $DIST | Out-Null
+Push-Location (Join-Path $ROOT "installer")
+try {
+    & (Join-Path $innoDir "ISCC.exe") "installer.iss"
+    if ($LASTEXITCODE -ne 0) { throw "Installer compile failed" }
+} finally { Pop-Location }
+Get-ChildItem $DIST | Select-Object Name, @{n="SizeMB";e={[math]::Round($_.Length/1MB,1)}}
+Write-Host "`nDone! Installer located at: $DIST" -ForegroundColor Green

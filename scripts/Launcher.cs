@@ -1,1 +1,390 @@
-Ly8gRGVlcFNlZWsgSGFybmVzcyDmoYzpnaLniYgg4oCU4oCUIOaJmOebmOWQr+WKqOWZqCArIOacjeWKoeebkeaKpCArIOW0qea6g+iHquaEiAovLyDnvJbor5HvvJrop4EgYnVpbGQucHMxIOesrCA0IOatpeOAguebruaghyAuTkVUIEZyYW1ld29yayA0LnggKGNzYy5leGUp44CCCi8vIOiBjOi0o++8iFJFQURNRSDlt6XkvZzmlrnlvI/vvInvvJoKLy8gICAqIOWNleWunuS+i+S6kuaWpe+8iOmHjeWkjeWQr+WKqCDihpIg6YCa55+l5bey5pyJ5a6e5L6L5omT5byA56qX5Y+j77yJCi8vICAgKiDnoa7kv50gJVVTRVJQUk9GSUxFJVwuZHNoXHByb2ZpbGVzXHdlYiDlrZjlnKgKLy8gICAqIOiLpeerr+WPo+W3suacieacjeWKoSDihpIg5o6l566h77yb5ZCm5YiZ5ZCv5YqoIHJ1bnRpbWVcbm9kZS5leGUgZHNoXGxpYlxiaW4uanMgLS1wcm9maWxlIHdlYiAtLXBvcnQgMTg2MzIKLy8gICAqIOetieW+heWwsee7qiDihpIg5raI5oGv5b6q546v5ZCO5by55Ye6IFdlYlZpZXcyIOeql+WPo++8iERzaENsaWVudC5PcGVuV2luZG9377yJCi8vICAgKiDmiZjnm5jluLjpqbvvvJrnm5HmiqTmnI3liqHov5vnqIvvvIzltKnmuoMv6YCA5Ye65pe26Ieq5Yqo6YeN5ZCv77yI6Ieq5oSI77yJ77yM6YeN5ZCvL+WBnOatoi/lvIDmnLroh6rlkK8v6YCA5Ye6Ci8vICAgKiDml6Xlv5fova7ovazvvJpkZXNrdG9wLmxvZyDotoUgMU1CIOiHquWKqOW9kuahowp1c2luZyBTeXN0ZW07CnVzaW5nIFN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljOwp1c2luZyBTeXN0ZW0uRGlhZ25vc3RpY3M7CnVzaW5nIFN5c3RlbS5EcmF3aW5nOwp1c2luZyBTeXN0ZW0uSU87CnVzaW5nIFN5c3RlbS5MaW5xOwp1c2luZyBTeXN0ZW0uUmVmbGVjdGlvbjsKdXNpbmcgU3lzdGVtLlJ1bnRpbWUuSW50ZXJvcFNlcnZpY2VzOwp1c2luZyBTeXN0ZW0uVGV4dDsKdXNpbmcgU3lzdGVtLlRocmVhZGluZzsKdXNpbmcgU3lzdGVtLldpbmRvd3MuRm9ybXM7CgpuYW1lc3BhY2UgRGVlcFNlZWtIYXJuZXNzCnsKICAgIGludGVybmFsIHN0YXRpYyBjbGFzcyBQcm9ncmFtCiAgICB7CiAgICAgICAgaW50ZXJuYWwgY29uc3Qgc3RyaW5nIEFwcE5hbWUgPSAiRGVlcFNlZWsgSGFybmVzcyI7CiAgICAgICAgaW50ZXJuYWwgY29uc3Qgc3RyaW5nIE11dGV4TmFtZSA9IEAiTG9jYWxcRGVlcFNlZWtIYXJuZXNzLVNpbmdsZUluc3RhbmNlLTE4NjMyIjsKICAgICAgICBpbnRlcm5hbCBzdGF0aWMgc3RyaW5nIEFwcERpciA9PiBBcHBEb21haW4uQ3VycmVudERvbWFpbi5CYXNlRGlyZWN0b3J5OwogICAgICAgIGludGVybmFsIHN0YXRpYyBzdHJpbmcgRGF0YURpciA9PiBQYXRoLkNvbWJpbmUoCiAgICAgICAgICAgIEVudmlyb25tZW50LkdldEZvbGRlclBhdGgoRW52aXJvbm1lbnQuU3BlY2lhbEZvbGRlci5Vc2VyUHJvZmlsZSksICIuZHNoIik7CiAgICAgICAgaW50ZXJuYWwgc3RhdGljIHN0cmluZyBMb2dQYXRoID0+IFBhdGguQ29tYmluZShEYXRhRGlyLCAiZGVza3RvcC5sb2ciKTsKICAgICAgICBpbnRlcm5hbCBzdGF0aWMgc3RyaW5nIFBpZFBhdGggPT4gUGF0aC5Db21iaW5lKERhdGFEaXIsICJkZXNrdG9wLnBpZCIpOwogICAgICAgIGludGVybmFsIHN0YXRpYyBpbnQgUG9ydCA9PiBQYXJzZVBvcnQoRW52aXJvbm1lbnQuR2V0RW52aXJvbm1lbnRWYXJpYWJsZSgiRFNIX1BPUlQiKSk7CiAgICAgICAgaW50ZXJuYWwgc3RhdGljIGJvb2wgTm9PcGVuID0+IEVudmlyb25tZW50LkdldEVudmlyb25tZW50VmFyaWFibGUoIkRTSF9OT19PUEVOIikgPT0gIjEiOwoKICAgICAgICBzdGF0aWMgaW50IFBhcnNlUG9ydChzdHJpbmcgcykKICAgICAgICB7CiAgICAgICAgICAgIGludCBwOyByZXR1cm4gaW50LlRyeVBhcnNlKHMsIG91dCBwKSAmJiBwID4gMCAmJiBwIDwgNjU1MzYgPyBwIDogMTg2MzI7CiAgICAgICAgfQoKICAgICAgICBbU1RBVGhyZWFkXQogICAgICAgIHN0YXRpYyB2b2lkIE1haW4oc3RyaW5nW10gYXJncykKICAgICAgICB7CiAgICAgICAgICAgIC8vIOWRveS7pOihjO+8mnN0b3AgPSDlgZzmraLmnI3liqHlubbpgIDlh7rmiZjnm5gKICAgICAgICAgICAgaWYgKGFyZ3MuTGVuZ3RoID4gMCAmJiBzdHJpbmcuRXF1YWxzKGFyZ3NbMF0sICJzdG9wIiwgU3RyaW5nQ29tcGFyaXNvbi5PcmRpbmFsSWdub3JlQ2FzZSkpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIFN0b3BTZXJ2aWNlQW5kRXhpdCgpOwogICAgICAgICAgICAgICAgcmV0dXJuOwogICAgICAgICAgICB9CgogICAgICAgICAgICBib29sIGNyZWF0ZWROZXc7CiAgICAgICAgICAgIHVzaW5nICh2YXIgbXV0ZXggPSBuZXcgTXV0ZXgodHJ1ZSwgTXV0ZXhOYW1lLCBvdXQgY3JlYXRlZE5ldykpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIGlmICghY3JlYXRlZE5ldykKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAvLyDlt7LmnInlrp7kvovvvJrlj5Hmtojmga/orqnlroPmiZPlvIDnqpflj6PvvIznhLblkI7oh6rlt7HpgIDlh7rvvIjljZXlrp7kvovlrojmiqTvvIkKICAgICAgICAgICAgICAgICAgICB0cnkgeyBOYXRpdmVNZXRob2RzLlBvc3ROb3RpZnlNZXNzYWdlKCk7IH0gY2F0Y2ggeyB9CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgQXBwbGljYXRpb24uRW5hYmxlVmlzdWFsU3R5bGVzKCk7CiAgICAgICAgICAgICAgICBBcHBsaWNhdGlvbi5TZXRDb21wYXRpYmxlVGV4dFJlbmRlcmluZ0RlZmF1bHQoZmFsc2UpOwoKICAgICAgICAgICAgICAgIERpcmVjdG9yeS5DcmVhdGVEaXJlY3RvcnkoRGF0YURpcik7CiAgICAgICAgICAgICAgICBFbnN1cmVQcm9maWxlVGVtcGxhdGUoKTsKICAgICAgICAgICAgICAgIExvZygi5ZCv5YqoICIgKyBBcHBOYW1lICsgIiBwb3J0PSIgKyBQb3J0ICsgIiBhcmdzPSIgKyBzdHJpbmcuSm9pbigiLCIsIGFyZ3MpKTsKCiAgICAgICAgICAgICAgICB2YXIgdHJheSA9IG5ldyBUcmF5QXBwKGFyZ3MpOwogICAgICAgICAgICAgICAgdHJheS5TdGFydHVwKCk7CiAgICAgICAgICAgICAgICAvLyDoh6rlrprkuYnmtojmga/vvJrph43lpI3lkK/liqjml7blt7LmnInlrp7kvovmlLbliLDlkI7miZPlvIDnqpflj6MKICAgICAgICAgICAgICAgIEFwcGxpY2F0aW9uLkFkZE1lc3NhZ2VGaWx0ZXIobmV3IFdpbmRvd01lc3NhZ2VGaWx0ZXIodHJheSkpOwogICAgICAgICAgICAgICAgdHJheS5CZWdpbldhaXRBbmRPcGVuKCk7CiAgICAgICAgICAgICAgICBBcHBsaWNhdGlvbi5SdW4odHJheSk7CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIC8vIOWBnOatouacjeWKoe+8muaMiSBwaWQg5p2A6L+b56iL5qCRCiAgICAgICAgaW50ZXJuYWwgc3RhdGljIHZvaWQgU3RvcFNlcnZpY2VBbmRFeGl0KCkKICAgICAgICB7CiAgICAgICAgICAgIHRyeQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBpZiAoRmlsZS5FeGlzdHMoUGlkUGF0aCkpCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaW50IHBpZDsKICAgICAgICAgICAgICAgICAgICBpZiAoaW50LlRyeVBhcnNlKEZpbGUuUmVhZEFsbFRleHQoUGlkUGF0aCkuVHJpbSgpLCBvdXQgcGlkKSAmJiBwaWQgPiAwKQogICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgdmFyIHAgPSBQcm9jZXNzLkdldFByb2Nlc3NCeUlkKHBpZCk7CiAgICAgICAgICAgICAgICAgICAgICAgIHAuS2lsbCgpOyAvLyDmnYAgbm9kZSDov5vnqIvvvJvlhbblrZDov5vnqIvvvIjlpoLmnInvvInnlLEgbm9kZSDoh6rlt7HnrqHnkIYKICAgICAgICAgICAgICAgICAgICAgICAgTG9nKCLlt7LlgZzmraLmnI3liqEgcGlkPSIgKyBwaWQpOwogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBGaWxlLkRlbGV0ZShQaWRQYXRoKTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICBjYXRjaCAoRXhjZXB0aW9uIGV4KSB7IExvZygic3RvcCDlpLHotKU6ICIgKyBleC5NZXNzYWdlKTsgfQogICAgICAgIH0KCiAgICAgICAgLy8g6aaW5qyh5ZCv5Yqo5oqK5YaF572uIHByb2ZpbGUg5qih5p2/5aSN5Yi25Yiw55So5oi35pWw5o2u55uu5b2V77yI5LiN6KaG55uW5bey5pyJ77yJCiAgICAgICAgc3RhdGljIHZvaWQgRW5zdXJlUHJvZmlsZVRlbXBsYXRlKCkKICAgICAgICB7CiAgICAgICAgICAgIHN0cmluZyBzcmMgPSBQYXRoLkNvbWJpbmUoQXBwRGlyLCAicHJvZmlsZXMiLCAid2ViIik7CiAgICAgICAgICAgIHN0cmluZyBkc3QgPSBQYXRoLkNvbWJpbmUoRGF0YURpciwgInByb2ZpbGVzIiwgIndlYiIpOwogICAgICAgICAgICBpZiAoIURpcmVjdG9yeS5FeGlzdHMoc3JjKSB8fCBEaXJlY3RvcnkuRXhpc3RzKGRzdCkpIHJldHVybjsKICAgICAgICAgICAgdHJ5CiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIERpcmVjdG9yeS5DcmVhdGVEaXJlY3RvcnkoUGF0aC5HZXREaXJlY3RvcnlOYW1lKGRzdCkpOwogICAgICAgICAgICAgICAgQ29weURpcihzcmMsIGRzdCk7CiAgICAgICAgICAgICAgICBMb2coIuW3suWIneWni+WMliBwcm9maWxlIOaooeadvyAtPiAiICsgZHN0KTsKICAgICAgICAgICAgfQogICAgICAgICAgICBjYXRjaCAoRXhjZXB0aW9uIGV4KSB7IExvZygicHJvZmlsZSDlpI3liLblpLHotKU6ICIgKyBleC5NZXNzYWdlKTsgfQogICAgICAgIH0KCiAgICAgICAgc3RhdGljIHZvaWQgQ29weURpcihzdHJpbmcgc3JjLCBzdHJpbmcgZHN0KQogICAgICAgIHsKICAgICAgICAgICAgRGlyZWN0b3J5LkNyZWF0ZURpcmVjdG9yeShkc3QpOwogICAgICAgICAgICBmb3JlYWNoICh2YXIgZiBpbiBEaXJlY3RvcnkuR2V0RmlsZXMoc3JjKSkKICAgICAgICAgICAgICAgIEZpbGUuQ29weShmLCBQYXRoLkNvbWJpbmUoZHN0LCBQYXRoLkdldEZpbGVOYW1lKGYpKSwgdHJ1ZSk7CiAgICAgICAgICAgIGZvcmVhY2ggKHZhciBkIGluIERpcmVjdG9yeS5HZXREaXJlY3RvcmllcyhzcmMpKQogICAgICAgICAgICAgICAgQ29weURpcihkLCBQYXRoLkNvbWJpbmUoZHN0LCBQYXRoLkdldEZpbGVOYW1lKGQpKSk7CiAgICAgICAgfQoKICAgICAgICAvLyDml6Xlv5fova7ovazvvJrotoXov4cgMU1CIOW9kuaho+S4uiBkZXNrdG9wLmxvZy4x77yI5pyA5aSa5L+d55WZIDMg5Lu977yJCiAgICAgICAgaW50ZXJuYWwgc3RhdGljIHZvaWQgTG9nKHN0cmluZyBtc2cpCiAgICAgICAgewogICAgICAgICAgICB0cnkKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgaWYgKEZpbGUuRXhpc3RzKExvZ1BhdGgpICYmIG5ldyBGaWxlSW5mbyhMb2dQYXRoKS5MZW5ndGggPiAxMDI0ICogMTAyNCkKICAgICAgICAgICAgICAgICAgICBSb3RhdGVMb2dzKCk7CiAgICAgICAgICAgICAgICBGaWxlLkFwcGVuZEFsbFRleHQoTG9nUGF0aCwKICAgICAgICAgICAgICAgICAgICBEYXRlVGltZS5Ob3cuVG9TdHJpbmcoIlt5eXl5LU1NLWRkIEhIOm1tOnNzXSAiKSArIG1zZyArIEVudmlyb25tZW50Lk5ld0xpbmUsCiAgICAgICAgICAgICAgICAgICAgRW5jb2RpbmcuVVRGOCk7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgY2F0Y2ggeyAvKiDml6Xlv5flpLHotKXnu53kuI3lvbHlk43kuLvmtYHnqIsgKi8gfQogICAgICAgIH0KCiAgICAgICAgc3RhdGljIHZvaWQgUm90YXRlTG9ncygpCiAgICAgICAgewogICAgICAgICAgICBmb3IgKGludCBpID0gMzsgaSA+PSAxOyBpLS0pCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIHN0cmluZyBmcm9tID0gTG9nUGF0aCArICIuIiArIGk7CiAgICAgICAgICAgICAgICBzdHJpbmcgdG8gPSBMb2dQYXRoICsgIi4iICsgKGkgKyAxKTsKICAgICAgICAgICAgICAgIGlmIChGaWxlLkV4aXN0cyhmcm9tKSkgeyB0cnkgeyBGaWxlLkRlbGV0ZSh0byk7IH0gY2F0Y2ggeyB9IHRyeSB7IEZpbGUuTW92ZShmcm9tLCB0byk7IH0gY2F0Y2ggeyB9IH0KICAgICAgICAgICAgfQogICAgICAgICAgICB0cnkgeyBGaWxlLk1vdmUoTG9nUGF0aCwgTG9nUGF0aCArICIuMSIpOyB9IGNhdGNoIHsgfQogICAgICAgIH0KICAgIH0KCiAgICAvLyDmiZjnm5jlupTnlKjvvJrmnI3liqHov5vnqIvnm5HmiqQgKyDoh6rmhIjph43lkK8gKyBXZWJWaWV3MiDnqpflj6MKICAgIGludGVybmFsIHNlYWxlZCBjbGFzcyBUcmF5QXBwIDogQXBwbGljYXRpb25Db250ZXh0CiAgICB7CiAgICAgICAgcmVhZG9ubHkgTm90aWZ5SWNvbiBfdHJheTsKICAgICAgICByZWFkb25seSBib29sIF9zdGFydHVwT25seTsKICAgICAgICBQcm9jZXNzIF9zZXJ2aWNlOwogICAgICAgIGJvb2wgX3N0b3BwaW5nOwogICAgICAgIGludCBfcmVzdGFydEZhaWx1cmVzOwogICAgICAgIGNvbnN0IGludCBNYXhSZXN0YXJ0RmFpbHVyZXMgPSA1OwogICAgICAgIGNvbnN0IGludCBSZXN0YXJ0RGVsYXlNcyA9IDE1MDA7CgogICAgICAgIGludGVybmFsIFRyYXlBcHAoc3RyaW5nW10gYXJncykKICAgICAgICB7CiAgICAgICAgICAgIF9zdGFydHVwT25seSA9IGFyZ3MuTGVuZ3RoID4gMCAmJiBhcmdzWzBdID09ICItLXN0YXJ0dXAiOwogICAgICAgICAgICBfdHJheSA9IG5ldyBOb3RpZnlJY29uKCk7CiAgICAgICAgICAgIF90cmF5LlRleHQgPSBQcm9ncmFtLkFwcE5hbWU7CiAgICAgICAgICAgIF90cmF5Lkljb24gPSBMb2FkSWNvbigpOwogICAgICAgICAgICBfdHJheS5WaXNpYmxlID0gdHJ1ZTsKCiAgICAgICAgICAgIHZhciBtZW51ID0gbmV3IENvbnRleHRNZW51U3RyaXAoKTsKICAgICAgICAgICAgbWVudS5JdGVtcy5BZGQoIuaJk+W8gOeql+WPoyIsIG51bGwsIChzLCBlKSA9PiBPcGVuV2luZG93KCkpOwogICAgICAgICAgICBtZW51Lkl0ZW1zLkFkZCgi6YeN5ZCv5pyN5YqhIiwgbnVsbCwgKHMsIGUpID0+IFJlc3RhcnRTZXJ2aWNlKCkpOwogICAgICAgICAgICBtZW51Lkl0ZW1zLkFkZCgi5YGc5q2i5pyN5Yqh77yI6YeK5pS+5YaF5a2Y77yJIiwgbnVsbCwgKHMsIGUpID0+IFN0b3BTZXJ2aWNlKCkpOwogICAgICAgICAgICBtZW51Lkl0ZW1zLkFkZChuZXcgVG9vbFN0cmlwU2VwYXJhdG9yKCkpOwogICAgICAgICAgICB2YXIgYXV0b3N0YXJ0ID0gbmV3IFRvb2xTdHJpcE1lbnVJdGVtKCLlvIDmnLroh6rlkK8iLCBudWxsLCAocywgZSkgPT4gVG9nZ2xlQXV0b3N0YXJ0KCkpOwogICAgICAgICAgICBhdXRvc3RhcnQuQ2hlY2tlZCA9IElzQXV0b3N0YXJ0RW5hYmxlZCgpOwogICAgICAgICAgICBtZW51Lkl0ZW1zLkFkZChhdXRvc3RhcnQpOwogICAgICAgICAgICBtZW51Lkl0ZW1zLkFkZChuZXcgVG9vbFN0cmlwU2VwYXJhdG9yKCkpOwogICAgICAgICAgICBtZW51Lkl0ZW1zLkFkZCgi6YCA5Ye6IiwgbnVsbCwgKHMsIGUpID0+IEV4aXRBcHAoKSk7CiAgICAgICAgICAgIF90cmF5LkNvbnRleHRNZW51U3RyaXAgPSBtZW51OwogICAgICAgICAgICBfdHJheS5Eb3VibGVDbGljayArPSAocywgZSkgPT4gT3BlbldpbmRvdygpOwogICAgICAgIH0KCiAgICAgICAgc3RhdGljIEljb24gTG9hZEljb24oKQogICAgICAgIHsKICAgICAgICAgICAgc3RyaW5nIGljbyA9IFBhdGguQ29tYmluZShQcm9ncmFtLkFwcERpciwgIndoYWxlLmljbyIpOwogICAgICAgICAgICBpZiAoRmlsZS5FeGlzdHMoaWNvKSkgeyB0cnkgeyByZXR1cm4gbmV3IEljb24oaWNvKTsgfSBjYXRjaCB7IH0gfQogICAgICAgICAgICByZXR1cm4gU3lzdGVtSWNvbnMuQXBwbGljYXRpb247CiAgICAgICAgfQoKICAgICAgICBpbnRlcm5hbCB2b2lkIFN0YXJ0dXAoKQogICAgICAgIHsKICAgICAgICAgICAgLy8gQmVsb3dOb3JtYWwg5LyY5YWI57qn77yM5LiN5oqi6LWE5rqQCiAgICAgICAgICAgIHRyeSB7IFByb2Nlc3MuR2V0Q3VycmVudFByb2Nlc3MoKS5Qcmlvcml0eUNsYXNzID0gUHJvY2Vzc1ByaW9yaXR5Q2xhc3MuQmVsb3dOb3JtYWw7IH0gY2F0Y2ggeyB9CiAgICAgICAgICAgIFN0YXJ0U2VydmljZSgpOwogICAgICAgIH0KCiAgICAgICAgLy8g5pyN5Yqh5piv5ZCm5bey5Zyo55uR5ZCs77yIVENQIOi/nuaOpeaOoua1i++8jOavlCBwaW5nIEhUVFAg5pu06L2777yJCiAgICAgICAgYm9vbCBJc1BvcnRPcGVuKCkKICAgICAgICB7CiAgICAgICAgICAgIHRyeQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICB1c2luZyAodmFyIGMgPSBuZXcgU3lzdGVtLk5ldC5Tb2NrZXRzLlRjcENsaWVudCgpKQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIHZhciBhciA9IGMuQmVnaW5Db25uZWN0KCIxMjcuMC4wLjEiLCBQcm9ncmFtLlBvcnQsIG51bGwsIG51bGwpOwogICAgICAgICAgICAgICAgICAgIGJvb2wgb2sgPSBhci5Bc3luY1dhaXRIYW5kbGUuV2FpdE9uZSgzMDApOwogICAgICAgICAgICAgICAgICAgIGlmIChvaykgYy5FbmRDb25uZWN0KGFyKTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gb2s7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICAgICAgY2F0Y2ggeyByZXR1cm4gZmFsc2U7IH0KICAgICAgICB9CgogICAgICAgIHZvaWQgU3RhcnRTZXJ2aWNlKCkKICAgICAgICB7CiAgICAgICAgICAgIGlmIChJc1BvcnRPcGVuKCkpIHsgUHJvZ3JhbS5Mb2coIuerr+WPo+W3suacieacjeWKoe+8jOaOpeeuoSIpOyByZXR1cm47IH0KICAgICAgICAgICAgc3RyaW5nIG5vZGUgPSBQYXRoLkNvbWJpbmUoUHJvZ3JhbS5BcHBEaXIsICJydW50aW1lIiwgIm5vZGUuZXhlIik7CiAgICAgICAgICAgIHN0cmluZyBiaW4gPSBQYXRoLkNvbWJpbmUoUHJvZ3JhbS5BcHBEaXIsICJkc2giLCAibGliIiwgImJpbi5qcyIpOwogICAgICAgICAgICBpZiAoIUZpbGUuRXhpc3RzKG5vZGUpIHx8ICFGaWxlLkV4aXN0cyhiaW4pKQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBQcm9ncmFtLkxvZygi57y65bCRIG5vZGUuZXhlIOaIliBiaW4uanPvvIzml6Dms5XlkK/liqjmnI3liqEiKTsKICAgICAgICAgICAgICAgIE1lc3NhZ2VCb3guU2hvdygi5a6J6KOF5LiN5a6M5pW077ya57y65bCR5YaF572u6L+Q6KGM5pe25oiWIGRzaCDlhoXmoLjvvIzor7fph43mlrDlronoo4XjgIIiLCBQcm9ncmFtLkFwcE5hbWUsCiAgICAgICAgICAgICAgICAgICAgTWVzc2FnZUJveEJ1dHRvbnMuT0ssIE1lc3NhZ2VCb3hJY29uLkVycm9yKTsKICAgICAgICAgICAgICAgIHJldHVybjsKICAgICAgICAgICAgfQogICAgICAgICAgICB0cnkKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgdmFyIHBzaSA9IG5ldyBQcm9jZXNzU3RhcnRJbmZvKG5vZGUpCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgV29ya2luZ0RpcmVjdG9yeSA9IFByb2dyYW0uQXBwRGlyLAogICAgICAgICAgICAgICAgICAgIFVzZVNoZWxsRXhlY3V0ZSA9IGZhbHNlLAogICAgICAgICAgICAgICAgICAgIENyZWF0ZU5vV2luZG93ID0gdHJ1ZSwKICAgICAgICAgICAgICAgICAgICBSZWRpcmVjdFN0YW5kYXJkT3V0cHV0ID0gdHJ1ZSwKICAgICAgICAgICAgICAgICAgICBSZWRpcmVjdFN0YW5kYXJkRXJyb3IgPSB0cnVlLAogICAgICAgICAgICAgICAgICAgIEFyZ3VtZW50cyA9ICJcIiIgKyBiaW4gKyAiXCIgLS1wcm9maWxlIHdlYiAtLXBvcnQgIiArIFByb2dyYW0uUG9ydAogICAgICAgICAgICAgICAgfTsKICAgICAgICAgICAgICAgIHBzaS5FbnZpcm9ubWVudFZhcmlhYmxlc1siTk9ERV9QQVRIIl0gPSBQYXRoLkNvbWJpbmUoUHJvZ3JhbS5BcHBEaXIsICJkc2giLCAibm9kZV9tb2R1bGVzIik7CiAgICAgICAgICAgICAgICBfc2VydmljZSA9IG5ldyBQcm9jZXNzIHsgU3RhcnRJbmZvID0gcHNpLCBFbmFibGVSYWlzaW5nRXZlbnRzID0gdHJ1ZSB9OwogICAgICAgICAgICAgICAgX3NlcnZpY2UuRXhpdGVkICs9IFNlcnZpY2VfRXhpdGVkOwogICAgICAgICAgICAgICAgX3NlcnZpY2UuU3RhcnQoKTsKICAgICAgICAgICAgICAgIEZpbGUuV3JpdGVBbGxUZXh0KFByb2dyYW0uUGlkUGF0aCwgX3NlcnZpY2UuSWQuVG9TdHJpbmcoKSk7CiAgICAgICAgICAgICAgICBQcm9ncmFtLkxvZygi5pyN5Yqh5bey5ZCv5YqoIHBpZD0iICsgX3NlcnZpY2UuSWQpOwogICAgICAgICAgICAgICAgLy8g5byC5q2l5rO15pel5b+X77yM6YG/5YWN57yT5Yay5Yy65ruh5a+86Ie05a2Q6L+b56iL6Zi75aGeCiAgICAgICAgICAgICAgICBCZWdpblB1bXAoX3NlcnZpY2UuU3RhbmRhcmRPdXRwdXQpOwogICAgICAgICAgICAgICAgQmVnaW5QdW1wKF9zZXJ2aWNlLlN0YW5kYXJkRXJyb3IpOwogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhdGNoIChFeGNlcHRpb24gZXgpIHsgUHJvZ3JhbS5Mb2coIuWQr+WKqOacjeWKoeWksei0pTogIiArIGV4Lk1lc3NhZ2UpOyB9CiAgICAgICAgfQoKICAgICAgICB2b2lkIEJlZ2luUHVtcChTdHJlYW1SZWFkZXIgcikKICAgICAgICB7CiAgICAgICAgICAgIFRocmVhZFBvb2wuUXVldWVVc2VyV29ya0l0ZW0oXyA9PgogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICB0cnkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBzdHJpbmcgbGluZTsKICAgICAgICAgICAgICAgICAgICB3aGlsZSAoKGxpbmUgPSByLlJlYWRMaW5lKCkpICE9IG51bGwpIFByb2dyYW0uTG9nKCJbZHNoXSAiICsgbGluZSk7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBjYXRjaCB7IH0KICAgICAgICAgICAgfSk7CiAgICAgICAgfQoKICAgICAgICAvLyDltKnmuoPoh6rmhIjmoLjlv4PvvJrmnI3liqHmhI/lpJbpgIDlh7og4oaSIOW7tui/n+iHquWKqOmHjeWQr++8m+i/nue7reWksei0peWImeaPkOekuueUqOaItwogICAgICAgIHZvaWQgU2VydmljZV9FeGl0ZWQob2JqZWN0IHNlbmRlciwgRXZlbnRBcmdzIGUpCiAgICAgICAgewogICAgICAgICAgICBpZiAoX3N0b3BwaW5nKSByZXR1cm47CiAgICAgICAgICAgIGludCBjb2RlID0gLTE7CiAgICAgICAgICAgIHRyeSB7IGNvZGUgPSAoKFByb2Nlc3Mpc2VuZGVyKS5FeGl0Q29kZTsgfSBjYXRjaCB7IH0KICAgICAgICAgICAgUHJvZ3JhbS5Mb2coIuacjeWKoeaEj+WklumAgOWHuiBleGl0PSIgKyBjb2RlICsgIu+8jOWHhuWkh+iHquaEiOmHjeWQryIpOwogICAgICAgICAgICBUaHJlYWRQb29sLlF1ZXVlVXNlcldvcmtJdGVtKF8gPT4KICAgICAgICAgICAgewogICAgICAgICAgICAgICAgVGhyZWFkLlNsZWVwKFJlc3RhcnREZWxheU1zKTsKICAgICAgICAgICAgICAgIGlmIChfc3RvcHBpbmcpIHJldHVybjsKICAgICAgICAgICAgICAgIGlmIChJc1BvcnRPcGVuKCkpIHJldHVybjsgLy8g5bey6KKr5Yir55qE5a6e5L6L5o6l566hCiAgICAgICAgICAgICAgICBfcmVzdGFydEZhaWx1cmVzKys7CiAgICAgICAgICAgICAgICBpZiAoX3Jlc3RhcnRGYWlsdXJlcyA+IE1heFJlc3RhcnRGYWlsdXJlcykKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBQcm9ncmFtLkxvZygi6L+e57ut6YeN5ZCv5aSx6LSl77yM5YGc5q2i6Ieq5Yqo6YeN5ZCv5bm25o+Q56S655So5oi3Iik7CiAgICAgICAgICAgICAgICAgICAgX3RyYXkuU2hvd0JhbGxvb25UaXAoNTAwMCwgIuacjeWKoeWPjeWkjeW0qea6gyIsCiAgICAgICAgICAgICAgICAgICAgICAgICLlt7Lov57nu63ph43lkK/lpLHotKXvvIzor7fmn6XnnIsgZGVza3RvcC5sb2cg5oiW5omL5Yqo6YeN5ZCv44CCIiwgVG9vbFRpcEljb24uV2FybmluZyk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgU3RhcnRTZXJ2aWNlKCk7CiAgICAgICAgICAgICAgICBpZiAoSXNQb3J0T3BlbigpKSBfcmVzdGFydEZhaWx1cmVzID0gMDsgLy8g5oGi5aSN5oiQ5Yqf77yM5riF6Zu26K6h5pWwCiAgICAgICAgICAgIH0pOwogICAgICAgIH0KCiAgICAgICAgaW50ZXJuYWwgdm9pZCBSZXN0YXJ0U2VydmljZSgpCiAgICAgICAgewogICAgICAgICAgICBTdG9wU2VydmljZSgpOwogICAgICAgICAgICBUaHJlYWQuU2xlZXAoNTAwKTsKICAgICAgICAgICAgX3Jlc3RhcnRGYWlsdXJlcyA9IDA7CiAgICAgICAgICAgIFN0YXJ0U2VydmljZSgpOwogICAgICAgICAgICBQcm9ncmFtLkxvZygi5omL5Yqo6YeN5ZCv5pyN5YqhIik7CiAgICAgICAgfQoKICAgICAgICB2b2lkIFN0b3BTZXJ2aWNlKCkKICAgICAgICB7CiAgICAgICAgICAgIF9zdG9wcGluZyA9IHRydWU7CiAgICAgICAgICAgIFByb2dyYW0uU3RvcFNlcnZpY2VBbmRFeGl0KCk7CiAgICAgICAgICAgIF9zdG9wcGluZyA9IGZhbHNlOwogICAgICAgIH0KCiAgICAgICAgLy8g562J5b6F5pyN5Yqh5bCx57uq77yI5pyA5aSaIDE1MCDnp5LvvInvvIzlsLHnu6rlkI7lvLkgV2ViVmlldzIg56qX5Y+jCiAgICAgICAgaW50ZXJuYWwgdm9pZCBCZWdpbldhaXRBbmRPcGVuKCkKICAgICAgICB7CiAgICAgICAgICAgIGlmIChfc3RhcnR1cE9ubHkgfHwgUHJvZ3JhbS5Ob09wZW4pIHJldHVybjsKICAgICAgICAgICAgVGhyZWFkUG9vbC5RdWV1ZVVzZXJXb3JrSXRlbShfID0+CiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIGZvciAoaW50IGkgPSAwOyBpIDwgMTUwOyBpKyspCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWYgKElzUG9ydE9wZW4oKSkKICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgICAgIFByb2dyYW0uTG9nKCLmnI3liqHlsLHnu6rvvIzmiZPlvIDlrqLmiLfnq6/nqpflj6MiKTsKICAgICAgICAgICAgICAgICAgICAgICAgT3BlbldpbmRvdygpOwogICAgICAgICAgICAgICAgICAgICAgICByZXR1cm47CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIFRocmVhZC5TbGVlcCgxMDAwKTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIFByb2dyYW0uTG9nKCLnrYnlvoXmnI3liqHotoXml7bvvIgxNTBz77yJIik7CiAgICAgICAgICAgICAgICBfdHJheS5TaG93QmFsbG9vblRpcCg1MDAwLCAi5ZCv5Yqo6LaF5pe2IiwgIuacjeWKoeacquWcqCAxNTAg56eS5YaF5bCx57uq77yM6K+35p+l55yL5pel5b+X44CCIiwgVG9vbFRpcEljb24uV2FybmluZyk7CiAgICAgICAgICAgIH0pOwogICAgICAgIH0KCiAgICAgICAgdm9pZCBPcGVuV2luZG93KCkKICAgICAgICB7CiAgICAgICAgICAgIHRyeSB7IERzaENsaWVudC5PcGVuV2luZG93KCJodHRwOi8vMTI3LjAuMC4xOiIgKyBQcm9ncmFtLlBvcnQsIFByb2dyYW0uQXBwTmFtZSwgTG9hZEljb24oKSk7IH0KICAgICAgICAgICAgY2F0Y2ggKEV4Y2VwdGlvbiBleCkgeyBQcm9ncmFtLkxvZygi5omT5byA56qX5Y+j5aSx6LSlOiAiICsgZXguTWVzc2FnZSk7IH0KICAgICAgICB9CgogICAgICAgIC8vIOW8gOacuuiHquWQr++8muWGmSBIS0NVXFNvZnR3YXJlXE1pY3Jvc29mdFxXaW5kb3dzXEN1cnJlbnRWZXJzaW9uXFJ1bgogICAgICAgIHN0YXRpYyByZWFkb25seSBzdHJpbmcgUnVuS2V5ID0gQCJTb2Z0d2FyZVxNaWNyb3NvZnRcV2luZG93c1xDdXJyZW50VmVyc2lvblxSdW4iOwogICAgICAgIHN0YXRpYyBib29sIElzQXV0b3N0YXJ0RW5hYmxlZCgpCiAgICAgICAgewogICAgICAgICAgICB0cnkKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgdXNpbmcgKHZhciBrID0gTWljcm9zb2Z0LldpbjMyLlJlZ2lzdHJ5LkN1cnJlbnRVc2VyLk9wZW5TdWJLZXkoUnVuS2V5KSkKICAgICAgICAgICAgICAgICAgICByZXR1cm4gayAhPSBudWxsICYmIGsuR2V0VmFsdWUoUHJvZ3JhbS5BcHBOYW1lKSAhPSBudWxsOwogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhdGNoIHsgcmV0dXJuIGZhbHNlOyB9CiAgICAgICAgfQogICAgICAgIHZvaWQgVG9nZ2xlQXV0b3N0YXJ0KCkKICAgICAgICB7CiAgICAgICAgICAgIHRyeQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICB1c2luZyAodmFyIGsgPSBNaWNyb3NvZnQuV2luMzIuUmVnaXN0cnkuQ3VycmVudFVzZXIuT3BlblN1YktleShSdW5LZXksIHRydWUpKQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGlmIChrID09IG51bGwpIHJldHVybjsKICAgICAgICAgICAgICAgICAgICBpZiAoSXNBdXRvc3RhcnRFbmFibGVkKCkpIGsuRGVsZXRlVmFsdWUoUHJvZ3JhbS5BcHBOYW1lLCBmYWxzZSk7CiAgICAgICAgICAgICAgICAgICAgZWxzZQogICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgc3RyaW5nIGV4ZSA9IFBhdGguQ29tYmluZShQcm9ncmFtLkFwcERpciwgIkRlZXBTZWVrIEhhcm5lc3MuZXhlIik7CiAgICAgICAgICAgICAgICAgICAgICAgIGsuU2V0VmFsdWUoUHJvZ3JhbS5BcHBOYW1lLCAiXCIiICsgZXhlICsgIlwiIC0tc3RhcnR1cCIpOwogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICBjYXRjaCAoRXhjZXB0aW9uIGV4KSB7IFByb2dyYW0uTG9nKCLoh6rlkK/lvIDlhbPlpLHotKU6ICIgKyBleC5NZXNzYWdlKTsgfQogICAgICAgIH0KCiAgICAgICAgdm9pZCBFeGl0QXBwKCkKICAgICAgICB7CiAgICAgICAgICAgIF9zdG9wcGluZyA9IHRydWU7CiAgICAgICAgICAgIFN0b3BTZXJ2aWNlKCk7CiAgICAgICAgICAgIF90cmF5LlZpc2libGUgPSBmYWxzZTsKICAgICAgICAgICAgX3RyYXkuRGlzcG9zZSgpOwogICAgICAgICAgICBFeGl0VGhyZWFkKCk7CiAgICAgICAgfQoKICAgICAgICAvLyDlpITnkIbph43lpI3lkK/liqjlrp7kvovlj5HmnaXnmoTjgIzmiZPlvIDnqpflj6PjgI3oh6rlrprkuYnmtojmga8KICAgICAgICBzZWFsZWQgY2xhc3MgV2luZG93TWVzc2FnZUZpbHRlciA6IElNZXNzYWdlRmlsdGVyCiAgICAgICAgewogICAgICAgICAgICByZWFkb25seSBUcmF5QXBwIF9hcHA7CiAgICAgICAgICAgIGludGVybmFsIFdpbmRvd01lc3NhZ2VGaWx0ZXIoVHJheUFwcCBhcHApIHsgX2FwcCA9IGFwcDsgfQogICAgICAgICAgICBwdWJsaWMgYm9vbCBQcmVGaWx0ZXJNZXNzYWdlKHJlZiBNZXNzYWdlIG0pCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIGlmIChtLk1zZyA9PSBOYXRpdmVNZXRob2RzLldNX1NIT1dfQVBQKSB7IF9hcHAuT3BlbldpbmRvdygpOyByZXR1cm4gdHJ1ZTsgfQogICAgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQoKICAgIGludGVybmFsIHN0YXRpYyBjbGFzcyBOYXRpdmVNZXRob2RzCiAgICB7CiAgICAgICAgaW50ZXJuYWwgY29uc3QgaW50IFdNX1NIT1dfQVBQID0gMHgwNDAwICsgNDI7CiAgICAgICAgW0RsbEltcG9ydCgidXNlcjMyLmRsbCIsIENoYXJTZXQgPSBDaGFyU2V0LkF1dG8pXQogICAgICAgIHN0YXRpYyBleHRlcm4gSW50UHRyIFNlbmRNZXNzYWdlVGltZW91dChJbnRQdHIgaFduZCwgdWludCBNc2csIEludFB0ciB3UGFyYW0sIEludFB0ciBsUGFyYW0sCiAgICAgICAgICAgIHVpbnQgZmxhZ3MsIHVpbnQgdGltZW91dCwgb3V0IEludFB0ciByZXN1bHQpOwogICAgICAgIC8vIOW5v+aSree7meaJgOaciemhtuWxgueql+WPo++8m+W3suacieWunuS+i+eahOa2iOaBr+i/h+a7pOWZqOS8muWTjeW6lAogICAgICAgIGludGVybmFsIHN0YXRpYyB2b2lkIFBvc3ROb3RpZnlNZXNzYWdlKCkKICAgICAgICB7CiAgICAgICAgICAgIEludFB0ciByZXM7CiAgICAgICAgICAgIFNlbmRNZXNzYWdlVGltZW91dCgoSW50UHRyKTB4ZmZmZiwgV01fU0hPV19BUFAsIEludFB0ci5aZXJvLCBJbnRQdHIuWmVybywgMiwgMTAwMCwgb3V0IHJlcyk7CiAgICAgICAgfQogICAgfQp9Cg==
+// DeepSeek Harness 桌面版 —— 托盘启动器 + 服务监护 + 崩溃自愈
+// 编译：见 build.ps1 第 4 步。目标 .NET Framework 4.x (csc.exe)。
+// 职责（README 工作方式）：
+//   * 单实例互斥（重复启动 → 通知已有实例打开窗口）
+//   * 确保 %USERPROFILE%\.dsh\profiles\web 存在
+//   * 若端口已有服务 → 接管；否则启动 runtime\node.exe dsh\lib\bin.js --profile web --port 18632
+//   * 等待就绪 → 消息循环后弹出 WebView2 窗口（DshClient.OpenWindow）
+//   * 托盘常驻：监护服务进程，崩溃/退出时自动重启（自愈），重启/停止/开机自启/退出
+//   * 日志轮转：desktop.log 超 1MB 自动归档
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+
+namespace DeepSeekHarness
+{
+    internal static class Program
+    {
+        internal const string AppName = "DeepSeek Harness";
+        internal const string MutexName = @"Local\DeepSeekHarness-SingleInstance-18632";
+        internal static string AppDir => AppDomain.CurrentDomain.BaseDirectory;
+        internal static string DataDir => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dsh");
+        internal static string LogPath => Path.Combine(DataDir, "desktop.log");
+        internal static string PidPath => Path.Combine(DataDir, "desktop.pid");
+        internal static int Port => ParsePort(Environment.GetEnvironmentVariable("DSH_PORT"));
+        internal static bool NoOpen => Environment.GetEnvironmentVariable("DSH_NO_OPEN") == "1";
+
+        static int ParsePort(string s)
+        {
+            int p; return int.TryParse(s, out p) && p > 0 && p < 65536 ? p : 18632;
+        }
+
+        [STAThread]
+        static void Main(string[] args)
+        {
+            // 命令行：stop = 停止服务并退出托盘
+            if (args.Length > 0 && string.Equals(args[0], "stop", StringComparison.OrdinalIgnoreCase))
+            {
+                StopServiceAndExit();
+                return;
+            }
+
+            bool createdNew;
+            using (var mutex = new Mutex(true, MutexName, out createdNew))
+            {
+                if (!createdNew)
+                {
+                    // 已有实例：发消息让它打开窗口，然后自己退出（单实例守护）
+                    try { NativeMethods.PostNotifyMessage(); } catch { }
+                    return;
+                }
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                Directory.CreateDirectory(DataDir);
+                EnsureProfileTemplate();
+                Log("启动 " + AppName + " port=" + Port + " args=" + string.Join(",", args));
+
+                var tray = new TrayApp(args);
+                tray.Startup();
+                // 自定义消息：重复启动时已有实例收到后打开窗口
+                Application.AddMessageFilter(new WindowMessageFilter(tray));
+                tray.BeginWaitAndOpen();
+                Application.Run(tray);
+            }
+        }
+
+        // 停止服务：按 pid 杀进程树
+        internal static void StopServiceAndExit()
+        {
+            try
+            {
+                if (File.Exists(PidPath))
+                {
+                    int pid;
+                    if (int.TryParse(File.ReadAllText(PidPath).Trim(), out pid) && pid > 0)
+                    {
+                        var p = Process.GetProcessById(pid);
+                        p.Kill(); // 杀 node 进程；其子进程（如有）由 node 自己管理
+                        Log("已停止服务 pid=" + pid);
+                    }
+                    File.Delete(PidPath);
+                }
+            }
+            catch (Exception ex) { Log("stop 失败: " + ex.Message); }
+        }
+
+        // 首次启动把内置 profile 模板复制到用户数据目录（不覆盖已有）
+        static void EnsureProfileTemplate()
+        {
+            string src = Path.Combine(AppDir, "profiles", "web");
+            string dst = Path.Combine(DataDir, "profiles", "web");
+            if (!Directory.Exists(src) || Directory.Exists(dst)) return;
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(dst));
+                CopyDir(src, dst);
+                Log("已初始化 profile 模板 -> " + dst);
+            }
+            catch (Exception ex) { Log("profile 复制失败: " + ex.Message); }
+        }
+
+        static void CopyDir(string src, string dst)
+        {
+            Directory.CreateDirectory(dst);
+            foreach (var f in Directory.GetFiles(src))
+                File.Copy(f, Path.Combine(dst, Path.GetFileName(f)), true);
+            foreach (var d in Directory.GetDirectories(src))
+                CopyDir(d, Path.Combine(dst, Path.GetFileName(d)));
+        }
+
+        // 日志轮转：超过 1MB 归档为 desktop.log.1（最多保留 3 份）
+        internal static void Log(string msg)
+        {
+            try
+            {
+                if (File.Exists(LogPath) && new FileInfo(LogPath).Length > 1024 * 1024)
+                    RotateLogs();
+                File.AppendAllText(LogPath,
+                    DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss] ") + msg + Environment.NewLine,
+                    Encoding.UTF8);
+            }
+            catch { /* 日志失败绝不影响主流程 */ }
+        }
+
+        static void RotateLogs()
+        {
+            for (int i = 3; i >= 1; i--)
+            {
+                string from = LogPath + "." + i;
+                string to = LogPath + "." + (i + 1);
+                if (File.Exists(from)) { try { File.Delete(to); } catch { } try { File.Move(from, to); } catch { } }
+            }
+            try { File.Move(LogPath, LogPath + ".1"); } catch { }
+        }
+    }
+
+    // 托盘应用：服务进程监护 + 自愈重启 + WebView2 窗口
+    internal sealed class TrayApp : ApplicationContext
+    {
+        readonly NotifyIcon _tray;
+        readonly bool _startupOnly;
+        Process _service;
+        bool _stopping;
+        int _restartFailures;
+        const int MaxRestartFailures = 5;
+        const int RestartDelayMs = 1500;
+
+        internal TrayApp(string[] args)
+        {
+            _startupOnly = args.Length > 0 && args[0] == "--startup";
+            _tray = new NotifyIcon();
+            _tray.Text = Program.AppName;
+            _tray.Icon = LoadIcon();
+            _tray.Visible = true;
+
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("打开窗口", null, (s, e) => OpenWindow());
+            menu.Items.Add("重启服务", null, (s, e) => RestartService());
+            menu.Items.Add("停止服务（释放内存）", null, (s, e) => StopService());
+            menu.Items.Add(new ToolStripSeparator());
+            var autostart = new ToolStripMenuItem("开机自启", null, (s, e) => ToggleAutostart());
+            autostart.Checked = IsAutostartEnabled();
+            menu.Items.Add(autostart);
+            menu.Items.Add(new ToolStripSeparator());
+            menu.Items.Add("退出", null, (s, e) => ExitApp());
+            _tray.ContextMenuStrip = menu;
+            _tray.DoubleClick += (s, e) => OpenWindow();
+        }
+
+        static Icon LoadIcon()
+        {
+            string ico = Path.Combine(Program.AppDir, "whale.ico");
+            if (File.Exists(ico)) { try { return new Icon(ico); } catch { } }
+            return SystemIcons.Application;
+        }
+
+        internal void Startup()
+        {
+            // BelowNormal 优先级，不抢资源
+            try { Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.BelowNormal; } catch { }
+            StartService();
+        }
+
+        // 服务是否已在监听（TCP 连接探测，比 ping HTTP 更轻）
+        bool IsPortOpen()
+        {
+            try
+            {
+                using (var c = new System.Net.Sockets.TcpClient())
+                {
+                    var ar = c.BeginConnect("127.0.0.1", Program.Port, null, null);
+                    bool ok = ar.AsyncWaitHandle.WaitOne(300);
+                    if (ok) c.EndConnect(ar);
+                    return ok;
+                }
+            }
+            catch { return false; }
+        }
+
+        void StartService()
+        {
+            if (IsPortOpen()) { Program.Log("端口已有服务，接管"); return; }
+            string node = Path.Combine(Program.AppDir, "runtime", "node.exe");
+            string bin = Path.Combine(Program.AppDir, "dsh", "lib", "bin.js");
+            if (!File.Exists(node) || !File.Exists(bin))
+            {
+                Program.Log("缺少 node.exe 或 bin.js，无法启动服务");
+                MessageBox.Show("安装不完整：缺少内置运行时或 dsh 内核，请重新安装。", Program.AppName,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            try
+            {
+                var psi = new ProcessStartInfo(node)
+                {
+                    WorkingDirectory = Program.AppDir,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = "\"" + bin + "\" --profile web --port " + Program.Port
+                };
+                psi.EnvironmentVariables["NODE_PATH"] = Path.Combine(Program.AppDir, "dsh", "node_modules");
+                _service = new Process { StartInfo = psi, EnableRaisingEvents = true };
+                _service.Exited += Service_Exited;
+                _service.Start();
+                File.WriteAllText(Program.PidPath, _service.Id.ToString());
+                Program.Log("服务已启动 pid=" + _service.Id);
+                // 异步泵日志，避免缓冲区满导致子进程阻塞
+                BeginPump(_service.StandardOutput);
+                BeginPump(_service.StandardError);
+            }
+            catch (Exception ex) { Program.Log("启动服务失败: " + ex.Message); }
+        }
+
+        void BeginPump(StreamReader r)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    string line;
+                    while ((line = r.ReadLine()) != null) Program.Log("[dsh] " + line);
+                }
+                catch { }
+            });
+        }
+
+        // 崩溃自愈核心：服务意外退出 → 延迟自动重启；连续失败则提示用户
+        void Service_Exited(object sender, EventArgs e)
+        {
+            if (_stopping) return;
+            int code = -1;
+            try { code = ((Process)sender).ExitCode; } catch { }
+            Program.Log("服务意外退出 exit=" + code + "，准备自愈重启");
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                Thread.Sleep(RestartDelayMs);
+                if (_stopping) return;
+                if (IsPortOpen()) return; // 已被别的实例接管
+                _restartFailures++;
+                if (_restartFailures > MaxRestartFailures)
+                {
+                    Program.Log("连续重启失败，停止自动重启并提示用户");
+                    _tray.ShowBalloonTip(5000, "服务反复崩溃",
+                        "已连续重启失败，请查看 desktop.log 或手动重启。", ToolTipIcon.Warning);
+                    return;
+                }
+                StartService();
+                if (IsPortOpen()) _restartFailures = 0; // 恢复成功，清零计数
+            });
+        }
+
+        internal void RestartService()
+        {
+            StopService();
+            Thread.Sleep(500);
+            _restartFailures = 0;
+            StartService();
+            Program.Log("手动重启服务");
+        }
+
+        void StopService()
+        {
+            _stopping = true;
+            Program.StopServiceAndExit();
+            _stopping = false;
+        }
+
+        // 等待服务就绪（最多 150 秒），就绪后弹 WebView2 窗口
+        internal void BeginWaitAndOpen()
+        {
+            if (_startupOnly || Program.NoOpen) return;
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                for (int i = 0; i < 150; i++)
+                {
+                    if (IsPortOpen())
+                    {
+                        Program.Log("服务就绪，打开客户端窗口");
+                        OpenWindow();
+                        return;
+                    }
+                    Thread.Sleep(1000);
+                }
+                Program.Log("等待服务超时（150s）");
+                _tray.ShowBalloonTip(5000, "启动超时", "服务未在 150 秒内就绪，请查看日志。", ToolTipIcon.Warning);
+            });
+        }
+
+        void OpenWindow()
+        {
+            try { DshClient.OpenWindow("http://127.0.0.1:" + Program.Port, Program.AppName, LoadIcon()); }
+            catch (Exception ex) { Program.Log("打开窗口失败: " + ex.Message); }
+        }
+
+        // 开机自启：写 HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+        static readonly string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        static bool IsAutostartEnabled()
+        {
+            try
+            {
+                using (var k = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RunKey))
+                    return k != null && k.GetValue(Program.AppName) != null;
+            }
+            catch { return false; }
+        }
+        void ToggleAutostart()
+        {
+            try
+            {
+                using (var k = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RunKey, true))
+                {
+                    if (k == null) return;
+                    if (IsAutostartEnabled()) k.DeleteValue(Program.AppName, false);
+                    else
+                    {
+                        string exe = Path.Combine(Program.AppDir, "DeepSeek Harness.exe");
+                        k.SetValue(Program.AppName, "\"" + exe + "\" --startup");
+                    }
+                }
+            }
+            catch (Exception ex) { Program.Log("自启开关失败: " + ex.Message); }
+        }
+
+        void ExitApp()
+        {
+            _stopping = true;
+            StopService();
+            _tray.Visible = false;
+            _tray.Dispose();
+            ExitThread();
+        }
+
+        // 处理重复启动实例发来的「打开窗口」自定义消息
+        sealed class WindowMessageFilter : IMessageFilter
+        {
+            readonly TrayApp _app;
+            internal WindowMessageFilter(TrayApp app) { _app = app; }
+            public bool PreFilterMessage(ref Message m)
+            {
+                if (m.Msg == NativeMethods.WM_SHOW_APP) { _app.OpenWindow(); return true; }
+                return false;
+            }
+        }
+    }
+
+    internal static class NativeMethods
+    {
+        internal const int WM_SHOW_APP = 0x0400 + 42;
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam,
+            uint flags, uint timeout, out IntPtr result);
+        // 广播给所有顶层窗口；已有实例的消息过滤器会响应
+        internal static void PostNotifyMessage()
+        {
+            IntPtr res;
+            SendMessageTimeout((IntPtr)0xffff, WM_SHOW_APP, IntPtr.Zero, IntPtr.Zero, 2, 1000, out res);
+        }
+    }
+}

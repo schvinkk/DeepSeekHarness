@@ -1,1 +1,71 @@
-OyBEZWVwU2VlayBIYXJuZXNzIOahjOmdoueJiCDigJQgSW5ubyBTZXR1cCDlronoo4XohJrmnKwgKDYuNyspCjsg6YWN5aWXIGJ1aWxkLnBzMSB2My4wLjAgLyDlhoXmoLggQGRlZXBzZWVrLWFpL2RzaCAwLjIuMi1yYy41Cjsg54m55oCn77ya5Lit5paH5ZCR5a+844CB6Ieq5a6a5LmJ55uu5b2V77yI6buY6K6k55So5oi355uu5b2V77yM5peg6ZyA566h55CG5ZGY77yJ44CB5byA5py66Ieq5ZCv6YCJ6aG544CBCjsgICAgICAg5Y246L295riF55CG5b+r5o235pa55byP5LiO6Ieq5ZCv6aG577yM5L2G5L+d55WZICVVU0VSUFJPRklMRSVcLmRzaCDnlKjmiLfmlbDmja7jgIIKCiNkZWZpbmUgTXlBcHBOYW1lICJEZWVwU2VlayBIYXJuZXNzIgojZGVmaW5lIE15QXBwVmVyc2lvbiAiMy4wLjAiCiNkZWZpbmUgTXlBcHBQdWJsaXNoZXIgIkRlZXBTZWVrIEhhcm5lc3MiCiNkZWZpbmUgTXlBcHBFeGVOYW1lICJEZWVwU2VlayBIYXJuZXNzLmV4ZSIKI2RlZmluZSBNeUFwcElkICJ7OEY0QTJDMTAtM0Q1RS00QjdBLTlDMjEtREVFUFNFRUtIQVJOM0R9IgoKW1NldHVwXQpBcHBJZD17eyNNeUFwcElkfQpBcHBOYW1lPXsjTXlBcHBOYW1lfQpBcHBWZXJzaW9uPXsjTXlBcHBWZXJzaW9ufQpBcHBWZXJOYW1lPXsjTXlBcHBOYW1lfSB7I015QXBwVmVyc2lvbn0KQXBwUHVibGlzaGVyPXsjTXlBcHBQdWJsaXNoZXJ9CkRlZmF1bHREaXJOYW1lPXt1c2VycGZ9XHsjTXlBcHBOYW1lfQpEZWZhdWx0R3JvdXBOYW1lPXsjTXlBcHBOYW1lfQpVbmluc3RhbGxEaXNwbGF5SWNvbj17YXBwfVx7I015QXBwRXhlTmFtZX0KVW5pbnN0YWxsRGlzcGxheU5hbWU9eyNNeUFwcE5hbWV9IHsjTXlBcHBWZXJzaW9ufQpPdXRwdXREaXI9Li5cZGlzdApPdXRwdXRCYXNlRmlsZW5hbWU9RGVlcFNlZWtIYXJuZXNzLVNldHVwLXsjTXlBcHBWZXJzaW9ufQpDb21wcmVzc2lvbj1sem1hMgpTb2xpZENvbXByZXNzaW9uPXllcwpXaXphcmRTdHlsZT1tb2Rlcm4KOyDml6DpnIDnrqHnkIblkZjvvJrlronoo4XliLDnlKjmiLfnm67lvZXvvIzlj6rlhpkgSEtDVQpQcml2aWxlZ2VzUmVxdWlyZWQ9bG93ZXN0CkFyY2hpdGVjdHVyZXNJbnN0YWxsSW42NEJpdE1vZGU9eDY0IGNvbXBhdGlibGUKTWluVmVyc2lvbj0xMC4wCkRpc2FibGVQcm9ncmFtR3JvdXBQYWdlPXllcwpMaWNlbnNlRmlsZT0KCltMYW5ndWFnZXNdCk5hbWU6ICJjbiI7IE1lc3NhZ2VzRmlsZTogImNvbXBpbGVyOkxhbmd1YWdlc1xDaGluZXNlU2ltcGxpZmllZC5pc2wiCgpbVGFza3NdCk5hbWU6ICJkZXNrdG9waWNvbiI7IERlc2NyaXB0aW9uOiAi5Yib5bu65qGM6Z2i5b+r5o235pa55byPIjsgR3JvdXBEZXNjcmlwdGlvbjogIuW/q+aNt+aWueW8jzoiOyBGbGFnczogY2hlY2tlZApOYW1lOiAic3RhcnR1cGljb24iOyBEZXNjcmlwdGlvbjogIuW8gOacuuiHquWKqOWQr+WKqO+8iOaJmOebmOW4uOmpu++8iSI7IEdyb3VwRGVzY3JpcHRpb246ICLlv6vmjbfmlrnlvI86IgoKW0ZpbGVzXQo7IOaVtOS4qiBhcHAg55uu5b2V77yI5ZCr5YaF572uIG5vZGXjgIFkc2gg5YaF5qC444CBV2ViVmlldzIgRExM44CB6L+Q6KGM5pe244CB5paH5qGj77yJClNvdXJjZTogIi4uXGFwcFwqIjsgRGVzdERpcjogInthcHB9IjsgRmxhZ3M6IGlnbm9yZXZlcnNpb24gcmVjdXJzZXN1YmRpcnMgY3JlYXRlYWxsc3ViZGlycwoKW0ljb25zXQpOYW1lOiAie2dyb3VwfVx7I015QXBwTmFtZX0iOyBGaWxlbmFtZTogInthcHB9XHsjTXlBcHBFeGVOYW1lfSI7IEljb25GaWxlbmFtZTogInthcHB9XHdoYWxlLmljbyIKTmFtZTogIntncm91cH1c5YGc5q2i5pyN5YqhIjsgRmlsZW5hbWU6ICJ7YXBwfVx7I015QXBwRXhlTmFtZX0iOyBQYXJhbWV0ZXJzOiAic3RvcCI7IEljb25GaWxlbmFtZTogInthcHB9XHdoYWxlLmljbyIKTmFtZTogInthdXRvZGVza3RvcH1ceyNNeUFwcE5hbWV9IjsgRmlsZW5hbWU6ICJ7YXBwfVx7I015QXBwRXhlTmFtZX0iOyBJY29uRmlsZW5hbWU6ICJ7YXBwfVx3aGFsZS5pY28iOyBUYXNrczogZGVza3RvcGljb24KOyDlvIDmnLroh6rlkK/vvJrlhpkgSEtDVSBSdW7vvIzmjIflkJEgLS1zdGFydHVwIOmdmem7mOaooeW8jwpOYW1lOiAie3VzZXJzdGFydHVwfVx7I015QXBwTmFtZX0iOyBGaWxlbmFtZTogInthcHB9XHsjTXlBcHBFeGVOYW1lfSI7IFBhcmFtZXRlcnM6ICItLXN0YXJ0dXAiOyBJY29uRmlsZW5hbWU6ICJ7YXBwfVx3aGFsZS5pY28iOyBUYXNrczogc3RhcnR1cGljb24KCltSdW5dCjsg5a6J6KOF5a6M5oiQ5ZCv5Yqo5LiA5qyh77yI5Y+v6YCJ77yJCkZpbGVuYW1lOiAie2FwcH1ceyNNeUFwcEV4ZU5hbWV9IjsgRGVzY3JpcHRpb246ICLnq4vljbPov5DooYwgeyNNeUFwcE5hbWV9IjsgRmxhZ3M6IG5vd2FpdCBwb3N0aW5zdGFsbCBza2lwaWZzaWxlbnQgdW5jaGVja2VkCgpbVW5pbnN0YWxsRGVsZXRlXQo7IOWPquWIoOeoi+W6j+iHqui6q+S6p+eUn+eahOS4tOaXtuaWh+S7tu+8m+eUqOaIt+aVsOaNriAlVVNFUlBST0ZJTEUlXC5kc2gg5Yi75oSP5L+d55WZClR5cGU6IGZpbGVzOyBOYW1lOiAie2FwcH1cZGVza3RvcC5waWQiClR5cGU6IGZpbGVzYW5kb3JkaXJzOyBOYW1lOiAie2FwcH1cZHNoXG5vZGVfbW9kdWxlc1xAZGVlcHNlZWstYWlcZHNoLXBsdWdpbi1zdWl0ZS5kc2hwYXRjaC50bXAuanMiCgpbTWVzc2FnZXNdCmNuLldlbGNvbWVMYWJlbDE95qyi6L+O5a6J6KOFIFtuYW1lXSDmoYzpnaLniYgKY24uV2VsY29tZUxhYmVsMj3lsIbmioogW25hbWVdIOWuieijheWIsOaCqOeahOiuoeeul+acuuOAguWGhee9riBOb2RlIOi/kOihjOaXtuS4jiBkc2ggMC4yLjItcmMuNSDlhoXmoLjvvIzml6DpnIDku7vkvZXlvIDlj5Hnjq/looPjgIIKCltDb2RlXQp7IOWNuOi9veaXtua4heeQhiBIS0NVIFJ1biDlkK/liqjpobnvvIhJY29ucyDnmoQgdXNlcnN0YXJ0dXAg5LiA6Iis55Sx5Y246L295Zmo6Ieq5Yqo5riF55CG77yM6L+Z6YeM5YWc5bqV77yJIH0KcHJvY2VkdXJlIEN1clVuaW5zdGFsbFN0ZXBDaGFuZ2VkKEN1clVuaW5zdGFsbFN0ZXA6IFRVbmluc3RhbGxTdGVwKTsKYmVnaW4KICBpZiBDdXJVbmluc3RhbGxTdGVwID0gdXNQb3N0VW5pbnN0YWxsIHRoZW4KICAgIFJlZ0RlbGV0ZVZhbHVlKEhLRVlfQ1VSUkVOVF9VU0VSLCAnU29mdHdhcmVcTWljcm9zb2Z0XFdpbmRvd3NcQ3VycmVudFZlcnNpb25cUnVuJywgJ3sjTXlBcHBOYW1lfScpOwplbmQ7Cg==
+; DeepSeek Harness 桌面版 — Inno Setup 安装脚本 (6.7+)
+; 配套 build.ps1 v3.0.0 / 内核 @deepseek-ai/dsh 0.2.2-rc.5
+; 特性：中文向导、自定义目录（默认用户目录，无需管理员）、开机自启选项、
+;       卸载清理快捷方式与自启项，但保留 %USERPROFILE%\.dsh 用户数据。
+
+#define MyAppName "DeepSeek Harness"
+#define MyAppVersion "3.0.0"
+#define MyAppPublisher "DeepSeek Harness"
+#define MyAppExeName "DeepSeek Harness.exe"
+#define MyAppId "{8F4A2C10-3D5E-4B7A-9C21-DEEPSEEKHARN3D}"
+
+[Setup]
+AppId={{#MyAppId}
+AppName={#MyAppName}
+AppVersion={#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
+AppPublisher={#MyAppPublisher}
+DefaultDirName={userpf}\{#MyAppName}
+DefaultGroupName={#MyAppName}
+UninstallDisplayIcon={app}\{#MyAppExeName}
+UninstallDisplayName={#MyAppName} {#MyAppVersion}
+OutputDir=..\dist
+OutputBaseFilename=DeepSeekHarness-Setup-{#MyAppVersion}
+Compression=lzma2
+SolidCompression=yes
+WizardStyle=modern
+; 无需管理员：安装到用户目录，只写 HKCU
+PrivilegesRequired=lowest
+ArchitecturesInstallIn64BitMode=x64 compatible
+MinVersion=10.0
+DisableProgramGroupPage=yes
+LicenseFile=
+
+[Languages]
+Name: "cn"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+
+[Tasks]
+Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "快捷方式:"; Flags: checked
+Name: "startupicon"; Description: "开机自动启动（托盘常驻）"; GroupDescription: "快捷方式:"
+
+[Files]
+; 整个 app 目录（含内置 node、dsh 内核、WebView2 DLL、运行时、文档）
+Source: "..\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\whale.ico"
+Name: "{group}\停止服务"; Filename: "{app}\{#MyAppExeName}"; Parameters: "stop"; IconFilename: "{app}\whale.ico"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\whale.ico"; Tasks: desktopicon
+; 开机自启：写 HKCU Run，指向 --startup 静默模式
+Name: "{userstartup}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--startup"; IconFilename: "{app}\whale.ico"; Tasks: startupicon
+
+[Run]
+; 安装完成启动一次（可选）
+Filename: "{app}\{#MyAppExeName}"; Description: "立即运行 {#MyAppName}"; Flags: nowait postinstall skipifsilent unchecked
+
+[UninstallDelete]
+; 只删程序自身产生的临时文件；用户数据 %USERPROFILE%\.dsh 刻意保留
+Type: files; Name: "{app}\desktop.pid"
+Type: filesandordirs; Name: "{app}\dsh\node_modules\@deepseek-ai\dsh-plugin-suite.dshpatch.tmp.js"
+
+[Messages]
+cn.WelcomeLabel1=欢迎安装 [name] 桌面版
+cn.WelcomeLabel2=将把 [name] 安装到您的计算机。内置 Node 运行时与 dsh 0.2.2-rc.5 内核，无需任何开发环境。
+
+[Code]
+{ 卸载时清理 HKCU Run 启动项（Icons 的 userstartup 一般由卸载器自动清理，这里兜底） }
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usPostUninstall then
+    RegDeleteValue(HKEY_CURRENT_USER, 'Software\Microsoft\Windows\CurrentVersion\Run', '{#MyAppName}');
+end;
