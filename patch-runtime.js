@@ -1,5 +1,5 @@
 /*
- * DeepSeek Harness - dsh 0.2.2-rc.5 运行时自愈补丁
+ * KK Go - dsh 0.2.2-rc.5 运行时自愈补丁
  *
  * 善后/自愈目标：
  *   rc.5 的 dsh-api-session-controller 里有一处裸变量调用
