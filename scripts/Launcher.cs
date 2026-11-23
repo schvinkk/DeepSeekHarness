@@ -1,4 +1,4 @@
-// DeepSeek Harness 桌面版 —— 托盘启动器 + 服务监护 + 崩溃自愈
+// KK Go 桌面版 —— 托盘启动器 + 服务监护 + 崩溃自愈
 // 编译：见 build.ps1 第 4 步。目标 .NET Framework 4.x (csc.exe)。
 // 职责（README 工作方式）：
 //   * 单实例互斥（重复启动 → 通知已有实例打开窗口）
@@ -16,15 +16,20 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace DeepSeekHarness
+namespace DshGo
 {
     internal static class Program
     {
-        internal const string AppName = "DeepSeek Harness";
-        internal const string MutexName = @"Local\DeepSeekHarness-SingleInstance-18632";
+        internal const string AppName = "KK Go";
+        // 单实例名与端口解耦：早期版本把端口号写进 Mutex 名，导致 DSH_PORT 一变
+        // 就变成"多实例"，两个进程抢同一个端口，第二个的 webserver 插件起不来
+        // （dsh: startup failed: required plugins did not activate）。
+        internal const string MutexName = @"Local\KKGo-SingleInstance";
+        internal const int DefaultPort = 18632;
         // 注意：build.ps1 用 .NET Framework 4.0 自带的 csc.exe（C# 5），
         // 不支持 C# 6 表达式体属性（=>），故一律写成传统 get 访问器。
         internal static string AppDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
@@ -38,7 +43,70 @@ namespace DeepSeekHarness
         }
         internal static string LogPath { get { return Path.Combine(DataDir, "desktop.log"); } }
         internal static string PidPath { get { return Path.Combine(DataDir, "desktop.pid"); } }
-        internal static int Port { get { return ParsePort(Environment.GetEnvironmentVariable("DSH_PORT")); } }
+
+        /// <summary>
+        /// 是否已配置模型凭据（DeepSeek 账号或 API Key）。
+        /// dsh 的凭据统一存在 $DSH_HOME/.credentials.yaml 的 refs / records 段里，
+        /// 键名形如 DEEPSEEK_API_KEY、deepseek-account-platform/default。
+        /// </summary>
+        internal static bool HasModelCredential()
+        {
+            try
+            {
+                string p = Path.Combine(DataDir, ".credentials.yaml");
+                if (!File.Exists(p)) return false;
+                string text = File.ReadAllText(p);
+                return text.IndexOf("deepseek", StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            catch { return true; } // 读不到就不打扰用户
+        }
+        internal static int Port
+        {
+            get
+            {
+                // 真实监听端口优先：从 service.log 解析出的 URL 才是权威值
+                if (_actualPort > 0) return _actualPort;
+                if (_requestedPort <= 0) _requestedPort = ResolvePort();
+                return _requestedPort;
+            }
+        }
+        static int _requestedPort = 0;
+        static int _actualPort = 0;
+
+        internal static void SetActualPort(int p) { if (p > 0 && p != _actualPort) { _actualPort = p; Log("实际监听端口 " + p); } }
+
+        /// <summary>
+        /// 端口解析：DSH_PORT 优先；否则用默认端口，若已被占用则自动换一个空闲端口。
+        /// 直接用占用端口会让 dsh 的 webserver 插件绑定失败，服务起不来，
+        /// 表现为"启动后什么都没有"——所以这里必须先探端口。
+        /// </summary>
+        static int ResolvePort()
+        {
+            int p = ParsePort(Environment.GetEnvironmentVariable("DSH_PORT"));
+            if (p > 0) return p;
+            if (!IsPortListening(DefaultPort)) return DefaultPort;
+            for (int c = 18700; c < 19000; c++)
+            {
+                if (!IsPortListening(c)) { Log("默认端口 " + DefaultPort + " 已被占用，自动改用 " + c); return c; }
+            }
+            return DefaultPort;
+        }
+
+        /// <summary>该端口上是否有进程在监听。</summary>
+        internal static bool IsPortListening(int port)
+        {
+            try
+            {
+                using (var c = new System.Net.Sockets.TcpClient())
+                {
+                    var ar = c.BeginConnect("127.0.0.1", port, null, null);
+                    if (!ar.AsyncWaitHandle.WaitOne(300)) return false;
+                    c.EndConnect(ar);
+                    return c.Connected;
+                }
+            }
+            catch { return false; }
+        }
         internal static bool NoOpen { get { return Environment.GetEnvironmentVariable("DSH_NO_OPEN") == "1"; } }
 
         static int ParsePort(string s)
@@ -53,6 +121,18 @@ namespace DeepSeekHarness
             if (args.Length > 0 && string.Equals(args[0], "stop", StringComparison.OrdinalIgnoreCase))
             {
                 StopServiceAndExit();
+                return;
+            }
+
+            // 命令行：--shutdown = 彻底关闭（安装器卸载前调用）
+            //
+            // 为什么必须有这个：dsh 服务是一个独立的 node.exe 子进程，它会一直
+            // 持有 <安装目录>\runtime\node.exe 的文件句柄。直接卸载时 Inno 删不掉
+            // 这个文件，用户的"卸载"就变成"卸载一半"——目录残留、93MB 核心留在磁盘上。
+            // 必须在卸载前把「托盘主进程 + dsh 服务进程树」整棵树干掉。
+            if (args.Length > 0 && string.Equals(args[0], "--shutdown", StringComparison.OrdinalIgnoreCase))
+            {
+                ShutdownEverything();
                 return;
             }
 
@@ -99,6 +179,57 @@ namespace DeepSeekHarness
                 }
             }
             catch (Exception ex) { Log("stop 失败: " + ex.Message); }
+        }
+
+        // 彻底关闭：杀掉 dsh 服务进程树 + 所有 KK Go 主进程（卸载器调用）。
+        // 顺序很重要：先杀服务（它锁着 runtime\node.exe），再杀主进程。
+        internal static void ShutdownEverything()
+        {
+            try
+            {
+                // 1) dsh 服务进程（独立 node.exe），连同其子孙一起杀
+                if (File.Exists(PidPath))
+                {
+                    int pid;
+                    if (int.TryParse(File.ReadAllText(PidPath).Trim(), out pid) && pid > 0)
+                        KillProcessTree(pid);
+                    try { File.Delete(PidPath); } catch { }
+                }
+
+                // 2) 托盘主进程（可能开了多个安装实例），排除自己
+                int me = Process.GetCurrentProcess().Id;
+                foreach (var p in Process.GetProcessesByName(AppName))
+                {
+                    try
+                    {
+                        if (p.Id == me) continue;
+                        KillProcessTree(p.Id);
+                    }
+                    catch { }
+                }
+                Log("shutdown 完成");
+            }
+            catch (Exception ex) { Log("shutdown 失败: " + ex.Message); }
+        }
+
+        // 用 taskkill /T 杀整棵进程树：dsh 服务下面还可能挂着别的 node 子进程，
+        // 只杀父进程的话子进程会变孤儿并继续占着文件句柄。
+        static void KillProcessTree(int pid)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo("taskkill", "/F /T /PID " + pid);
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+                using (var p = Process.Start(psi))
+                {
+                    if (p != null) p.WaitForExit(15000);
+                }
+                Log("已结束进程树 pid=" + pid);
+            }
+            catch (Exception ex) { Log("KillProcessTree(" + pid + ") 失败: " + ex.Message); }
         }
 
         // 首次启动把内置 profile 模板复制到用户数据目录（不覆盖已有）
@@ -159,9 +290,10 @@ namespace DeepSeekHarness
         // UI 线程锚点：在 STA 主线程构造，OpenWindow 从后台线程经它切回 UI 线程，
         // 保证 WebView2/WinForms 控件始终在 STA 线程创建（否则 MTA 线程建窗体失败或空白）。
         readonly Control _uiAnchor;
-        Process _service;
+        NativeLauncher.ServiceProcess _service;
         bool _stopping;
         int _restartFailures;
+        bool _startupFailed;
         const int MaxRestartFailures = 5;
         const int RestartDelayMs = 1500;
 
@@ -212,12 +344,136 @@ namespace DeepSeekHarness
                 using (var c = new System.Net.Sockets.TcpClient())
                 {
                     var ar = c.BeginConnect("127.0.0.1", Program.Port, null, null);
-                    bool ok = ar.AsyncWaitHandle.WaitOne(300);
-                    if (ok) c.EndConnect(ar);
-                    return ok;
+                    // 被防火墙静默丢弃时 SYN 无响应，WaitOne 会超时返回 false；
+                    // 端口未监听时 WaitOne 返回 true 但 EndConnect 抛异常。
+                    // 两种都要判为"不通"，否则会把"端口没人听"误判成"已有服务"而放弃启动。
+                    if (!ar.AsyncWaitHandle.WaitOne(300)) return false;
+                    c.EndConnect(ar);
+                    return c.Connected;
                 }
             }
             catch { return false; }
+        }
+
+        // 等待本地端口真正可连通（最多 seconds 秒）
+        bool WaitPortReachable(int seconds)
+        {
+            for (int i = 0; i < seconds * 2; i++)
+            {
+                if (IsPortOpen()) return true;
+                Thread.Sleep(500);
+            }
+            return IsPortOpen();
+        }
+
+        // ============================================================
+        // 本机防火墙拦截回环的自愈
+        // ------------------------------------------------------------
+        // 现象：dsh 服务进程正常启动、端口也确实 LISTENING，但任何对本机
+        // 127.0.0.1:<port> 的连接都会超时。原因不是 dsh，而是 Windows Defender
+        // 防火墙按"程序"过滤入站包：内置的便携 node.exe 不在任何放行规则里，
+        // 于是它监听的回环端口被静默丢包（对照实验：有放行规则的 node 0.03s
+        // 连通，无规则的便携 node 6s 超时）。
+        // 用户侧表现：托盘图标有了、进程也起来了，但界面永远是一张空白/错误页。
+        //
+        // 防火墙规则必须管理员权限才能加，所以这里在发现被拦截时弹窗征询，
+        // 由用户点一次"修复"，触发 UAC 放行；随后重新探测并继续开窗。
+        // ============================================================
+
+        // 服务已报出可用地址，但端口连不上 —— 典型的被防火墙丢包
+        bool IsLocalAccessBlocked()
+        {
+            return HasClientUrl() && !IsPortOpen();
+        }
+
+        // 以管理员权限添加内置 node 的入站放行规则
+        bool AddFirewallRuleElevated()
+        {
+            try
+            {
+                string node = Path.Combine(Program.AppDir, "runtime", "node.exe");
+                if (!File.Exists(node)) { Program.Log("找不到内置 node.exe，跳过防火墙修复"); return false; }
+                // 用 PowerShell 的 New-NetFirewallRule：单引号里的路径可以带空格，
+                // 整条命令用双引号包住交给 powershell 自己解析，避免多层转义出错。
+                string ps = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command \"New-NetFirewallRule " +
+                            "-DisplayName 'KK Go 内置运行时' -Direction Inbound -Program '" + node + "' " +
+                            "-Action Allow -Profile Any -ErrorAction Stop | Out-Null\"";
+                var psi = new ProcessStartInfo("powershell.exe", ps);
+                // 必须 UseShellExecute=true：Verb="runas" 只有走 ShellExecute 才能触发 UAC。
+                // 顺带绕开了 ProcessStartInfo.EnvironmentVariables 的重复键缺陷（UseShellExecute
+                // 时 .NET 不会去字典化环境变量）。
+                psi.UseShellExecute = true;
+                psi.Verb = "runas";
+                psi.WindowStyle = ProcessWindowStyle.Hidden;
+                using (var p = Process.Start(psi))
+                {
+                    if (p != null) p.WaitForExit(30000);
+                }
+                Program.Log("已请求添加防火墙放行规则（UAC）");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // 用户取消 UAC 时抛 Win32Exception(1223)，属正常路径
+                Program.Log("添加防火墙规则失败: " + ex.Message);
+                return false;
+            }
+        }
+
+        // 弹窗征询用户是否修复（必须在 UI 线程）
+        bool AskFixFirewallUi()
+        {
+            try
+            {
+                DialogResult r = MessageBox.Show(
+                    "Windows 防火墙拦截了 KK Go 的本地服务端口（127.0.0.1:" + Program.Port + "），\r\n" +
+                    "服务已经在运行，但界面无法加载。\r\n\r\n" +
+                    "是否立即添加放行规则？需要管理员权限（会弹出一次 UAC 确认）。",
+                    Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                return r == DialogResult.Yes;
+            }
+            catch (Exception ex)
+            {
+                Program.Log("防火墙提示失败: " + ex.Message);
+                return false;
+            }
+        }
+
+        // 在任意线程调用：自动切到 UI 线程弹窗
+        bool AskFixFirewall()
+        {
+            if (_uiAnchor != null && _uiAnchor.InvokeRequired)
+            {
+                bool res = false;
+                try { _uiAnchor.Invoke(new Action(() => { res = AskFixFirewallUi(); })); }
+                catch (Exception ex) { Program.Log("防火墙提示切线程失败: " + ex.Message); return false; }
+                return res;
+            }
+            return AskFixFirewallUi();
+        }
+
+        // 保证界面能加载：必要时修复防火墙。返回 true 表示本地可访问
+        bool EnsureLocalAccess()
+        {
+            // 给服务一点自举时间：进程刚起来时监听可能还没就绪
+            if (WaitPortReachable(10)) return true;
+            if (!IsLocalAccessBlocked())
+            {
+                // 不是被拦截（服务可能还在启动），再给一段宽限时间
+                return WaitPortReachable(20);
+            }
+            Program.Log("服务已就绪但本地端口不可达，判定被本机防火墙拦截");
+            if (!AskFixFirewall()) return false;
+            if (!AddFirewallRuleElevated()) return false;
+            // 规则生效后新的连接即可通过
+            bool ok = WaitPortReachable(20);
+            if (ok)
+            {
+                Program.Log("防火墙规则生效，本地端口已可达");
+                // 若窗口已经开着（托盘里再次点开），把之前加载失败的错误页刷掉
+                try { DshClient.Reload(); } catch { }
+            }
+            return ok;
         }
 
         void StartService()
@@ -234,48 +490,176 @@ namespace DeepSeekHarness
             }
             try
             {
-                var psi = new ProcessStartInfo(node)
-                {
-                    WorkingDirectory = Program.AppDir,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    // --no-open: 由本启动器用 WebView2 开原生窗口，禁止 dsh 再弹默认浏览器（否则双窗口）
-                    Arguments = "\"" + bin + "\" --profile web --no-open --port " + Program.Port
-                };
-                psi.EnvironmentVariables["NODE_PATH"] = Path.Combine(Program.AppDir, "dsh", "node_modules");
-                _service = new Process { StartInfo = psi, EnableRaisingEvents = true };
-                _service.Exited += Service_Exited;
-                _service.Start();
-                File.WriteAllText(Program.PidPath, _service.Id.ToString());
-                Program.Log("服务已启动 pid=" + _service.Id);
-                // 异步泵日志，避免缓冲区满导致子进程阻塞
-                BeginPump(_service.StandardOutput);
-                BeginPump(_service.StandardError);
+                // 关键：不能用 ProcessStartInfo。
+                // .NET Framework 的 ProcessStartInfo.EnvironmentVariables 是 StringDictionary
+                // （大小写不敏感），而 Windows 环境块常同时存在 Path / PATH / path 三个变体，
+                // 字典化时直接抛 ArgumentException("已添加项。字典中的关键字:Path...")，
+                // 结果是 .exe 能起来但 dsh 服务永远起不来，用户看到"装了却用不了"。
+                // 这里改用 Win32 CreateProcess + 自建最小环境块，绕开该字典。
+                string nodePath = Path.Combine(Program.AppDir, "dsh", "node_modules");
+                // ⚠ 参数顺序有讲究：dsh 的启动器选项（--profile/--patch）必须排在 app 自己的
+                // 参数（--no-open/--port）之前。一旦先出现 app 的未知选项，commander 的
+                // passThroughOptions 会把后面所有参数原样透传给 app，--patch 就会变成
+                // "unknown option '--patch'"，品牌覆盖层直接失效。
+                string args = "\"" + bin + "\" --profile web";
+                string brandPatch = Path.Combine(Program.AppDir, "profiles", "kkgo.patch.yml");
+                if (File.Exists(brandPatch)) args += " --patch \"" + brandPatch + "\"";
+                args += " --no-open --port " + Program.Port;
+                var svc = NativeLauncher.Start(node, args, Program.AppDir, nodePath);
+                _service = svc;
+                File.WriteAllText(Program.PidPath, svc.ProcessId.ToString());
+                Program.Log("服务已启动 pid=" + svc.ProcessId);
+                // 监控线程：检测服务意外退出并触发自愈重启
+                StartWatch(svc);
+                // 启动看护：进程起来了不等于服务起来了。
+                // dsh 的 webserver 插件绑定端口失败时，node 进程会启动后立刻退出，
+                // 之前的表现是"点了没反应 + 无限重启"，用户完全看不到原因。
+                WatchStartup(svc);
             }
             catch (Exception ex) { Program.Log("启动服务失败: " + ex.Message); }
         }
 
-        void BeginPump(StreamReader r)
+        // 启动看护：30 秒内必须出现带 token 的访问地址，否则判定启动失败并给出真实原因
+        void WatchStartup(NativeLauncher.ServiceProcess svc)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
                 {
-                    string line;
-                    while ((line = r.ReadLine()) != null) Program.Log("[dsh] " + line);
+                    for (int i = 0; i < 30; i++)
+                    {
+                        if (_stopping) return;
+                        if (HasClientUrl()) { Program.Log("服务启动完成"); return; }
+                        if (svc.HasExited) { ReportStartupFailure(svc); return; }
+                        Thread.Sleep(1000);
+                    }
+                    if (!HasClientUrl()) ReportStartupFailure(svc);
+                }
+                catch (Exception ex) { Program.Log("启动看护异常: " + ex.Message); }
+            });
+        }
+
+        // 启动失败：把 dsh 真正打印的原因挖出来，用原生对话框告诉用户
+        void ReportStartupFailure(NativeLauncher.ServiceProcess svc)
+        {
+            if (_startupFailed) return;
+            _startupFailed = true;
+            int code = -1;
+            try { code = svc.ExitCode; } catch { }
+            string tail = ReadServiceLogTail();
+            Program.Log("服务启动失败 exit=" + code + " 日志: " + tail);
+
+            string reason;
+            if (tail.IndexOf("required plugins did not activate", StringComparison.OrdinalIgnoreCase) >= 0)
+                reason = "本地端口被占用或服务组件启动失败（dsh 报 required plugins did not activate）。";
+            else if (tail.IndexOf("EADDRINUSE", StringComparison.OrdinalIgnoreCase) >= 0)
+                reason = "本地端口被其他程序占用。";
+            else if (tail.IndexOf("Cannot find module", StringComparison.OrdinalIgnoreCase) >= 0)
+                reason = "内置运行时文件不完整（缺少模块），请重新安装。";
+            else
+                reason = "内置服务未能正常启动。";
+
+            try
+            {
+                ShowOnUi(delegate
+                {
+                    MessageBox.Show(
+                        reason + "\r\n\r\n端口：" + Program.Port + "\r\n\r\n" +
+                        "详细信息（service.log 末尾）：\r\n" + tail,
+                        Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                });
+            }
+            catch { }
+        }
+
+        // 读取 service.log 末尾（dsh 服务进程会长期持有该文件的写句柄，
+        // 必须用 FileShare.ReadWrite 打开，否则抛共享冲突）
+        static string ReadServiceLogTail()
+        {
+            try
+            {
+                string p = Path.Combine(Program.AppDir, "service.log");
+                if (!File.Exists(p)) return "(service.log 不存在)";
+                using (var fs = new FileStream(p, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    int len = (int)Math.Min(fs.Length, 4000);
+                    fs.Seek(-len, SeekOrigin.End);
+                    byte[] buf = new byte[len];
+                    fs.Read(buf, 0, len);
+                    string s = Encoding.UTF8.GetString(buf);
+                    if (s.Length > 1200) s = s.Substring(s.Length - 1200);
+                    return s.Trim();
+                }
+            }
+            catch (Exception ex) { return "(读取失败: " + ex.Message + ")"; }
+        }
+
+        // 在 UI 线程执行（托盘应用必须从 STA 线程弹窗）
+        void ShowOnUi(Action action)
+        {
+            try
+            {
+                if (_uiAnchor != null && _uiAnchor.InvokeRequired)
+                {
+                    _uiAnchor.BeginInvoke(action);
+                }
+                else action();
+            }
+            catch { }
+        }
+
+        // 首次运行引导：尚未配置 DeepSeek 凭据时，web 界面会弹一个挡住全部功能的
+        // 「开始使用」弹窗。用户看到的是"整个应用都不能用"，而不是"还没登录"。
+        // 这里先用原生对话框把原因讲清楚，并且只提示一次。
+        void ShowOnboardingIfNeeded()
+        {
+            try
+            {
+                string marker = Path.Combine(Program.DataDir, "onboarding.done");
+                if (File.Exists(marker)) return;
+                if (!Program.HasModelCredential())
+                {
+                    Program.Log("未检测到 DeepSeek 凭据，显示首次运行引导");
+                    ShowOnUi(delegate
+                    {
+                        MessageBox.Show(
+                            "KK Go 还没有连接你的 DeepSeek 账号。\r\n\r\n" +
+                            "完成一次登录（DeepSeek 账号或 API Key）后，对话、命令、技能与插件等" +
+                            "全部功能即可使用；你的项目和文件始终保存在本机。\r\n\r\n" +
+                            "在窗口中央的「开始使用」弹窗里点「登录」完成授权即可。",
+                            Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    });
+                }
+                File.WriteAllText(marker, DateTime.Now.ToString("s"));
+            }
+            catch (Exception ex) { Program.Log("首次运行引导失败: " + ex.Message); }
+        }
+
+        // 监控服务进程：退出即触发自愈重启（用轮询替代 Process.Exited 事件，
+        // 因为原生句柄不走 .NET 的进程事件机制）。
+        void StartWatch(NativeLauncher.ServiceProcess svc)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    while (!_stopping)
+                    {
+                        if (svc.WaitForExit(2000)) { ServiceExited(svc); return; }
+                    }
                 }
                 catch { }
             });
         }
 
         // 崩溃自愈核心：服务意外退出 → 延迟自动重启；连续失败则提示用户
-        void Service_Exited(object sender, EventArgs e)
+        void ServiceExited(NativeLauncher.ServiceProcess svc)
         {
             if (_stopping) return;
+            // 启动阶段就已经失败并报过错：不再自愈重启，避免无限重启刷屏
+            if (_startupFailed) { Program.Log("启动已失败，跳过自愈重启"); return; }
             int code = -1;
-            try { code = ((Process)sender).ExitCode; } catch { }
+            try { code = svc.ExitCode; } catch { }
             Program.Log("服务意外退出 exit=" + code + "，准备自愈重启");
             ThreadPool.QueueUserWorkItem(_ =>
             {
@@ -307,6 +691,13 @@ namespace DeepSeekHarness
         void StopService()
         {
             _stopping = true;
+            // 优先用原生句柄精确终止；句柄不可用时回退到 pid 文件
+            if (_service != null)
+            {
+                try { _service.Kill(); } catch { }
+                try { _service.Dispose(); } catch { }
+                _service = null;
+            }
             Program.StopServiceAndExit();
             _stopping = false;
         }
@@ -319,7 +710,9 @@ namespace DeepSeekHarness
             {
                 for (int i = 0; i < 150; i++)
                 {
-                    if (IsPortOpen())
+                    // 必须等 token 地址出现：dsh 根路径不带 token 会拒绝，
+                    // 只探端口通会导致窗口打开是一片空白/错误页。
+                    if (HasClientUrl())
                     {
                         Program.Log("服务就绪，打开客户端窗口");
                         OpenWindow();
@@ -332,10 +725,78 @@ namespace DeepSeekHarness
             });
         }
 
+        // service.log 里是否已出现带 token 的访问地址
+        bool HasClientUrl()
+        {
+            string u; int p;
+            return TryParseClientUrl(out u, out p);
+        }
+
+        // 从 service.log 末尾解析 dsh 打印的访问地址，并记录真实监听端口
+        bool TryParseClientUrl(out string url, out int port)
+        {
+            url = null; port = 0;
+            try
+            {
+                string logPath = Path.Combine(Program.AppDir, "service.log");
+                if (!File.Exists(logPath)) return false;
+                using (var fs = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    int len = (int)Math.Min(fs.Length, 8192);
+                    fs.Seek(-len, SeekOrigin.End);
+                    byte[] buf = new byte[len];
+                    fs.Read(buf, 0, len);
+                    string text = Encoding.UTF8.GetString(buf);
+                    var m = Regex.Match(text, @"http://127\.0\.0\.1:(\d+)/\?token=[A-Za-z0-9_\-]+");
+                    if (!m.Success) return false;
+                    url = m.Value;
+                    int parsed;
+                    if (int.TryParse(m.Groups[1].Value, out parsed)) port = parsed;
+                    Program.SetActualPort(port);
+                    return true;
+                }
+            }
+            catch { return false; }
+        }
+
         void OpenWindow()
         {
-            // WebView2/WinForms 窗体必须在 STA UI 线程创建。若当前是 ThreadPool(MTA)
-            // 线程，则经锚点控件切回主线程执行；否则直接开窗。
+            // 开窗前必须确认本地端口真的连得上（可能被本机防火墙拦截）。
+            // 这一步含等待与 UAC 弹窗，绝不能占用 UI 线程，所以整体丢到后台线程，
+            // 真正建窗时再切回 UI 线程。
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    bool reachable = EnsureLocalAccess();
+                    // 端口不通也要开窗。
+                    // 以前这里是直接 return —— 用户看到的现象是"双击了图标，什么都没发生"，
+                    // 既没有界面也没有提示，最难排查。现在至少有个窗口 + 一条明确出路。
+                    OpenWindowNow();
+                    if (!reachable)
+                    {
+                        Program.Log("本地端口仍不可达，已开窗并给出处理办法");
+                        ShowOnUi(delegate
+                        {
+                            MessageBox.Show(
+                                "Windows 防火墙仍在拦截 KK Go 的本地服务端口（127.0.0.1:" + Program.Port + "）。\r\n" +
+                                "服务已经在运行，但界面暂时无法加载。\r\n\r\n" +
+                                "处理办法：打开「Windows 安全中心 → 防火墙和网络保护 → 允许应用通过防火墙」，\r\n" +
+                                "允许「KK Go」通过专用网络；或在安全软件中放行本程序目录下的 runtime\\node.exe。\r\n\r\n" +
+                                "放行后关闭并重新启动 KK Go 即可正常使用。",
+                                Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        });
+                        return;
+                    }
+                    // 先把"还没登录"这件事讲清楚（窗口已经打开，弹窗会盖在应用之上）
+                    ShowOnboardingIfNeeded();
+                }
+                catch (Exception ex) { Program.Log("开窗流程异常: " + ex.Message); }
+            });
+        }
+        // 真正开窗：WebView2/WinForms 窗体必须在 STA UI 线程创建。
+        void OpenWindowNow()
+        {
             try
             {
                 if (_uiAnchor != null && _uiAnchor.InvokeRequired)
@@ -351,8 +812,18 @@ namespace DeepSeekHarness
 
         void OpenWindowOnUiThread()
         {
-            try { DshClient.OpenWindow("http://127.0.0.1:" + Program.Port, Program.AppName, LoadIcon()); }
+            try { DshClient.OpenWindow(ClientUrl(), Program.AppName, LoadIcon()); }
             catch (Exception ex) { Program.Log("打开窗口失败: " + ex.Message); }
+        }
+
+        // dsh 启动后会打印带 token 的访问地址（http://127.0.0.1:<port>/?token=xxx），
+        // 根路径不带 token 会被拒绝，所以必须从 service.log 里解析出真实地址再开窗。
+        internal string ClientUrl()
+        {
+            string baseUrl = "http://127.0.0.1:" + Program.Port;
+            string u; int p;
+            if (TryParseClientUrl(out u, out p) && !string.IsNullOrEmpty(u)) return u;
+            return baseUrl;
         }
 
         // 开机自启：写 HKCU\Software\Microsoft\Windows\CurrentVersion\Run
@@ -376,7 +847,7 @@ namespace DeepSeekHarness
                     if (IsAutostartEnabled()) k.DeleteValue(Program.AppName, false);
                     else
                     {
-                        string exe = Path.Combine(Program.AppDir, "DeepSeek Harness.exe");
+                        string exe = Path.Combine(Program.AppDir, "KK Go.exe");
                         k.SetValue(Program.AppName, "\"" + exe + "\" --startup");
                     }
                 }
@@ -418,5 +889,12 @@ namespace DeepSeekHarness
             IntPtr res;
             SendMessageTimeout((IntPtr)0xffff, WM_SHOW_APP, IntPtr.Zero, IntPtr.Zero, 2, 1000, out res);
         }
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        internal static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
+            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+        [DllImport("kernel32.dll")]
+        internal static extern IntPtr GetStdHandle(int nStdHandle);
     }
 }
