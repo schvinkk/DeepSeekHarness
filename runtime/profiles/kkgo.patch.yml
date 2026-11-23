@@ -1,0 +1,15 @@
+# KK Go 品牌覆盖层
+#
+# 通过 `dsh --patch <此文件>` 叠加在 profile 层之后（dsh CLI 的 --patch 参数）。
+# 目的：把侧边栏品牌从上游的 "deepseek HARNESS" 换成 KK Go 自有标识。
+#
+#   · ui-brand-official —— 上游官方品牌插件，禁用掉，避免与 KK Go 字样并存
+#   · ui-brand-kkgo     —— KK Go 自有品牌插件，注册 sidebar.brand.* 两个插槽
+#
+# 注意：这是覆盖层，不写进用户的 ~/.dsh/profiles，因此用户自己的 profile 改动不会被污染。
+- id: ui-brand-official
+  disabled: true
+
+- insert:
+    - id: ui-brand-kkgo
+      name: '@deepseek-ai/dsh-client-ui-brand-kkgo'
