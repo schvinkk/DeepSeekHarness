@@ -1,8 +1,9 @@
-# DeepSeek Harness 桌面版 — 打包工程
+# KK Go 桌面版 — 打包工程
 
-把 DeepSeek Harness（`@deepseek-ai/dsh`）封装成**普通用户可直接安装使用的
-Windows 桌面客户端安装包**：安装包自带 Node.js 运行时与全部依赖，无需用户安装
-任何开发环境；内置黑色鲸鱼图标（由 `scripts/make-icon.cjs` 零依赖生成）。
+把 dsh 内核（`@deepseek-ai/dsh`）封装成**普通用户可直接安装使用的
+Windows 桌面客户端安装包**，与手机端 dsh-Go 同属一套「KK Go」品牌：安装包自带
+Node.js 运行时与全部依赖，无需用户安装任何开发环境；内置黑色鲸鱼图标（由
+`scripts/make-icon.cjs` 零依赖生成）。
 
 > **v3.0.0 补全说明**：本仓库此前只有构建脚本、没有任何打包源文件，是个无法构建的
 > 空壳。现已补齐全部缺失文件（`scripts/Launcher.cs`、`scripts/DshClient.cs`、
@@ -45,9 +46,9 @@ Windows 桌面客户端安装包**：安装包自带 Node.js 运行时与全部�
 
 | 文件 | 说明 |
 |---|---|
-| `dist\DeepSeekHarness-Setup-3.0.0.exe` | **最终安装包**（约 50MB），发给用户直接安装 |
+| `dist\KKGo-Setup-3.1.0.exe` | **最终安装包**（约 156MB），发给用户直接安装 |
 | `start-dsh-3080.bat` | 命令行/PWA 版启动脚本：用**全局 `dsh web`** 启动 3080 端口，避免 `npx` 导致的 profile bundle 解析失败 |
-| `app\DeepSeek Harness.exe` | 托盘启动器 + 原生客户端窗口（无参=启动并打开窗口；`--startup`=静默常驻；`stop`=停止） |
+| `app\KK Go.exe` | 托盘启动器 + 原生客户端窗口（无参=启动并打开窗口；`--startup`=静默常驻；`stop`=停止服务；`--shutdown`=彻底关闭） |
 | `app\Microsoft.Web.WebView2.*.dll` + `WebView2Loader.dll` | WebView2 SDK（承载原生窗口，随包分发） |
 | `app\runtime\node.exe` | 内置 Node.js v24.22.1 便携运行时（随包分发） |
 | `app\dsh\` | `@deepseek-ai/dsh` 完整包 + 全部依赖（已裁剪 sourcemap 与非 Windows 预编译模块） |
@@ -59,7 +60,7 @@ Windows 桌面客户端安装包**：安装包自带 Node.js 运行时与全部�
 ## 工作方式
 
 ```
-DeepSeek Harness.exe
+KK Go.exe
   ├─ 单实例互斥（重复启动 → 通知托盘实例打开窗口/退出）
   ├─ 确保 %USERPROFILE%\.dsh\profiles\web 存在（缺失时从内置模板复制）
   ├─ 若 127.0.0.1:18632 已有服务 → 直接接管
@@ -68,11 +69,38 @@ DeepSeek Harness.exe
   ├─ 等待服务就绪（最多 150 秒）→ 消息循环启动后弹出原生 WebView2 窗口（鲸鱼图标）
   └─ 托盘常驻：监护进程、重启/停止服务、开机自启开关、退出
 
-DeepSeek Harness.exe stop  → 停止服务并退出托盘（开始菜单快捷方式）
-DeepSeek Harness.exe --startup → 开机自启模式（只起服务+托盘，不弹窗口）
+KK Go.exe stop  → 停止服务并退出托盘（开始菜单快捷方式）
+KK Go.exe --startup → 开机自启模式（只起服务+托盘，不弹窗口）
+KK Go.exe --shutdown → 彻底关闭（杀托盘主进程 + dsh 服务整棵进程树；卸载器在删文件前调用）
 ```
 
+> **`--shutdown` 为什么必须有**：dsh 服务是独立的 `node.exe` 子进程，会一直持有
+> `<安装目录>\runtime\node.exe` 的文件句柄。不先杀掉它，Inno 卸载时就删不掉这个
+> 93MB 的核心文件，用户看到的"卸载"就变成"卸载一半"。安装器的 `[UninstallRun]`
+> 会在删文件前调用 `--shutdown`，配合 `[Setup] CloseApplications=yes` 双保险。
+
 用户数据（会话、配置、API 密钥）保存在 `%USERPROFILE%\.dsh`，卸载不删除。
+
+## KK Go 品牌层（与上游 dsh 的辨识度）
+
+| 位置 | 作用 |
+|---|---|
+| `runtime/kkgo-brand/` | 自研客户端插件 `@deepseek-ai/dsh-client-ui-brand-kkgo`，通过 `sidebar.brand.mark` / `sidebar.brand.name` 两个插槽渲染「渐变 KK 徽标 + KK Go 字样」 |
+| `runtime/profiles/kkgo.patch.yml` | profile overlay：禁用上游 `ui-brand-official`，插入 KK Go 品牌插件 |
+| `scripts/verify_brand.py` | **品牌运行时闸门**：真起服务 → 断言 stdout 无 `did not activate` / `ERR_MODULE_NOT_FOUND` → 抓真正下发给浏览器的 HTML → 断言 boot 清单含 `ui-brand-kkgo`、不含 `ui-brand-official`、`<title>KK Go</title>`。闸门不过，构建直接失败 |
+| `build.ps1` 第 4 步 | 把品牌包登记进 `app/dsh/package.json` 的 `dependencies`（**必须**——否则 dsh 的包解析双域机制收不到它，浏览器侧直接 `ERR_MODULE_NOT_FOUND`） |
+
+> **浏览器侧 factory 必须是 CommonJS 包装**：官方写法是
+> `var module={exports:{}}; var exports=module.exports;` +
+> `Object.defineProperty(exports, Symbol.toStringTag, {value:'Module'})`。
+> 直接写裸 ESM 会抛 `exports is not defined`，整个侧边栏品牌区空白。
+
+## WebView2 用户数据目录
+
+`CoreWebView2Environment.CreateAsync(null, %LOCALAPPDATA%\KK Go\WebView2, null)` —— **必须显式指定**。
+不指定时 WebView2 默认写在**可执行文件同级目录**（`<安装目录>\KK Go.exe.WebView2`），
+后果有三：卸载后残留一整个浏览器缓存目录；装到 Program Files 时没有写权限导致 WebView2 起不来；
+和程序文件混在一起，升级时被当成程序文件一起搬走。
 
 ## 重新构建
 
@@ -89,21 +117,21 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
    把 `node.exe` 与 `LICENSE` 放入 `app\runtime\`
 3. dsh 包：`robocopy <全局 dsh 安装目录> app\dsh /E /XF *.map /XD darwin-arm64 darwin-x64 win32-arm64 linux-x64 linux-arm64 .cache .git`
 4. 启动器 + 客户端窗口：`csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001
-   /win32icon:icon\whale.ico /out:"app\DeepSeek Harness.exe"
+   /win32icon:icon\whale.ico /out:"app\KK Go.exe"
    /r:System.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll
    /r:"app\Microsoft.Web.WebView2.Core.dll" /r:"app\Microsoft.Web.WebView2.WinForms.dll"
    scripts\Launcher.cs scripts\DshClient.cs`
    （WebView2 SDK 从 NuGet 的 `Microsoft.Web.WebView2` 包提取 net462 三个 DLL 放入 app 根目录）
 5. 安装包：`ISCC.exe installer\installer.iss`（Inno Setup 6.7+，需 ChineseSimplified.isl）
 6. **数字签名（正式发布前）**：见 `app\docs\数字签名指南.md` —— 先签
-   `DeepSeek Harness.exe` 再编译安装包，最后签安装包
+   `KK Go.exe` 再编译安装包，最后签安装包
 
 ## 版本与注意事项
 
-- 桌面版版本 **3.0.0**（内置 `@deepseek-ai/dsh` **0.2.2-rc.5** + 15个插件），Node 运行时 **v24.22.1**
-  - **内核与 dsh-Go 手机版统一**：两边都锁定 `@deepseek-ai/dsh` 0.2.2-rc.5（见 dsh-Go 仓库 `tooling/kernel-bump/README.md`）
-  - build.ps1 会自动 `npm install @deepseek-ai/dsh@0.2.2-rc.5` 固定内核，不依赖构建机全局 npm 版本；版本号不符会直接报错停止
-  - Node v24.22.1 是 rc.5 官方构建所用版本，原生模块 ABI 必须一致，**勿随意更换版本**
+- 桌面版版本 **3.1.0**（内置 `@deepseek-ai/dsh` **0.2.2-rc.5** + 10个内置插件 + KK Go 品牌插件），Node 运行时 **v24.22.1**
+  - **内核版本可自由指定/升级**：不与任何端硬绑定。默认 `0.2.2-rc.5`，可通过命令行 `-DshVer`、环境变量 `DSH_VER` 或 `build.config.json` 的 `dshVer` 任意指定/升级
+  - build.ps1 会按指定版本 `npm install @deepseek-ai/dsh@<版本>` 固定内核，不依赖构建机全局 npm 版本；版本号不符会直接报错停止
+  - Node 版本同样可配（`-NodeVer` / 环境变量 `NODE_VER` / `build.config.json`），默认 v24.22.1；原生模块 ABI 需与所选内核匹配，勿随意更换
 - 仅支持 **Windows 10/11 x64**（安装器已限制 `x64compatible` + `MinVersion=10.0`），
   无需管理员权限
 - 客户端窗口需 WebView2 运行时（Win10/11 自带或随 Edge 安装），缺失时自动回退浏览器
