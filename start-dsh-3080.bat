@@ -1,11 +1,11 @@
 @echo off
 chcp 65001 >nul
-title DeepSeek Harness 启动器 (dsh web 3080)
+title KK Go 启动器 (dsh web 3080)
 
 set "URL=http://127.0.0.1:3080"
 
 echo ==============================================
-echo  DeepSeek Harness 启动器 (PWA / 浏览器版)
+echo  KK Go 启动器 (PWA / 浏览器版)
 echo  端口: 3080  (与桌面安装包的 18632 不冲突)
 echo ==============================================
 echo.
@@ -15,7 +15,7 @@ where dsh >nul 2>nul
 if errorlevel 1 (
     echo   [错误] 未找到 dsh 命令。
     echo.
-    echo   请先全局安装 DeepSeek Harness CLI：
+    echo   请先全局安装 dsh CLI：
     echo     npm install -g @deepseek-ai/dsh
     echo.
     echo   安装完成后，再运行本脚本。
@@ -58,15 +58,15 @@ goto wait_loop
 
 :open
 echo.
-echo [5/5] 打开 DeepSeek Harness ...
+echo [5/5] 打开 KK Go ...
 
 :: 优先尝试打开已安装的 Edge PWA 快捷方式
-if exist "%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\DeepSeek Harness.lnk" (
-    start "" "%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\DeepSeek Harness.lnk"
+if exist "%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\KK Go.lnk" (
+    start "" "%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\KK Go.lnk"
     goto done
 )
-if exist "%USERPROFILE%\Desktop\DeepSeek Harness.lnk" (
-    start "" "%USERPROFILE%\Desktop\DeepSeek Harness.lnk"
+if exist "%USERPROFILE%\Desktop\KK Go.lnk" (
+    start "" "%USERPROFILE%\Desktop\KK Go.lnk"
     goto done
 )
 
