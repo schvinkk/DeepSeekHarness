@@ -1,5 +1,5 @@
 {
-  "version": "3.1.0",
+  "version": "3.1.4",
   "dshVer": "0.2.2-rc.5",
   "nodeVer": "v24.22.1",
   "_comment": "KK Go 桌面版构建配置。版本解析优先级: 命令行参数 > 环境变量(DSH_VER/NODE_VER/APP_VERSION) > 本文件 > 脚本默认值。升级内核只需改 dshVer 或传 -DshVer。"
