@@ -26,6 +26,25 @@ namespace DshGo
         const uint STARTF_USESHOWWINDOW = 0x00000001;
         const ushort SW_HIDE = 0;
 
+        /// <summary>
+        /// 不能传给 dsh 子进程的环境变量。
+        ///
+        /// NODE_OPTIONS 里的 --require 会给 node 注入宿主钩子；宿主钩子改写 fs/fs.promises
+        /// 后，DSH 的 atomic-write 清锁、pnpm 删临时目录都会失败。本机实测 WorkBuddy 沙箱的
+        /// node-safe-delete-shim 正是这样把 DSH 启动打断的（详见 Start() 里的注释）。
+        ///
+        /// NODE_REPL_EXTERNAL_MODULE 同样会改写 node 的模块加载行为，DSH 不需要它。
+        /// ELECTRON_RUN_AS_NODE / NODE_ICU_DATA 等是 Electron 宿主的内部约定，一并清掉，
+        /// 免得子进程误以为自己跑在 Electron 里。
+        /// </summary>
+        static readonly string[] PoisonedEnvVars =
+        {
+            "NODE_OPTIONS",
+            "NODE_REPL_EXTERNAL_MODULE",
+            "ELECTRON_RUN_AS_NODE",
+            "NODE_ICU_DATA",
+        };
+
         [StructLayout(LayoutKind.Sequential)]
         struct SECURITY_ATTRIBUTES
         {
@@ -149,6 +168,16 @@ namespace DshGo
         /// </summary>
         internal static ServiceProcess Start(string exePath, string arguments, string workingDirectory, string nodePath)
         {
+            return Start(exePath, arguments, workingDirectory, nodePath, null);
+        }
+
+        /// <summary>
+        /// 带 DSH_HOME 的启动：把 dsh 全部用户数据目录（凭据/会话/profile/插件）
+        /// 指到指定位置，实现"数据目录可自选、默认不占 C 盘"。
+        /// </summary>
+        internal static ServiceProcess Start(string exePath, string arguments, string workingDirectory,
+                                             string nodePath, string dshHome)
+        {
             // 1) 组装去重后的环境变量（大小写不敏感去重，保留最后一个值）
             var merged = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (System.Collections.DictionaryEntry de in Environment.GetEnvironmentVariables())
@@ -158,11 +187,40 @@ namespace DshGo
                 if (string.IsNullOrEmpty(k)) continue;
                 merged[k] = v; // 同名后写覆盖前写，等价于 Windows 的行为
             }
+            // ⚠ 必须剥离 NODE_OPTIONS。
+            //   NODE_OPTIONS 里常见的是 `--require=<某个 shim.cjs>`，用于给 node 进程注入
+            //   宿主环境的钩子。本机实测踩过的坑：WorkBuddy 的沙箱会注入
+            //     NODE_OPTIONS=--require=".../sandbox-center-runtime-kit/shim/node-language-shim.cjs"
+            //   该 shim 接管了 fs.rm，DSH 的 @deepseek-ai/dsh-atomic-write 在 withFileLock
+            //   里 `rm(lockPath, {force:true})` 清理写锁时被它拦下 → 锁文件删不掉 →
+            //   下次启动抢不到锁 → connection 插件激活失败 → web-runtime 拿不到 webServer →
+            //   端口从不监听 → 界面只看到 HTTP ERROR 404。
+            //   只要 KK Go 是从带这个环境变量的宿主里启动的（IDE、终端、自动化宿主），
+            //   子进程就会原样继承，DSH 必崩。
+            //   dsh 是独立运行的 node 服务，不该吃任何宿主的注入钩子 —— 一律清掉。
+            //   已在当前进程也清一遍：CreateProcess 走"继承父进程环境"的回退分支时，
+            //   继承来的就是当前进程环境。
+            foreach (string poison in PoisonedEnvVars)
+            {
+                if (merged.Remove(poison))
+                {
+                    try { Environment.SetEnvironmentVariable(poison, null, EnvironmentVariableTarget.Process); }
+                    catch { }
+                }
+            }
             // dsh 解析 @deepseek-ai/* 依赖需要 NODE_PATH
             merged["NODE_PATH"] = nodePath;
             // 同时写入当前进程环境：CreateProcess 继承父进程环境时才能带上 NODE_PATH
             try { Environment.SetEnvironmentVariable("NODE_PATH", nodePath, EnvironmentVariableTarget.Process); }
             catch { }
+            // DSH_HOME：dsh 所有用户数据（凭据、会话、profile、插件、workspace）的根。
+            // 显式指定后可把数据整体挪出 C 盘（见 Launcher.DataDir）。
+            if (!string.IsNullOrEmpty(dshHome))
+            {
+                merged["DSH_HOME"] = dshHome;
+                try { Environment.SetEnvironmentVariable("DSH_HOME", dshHome, EnvironmentVariableTarget.Process); }
+                catch { }
+            }
             // Node 在 Windows 上需要 SystemRoot 才能定位系统目录
             if (!merged.ContainsKey("SystemRoot"))
             {
