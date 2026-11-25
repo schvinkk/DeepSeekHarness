@@ -25,6 +25,12 @@ namespace DshGo
     internal static class Program
     {
         internal const string AppName = "KK Go";
+        // 版本信息：build.ps1 在出包前会把这一段同步为 build.config.json 的版本，
+        // 供「关于」「检查更新」显示与比对，确保用户看到的就是实际安装的版本。
+        internal const string AppVersion = "3.1.3";
+        internal const string KernelVersion = "0.2.2-rc.5";
+        internal const string RepoLatestUrl = "https://api.github.com/repos/schvinkk/KK-GO-DSH-Desktop/releases/latest";
+        internal const string RepoReleasesUrl = "https://github.com/schvinkk/KK-GO-DSH-Desktop/releases/latest";
         // 单实例名与端口解耦：早期版本把端口号写进 Mutex 名，导致 DSH_PORT 一变
         // 就变成"多实例"，两个进程抢同一个端口，第二个的 webserver 插件起不来
         // （dsh: startup failed: required plugins did not activate）。
@@ -33,16 +39,117 @@ namespace DshGo
         // 注意：build.ps1 用 .NET Framework 4.0 自带的 csc.exe（C# 5），
         // 不支持 C# 6 表达式体属性（=>），故一律写成传统 get 访问器。
         internal static string AppDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+
+        // 数据目录（DSH_HOME）解析，优先级从高到低：
+        //   1) 安装目录下 .kkgo\datadir.txt 里用户自定义的路径（托盘"更改数据目录"写入）
+        //   2) 默认：安装目录下已有的 KK Go Data（覆盖升级不丢数据）→ 非 C 盘根目录
+        //      （D:\KK Go Data 等）→ %USERPROFILE%\KK Go Data 兜底。
+        //   ★ 绝不读取外部 DSH_HOME 环境变量（详见下方注释）。
+        // 日志与 PID 独立放在安装目录下 .kkgo，跟随程序安装位置、升级时不丢失。
+        // 缓存 + 手动失效：避免每次调用都扫盘符/建目录；"更改数据目录"时清缓存让它重新解析。
+        static string _dataDirCache = null;
         internal static string DataDir
         {
             get
             {
-                return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dsh");
+                if (!string.IsNullOrEmpty(_dataDirCache)) return _dataDirCache;
+                try
+                {
+                    string cfg = Path.Combine(AppDir, ".kkgo", "datadir.txt");
+                    if (File.Exists(cfg))
+                    {
+                        string v = File.ReadAllText(cfg).Trim();
+                        // 必须是绝对路径：相对路径（如 "D:KK Go Data"）会让 WebView2
+                        // 弹「无法创建数据目录」，直接废掉整个窗口。
+                        if (!string.IsNullOrEmpty(v) && Path.IsPathRooted(v) && Directory.Exists(v))
+                        {
+                            _dataDirCache = Path.GetFullPath(v);
+                            return _dataDirCache;
+                        }
+                    }
+                }
+                catch { }
+
+                // ★ 绝不读取外部 DSH_HOME 环境变量 ★
+                // DSH_HOME 是命令行 dsh / 其他 dsh 桌面产品的全局环境变量。
+                // 曾因此把 KK Go 指向用户旧 dsh 的 profile（装满 auto-continue / codex /
+                // dsh-pocket 等第三方插件），dsh 启动即崩溃 exit=259、token 丢失，
+                // 窗口打开就是 "dsh web authentication required"——用户侧等于"装了用不了"。
+                // KK Go 的数据只认：① .kkgo\datadir.txt（托盘自定义） ② 专属默认目录。
+                // 注入给 dsh 子进程时由 NativeLauncher 显式覆盖 DSH_HOME 为本目录，
+                // 因此子进程拿到的是干净的 KK Go 数据目录，与外部 DSH_HOME 完全隔离。
+                _dataDirCache = PickDefaultDataDir();
+                return _dataDirCache;
             }
         }
-        internal static string LogPath { get { return Path.Combine(DataDir, "desktop.log"); } }
-        internal static string PidPath { get { return Path.Combine(DataDir, "desktop.pid"); } }
+        // 用户改数据目录后调用，强制下次重新解析（读到最新的 datadir.txt）
+        internal static void InvalidateDataDirCache() { _dataDirCache = null; }
+        // 日志 / PID 放在安装目录的 .kkgo 子目录，与程序同寿命，升级保留、卸载可控
+        internal static string CfgDir
+        {
+            get { return Path.Combine(AppDir, ".kkgo"); }
+        }
+        internal static string LogPath { get { return Path.Combine(CfgDir, "desktop.log"); } }
+        internal static string PidPath { get { return Path.Combine(CfgDir, "desktop.pid"); } }
+
+        /// <summary>
+        /// 选一个默认数据目录。三条硬规则，逐条都不能破：
+        ///   1. 必须是【绝对路径】。RootDirectory.FullName 是 "D:\"，绝不能 TrimEnd('\\')
+        ///      变成 "D:" —— Path.Combine("D:", "KK Go Data") 得到 "D:KK Go Data"
+        ///      （驱动器相对路径），WebView2 拿它当 userDataFolder 会弹
+        ///      「无法创建数据目录」，用户侧等于装了用不了（3.1.3 实测踩坑）。
+        ///   2. 默认不占 C 盘。
+        ///   3. 已存在的数据目录优先复用，保证覆盖升级不丢凭据/会话。
+        /// </summary>
+        static string PickDefaultDataDir()
+        {
+            // 0) 安装目录下的 KK Go Data：老版本把数据实际落在这里，
+            //    覆盖升级必须先认它，否则用户配置"凭空消失"。且安装目录不在 C 盘时才用。
+            try
+            {
+                string installRoot = new DirectoryInfo(AppDir).Root.FullName;
+                if (char.ToUpperInvariant(installRoot[0]) != 'C')
+                {
+                    string existing = Path.GetFullPath(Path.Combine(AppDir, "KK Go Data"));
+                    if (Directory.Exists(existing) && IsWritable(existing)) return existing;
+                }
+            }
+            catch { }
+
+            // 1) 第一个可用（存在且可写）的非 C 盘根目录
+            try
+            {
+                foreach (var d in DriveInfo.GetDrives())
+                {
+                    if (!d.IsReady) continue;
+                    string drive = d.Name;
+                    if (string.IsNullOrEmpty(drive)) continue;
+                    if (char.ToUpperInvariant(drive[0]) == 'C') continue;
+                    string root = d.RootDirectory.FullName; // "D:\"，保留尾部反斜杠
+                    // ★ 绝不 TrimEnd('\\')：D:\ -> D: 会退化成驱动器相对路径。
+                    string cand = Path.GetFullPath(Path.Combine(root, "KK Go Data"));
+                    try { Directory.CreateDirectory(cand); if (IsWritable(cand)) return cand; } catch { }
+                }
+            }
+            catch { }
+
+            // 2) 回退：用户 profile 下（一定在 C 盘，但至少是绝对路径、能用）
+            return Path.GetFullPath(Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "KK Go Data"));
+        }
+
+        /// <summary>目录是否可写：真实建删一个探针文件，不用 ACL 猜。</summary>
+        static bool IsWritable(string dir)
+        {
+            try
+            {
+                string probe = Path.Combine(dir, ".kkgo-write-test-" + Guid.NewGuid().ToString("N"));
+                File.WriteAllText(probe, "ok");
+                File.Delete(probe);
+                return true;
+            }
+            catch { return false; }
+        }
 
         /// <summary>
         /// 是否已配置模型凭据（DeepSeek 账号或 API Key）。
@@ -148,6 +255,8 @@ namespace DshGo
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
+                // 日志/PID 放安装目录 .kkgo；用户数据（DSH_HOME）放 DataDir（可自选、默认非 C 盘）
+                try { Directory.CreateDirectory(CfgDir); } catch { }
                 Directory.CreateDirectory(DataDir);
                 EnsureProfileTemplate();
                 Log("启动 " + AppName + " port=" + Port + " args=" + string.Join(",", args));
@@ -310,9 +419,17 @@ namespace DshGo
             menu.Items.Add("重启服务", null, (s, e) => RestartService());
             menu.Items.Add("停止服务（释放内存）", null, (s, e) => StopService());
             menu.Items.Add(new ToolStripSeparator());
+            var dataDirItem = new ToolStripMenuItem("更改数据目录", null, (s, e) => ChangeDataDir());
+            dataDirItem.ToolTipText = "把会话/配置/插件等数据存到别的盘（不占 C 盘），重启服务后生效";
+            menu.Items.Add(dataDirItem);
             var autostart = new ToolStripMenuItem("开机自启", null, (s, e) => ToggleAutostart());
             autostart.Checked = IsAutostartEnabled();
             menu.Items.Add(autostart);
+            menu.Items.Add(new ToolStripSeparator());
+            menu.Items.Add("检查更新", null, (s, e) => CheckForUpdates());
+            menu.Items.Add("打开数据目录", null, (s, e) => OpenDataDir());
+            menu.Items.Add("查看日志", null, (s, e) => OpenLogFile());
+            menu.Items.Add("关于 KK Go", null, (s, e) => ShowAbout());
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("退出", null, (s, e) => ExitApp());
             _tray.ContextMenuStrip = menu;
@@ -497,6 +614,8 @@ namespace DshGo
                 // 结果是 .exe 能起来但 dsh 服务永远起不来，用户看到"装了却用不了"。
                 // 这里改用 Win32 CreateProcess + 自建最小环境块，绕开该字典。
                 string nodePath = Path.Combine(Program.AppDir, "dsh", "node_modules");
+                // 数据目录（DSH_HOME）：把 dsh 全部用户数据指到 DataDir（可自选、默认不占 C 盘）
+                string dshHome = Program.DataDir;
                 // ⚠ 参数顺序有讲究：dsh 的启动器选项（--profile/--patch）必须排在 app 自己的
                 // 参数（--no-open/--port）之前。一旦先出现 app 的未知选项，commander 的
                 // passThroughOptions 会把后面所有参数原样透传给 app，--patch 就会变成
@@ -505,7 +624,7 @@ namespace DshGo
                 string brandPatch = Path.Combine(Program.AppDir, "profiles", "kkgo.patch.yml");
                 if (File.Exists(brandPatch)) args += " --patch \"" + brandPatch + "\"";
                 args += " --no-open --port " + Program.Port;
-                var svc = NativeLauncher.Start(node, args, Program.AppDir, nodePath);
+                var svc = NativeLauncher.Start(node, args, Program.AppDir, nodePath, dshHome);
                 _service = svc;
                 File.WriteAllText(Program.PidPath, svc.ProcessId.ToString());
                 Program.Log("服务已启动 pid=" + svc.ProcessId);
@@ -688,6 +807,36 @@ namespace DshGo
             Program.Log("手动重启服务");
         }
 
+        // 更改数据目录：让用户把会话/配置/插件数据挪到自选的盘（不占 C 盘）。
+        // 写入 安装目录\.kkgo\datadir.txt，重启服务后生效（DSH_HOME 随服务进程注入）。
+        void ChangeDataDir()
+        {
+            try
+            {
+                using (var dlg = new FolderBrowserDialog())
+                {
+                    string init = Program.DataDir;
+                    try { dlg.SelectedPath = Directory.GetParent(init) != null ? Directory.GetParent(init).FullName : init; } catch { }
+                    dlg.Description = "选择 KK Go 的数据存放位置（会话、配置、插件、凭据等）";
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    string chosen = dlg.SelectedPath;
+                    if (string.IsNullOrEmpty(chosen)) return;
+                    Directory.CreateDirectory(chosen);
+                    string cfg = Path.Combine(Program.AppDir, ".kkgo", "datadir.txt");
+                    Directory.CreateDirectory(Path.GetDirectoryName(cfg));
+                    File.WriteAllText(cfg, chosen);
+                    Program.InvalidateDataDirCache(); // 让紧接着的 RestartService→StartService 读到新路径
+                    Program.Log("数据目录已更改为 " + chosen + "，重启服务生效");
+                    MessageBox.Show(
+                        "已把数据目录设为：\r\n" + chosen +
+                        "\r\n\r\n正在重启服务使其生效。", Program.AppName,
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RestartService();
+                }
+            }
+            catch (Exception ex) { Program.Log("更改数据目录失败: " + ex.Message); }
+        }
+
         void StopService()
         {
             _stopping = true;
@@ -742,13 +891,17 @@ namespace DshGo
                 if (!File.Exists(logPath)) return false;
                 using (var fs = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    int len = (int)Math.Min(fs.Length, 8192);
+                    // token URL 在"启动完成"时打印一次；旧会话日志刷屏会把它顶到很前面，
+                    // 只读末尾 8192 字节会漏掉 → 回退到无 token 根路径 → 401。
+                    // 读末尾 256KB，并取【最后一个】匹配（最新一次启动的 token 才是有效的）。
+                    int len = (int)Math.Min(fs.Length, 262144);
                     fs.Seek(-len, SeekOrigin.End);
                     byte[] buf = new byte[len];
                     fs.Read(buf, 0, len);
                     string text = Encoding.UTF8.GetString(buf);
-                    var m = Regex.Match(text, @"http://127\.0\.0\.1:(\d+)/\?token=[A-Za-z0-9_\-]+");
-                    if (!m.Success) return false;
+                    var matches = Regex.Matches(text, @"http://127\.0\.0\.1:(\d+)/\?token=[A-Za-z0-9_\-]+");
+                    if (matches.Count == 0) return false;
+                    var m = matches[matches.Count - 1];
                     url = m.Value;
                     int parsed;
                     if (int.TryParse(m.Groups[1].Value, out parsed)) port = parsed;
@@ -853,6 +1006,96 @@ namespace DshGo
                 }
             }
             catch (Exception ex) { Program.Log("自启开关失败: " + ex.Message); }
+        }
+
+        // 检查更新：后台拉取 GitHub 最新 release 的 tag_name，与本地版本比对。
+        // 不阻塞 UI；断网/超时静默忽略，绝不弹错误框打扰用户。
+        void CheckForUpdates()
+        {
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                try
+                {
+                    var req = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(Program.RepoLatestUrl);
+                    req.Method = "GET";
+                    req.Timeout = 12000;
+                    req.ReadWriteTimeout = 12000;
+                    req.UserAgent = "KKGo-Updater";
+                    req.Accept = "application/vnd.github+json";
+                    string json;
+                    using (var resp = (System.Net.HttpWebResponse)req.GetResponse())
+                    using (var sr = new StreamReader(resp.GetResponseStream(), Encoding.UTF8))
+                        json = sr.ReadToEnd();
+                    var m = Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v?([0-9]+\\.[0-9]+\\.[0-9]+)\"");
+                    if (!m.Success) return;
+                    string latest = m.Groups[1].Value;
+                    Version lv, cv;
+                    if (!Version.TryParse(latest, out lv) || !Version.TryParse(Program.AppVersion, out cv)) return;
+                    if (lv <= cv)
+                    {
+                        ShowOnUi(delegate
+                        {
+                            MessageBox.Show("当前已是最新版本 v" + Program.AppVersion + "。",
+                                Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        });
+                        return;
+                    }
+                    ShowOnUi(delegate
+                    {
+                        var r = MessageBox.Show(
+                            "发现新版本 v" + latest + "（当前 v" + Program.AppVersion + "）。\r\n\r\n" +
+                            "新版本可从 GitHub 下载，安装时直接覆盖即可，数据不会丢失。\r\n\r\n" +
+                            "现在打开下载页面吗？",
+                            "KK Go 检查更新", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        if (r == DialogResult.Yes)
+                        {
+                            try { System.Diagnostics.Process.Start(Program.RepoReleasesUrl); }
+                            catch { }
+                        }
+                    });
+                }
+                catch (Exception ex) { Program.Log("检查更新失败（已忽略）: " + ex.Message); }
+            });
+        }
+
+        // 打开数据目录（会话/配置/插件数据所在位置）
+        void OpenDataDir()
+        {
+            try
+            {
+                string dir = Program.DataDir;
+                Directory.CreateDirectory(dir);
+                System.Diagnostics.Process.Start("explorer.exe", "\"" + dir + "\"");
+            }
+            catch (Exception ex) { Program.Log("打开数据目录失败: " + ex.Message); }
+        }
+
+        // 查看运行日志
+        void OpenLogFile()
+        {
+            try
+            {
+                string log = Program.LogPath;
+                if (!File.Exists(log)) { File.WriteAllText(log, "(暂无日志)"); }
+                System.Diagnostics.Process.Start("notepad.exe", "\"" + log + "\"");
+            }
+            catch (Exception ex) { Program.Log("打开日志失败: " + ex.Message); }
+        }
+
+        // 关于：显示版本、内核、数据目录、端口
+        void ShowAbout()
+        {
+            ShowOnUi(delegate
+            {
+                MessageBox.Show(
+                    Program.AppName + " 桌面版  v" + Program.AppVersion + "\r\n" +
+                    "内核 @deepseek-ai/dsh  " + Program.KernelVersion + "\r\n\r\n" +
+                    "数据目录：" + Program.DataDir + "\r\n" +
+                    "服务端口：" + Program.Port + "\r\n" +
+                    "安装目录：" + Program.AppDir + "\r\n\r\n" +
+                    "托盘右键可检查更新、打开数据目录、查看日志。",
+                    "关于 " + Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            });
         }
 
         void ExitApp()
