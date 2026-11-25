@@ -117,9 +117,12 @@ namespace DshGo
             {
                 try
                 {
-                    string dir = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        Program.AppName, "WebView2");
+                    // 浏览器缓存/数据跟随「数据目录」（DSH_HOME，默认放非 C 盘）：
+                    // 卸载/升级可控、不占系统盘，且每个用户一份。
+                    string dir = Path.GetFullPath(Path.Combine(Program.DataDir, "WebView2"));
+                    // 防御：绝不把驱动器相对路径（如 "D:KK Go Data\WebView2"）交给 WebView2，
+                    // 否则 Edge 自己弹「无法创建数据目录」模态框，程序窗口直接废掉。
+                    if (!Path.IsPathRooted(dir)) throw new InvalidOperationException("数据目录不是绝对路径: " + dir);
                     Directory.CreateDirectory(dir);
 
                     Type envType = null;
