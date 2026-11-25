@@ -4,7 +4,7 @@
 ;       卸载清理快捷方式与自启项，但保留 %USERPROFILE%\.dsh 用户数据。
 
 #define MyAppName "KK Go"
-#define MyAppVersion "3.1.0"
+#define MyAppVersion "3.1.4"
 #define MyAppPublisher "KK Go"
 #define MyAppExeName "KK Go.exe"
 #define MyAppId "{7B4E2C91-3F6A-4D28-9E15-A8C3B07D6F42}"
@@ -17,6 +17,8 @@ AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={userpf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+; ★ 安装包本身也必须显示官方鲸鱼图标，否则 Edge 下载下来看到的是 Inno 默认图标
+SetupIconFile=..\app\whale.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 OutputDir=..\dist
@@ -30,8 +32,10 @@ ArchitecturesInstallIn64BitMode=x64
 MinVersion=10.0
 DisableProgramGroupPage=yes
 LicenseFile=
-; 卸載/升級時自動嘗試關閉正在運行的 KK Go（配合 UninstallRun 的 --shutdown 雙保險）
-CloseApplications=yes
+; 关闭 Inno 自带的 RestartManager：它检测到 dsh 的 node.exe 占用 runtime\node.exe 时
+; 无法自动关闭，会在静默安装下直接 Abort（exit=5），导致覆盖升级失败、exe 仍是旧版。
+; 我们改在 PrepareToInstall 里用自己的脚本精确结束本产品进程（见 [Code]）。
+CloseApplications=no
 RestartApplications=no
 
 [Languages]
@@ -49,7 +53,9 @@ Name: "firewallrule"; Description: "允许 KK Go 的本地服务通过 Windows �
 [Files]
 ; 整个 app 目录（含内置 node、dsh 内核、WebView2 DLL、运行时、文档）
 ; 排除构建期残留的测试日志（内含明文会话 token，绝不能进安装包）
-Source: "..\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "dsh_test_launch.log,service.log,desktop.log,desktop.log.*,dump-config-web.yml,dump-kkgo.yml"
+Source: "..\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "dsh_test_launch.log,service.log,desktop.log,desktop.log.*,dump-config-web.yml,dump-kkgo.yml,.kkgo\*,desktop.pid"
+; 升级前停进程脚本：dontcopy=只打包进安装器、不装到目标目录，安装早期即可 ExtractTemporaryFile 执行
+Source: "..\app\tools\stop-before-upgrade.ps1"; Flags: dontcopy
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\whale.ico"
@@ -85,6 +91,65 @@ cn.WelcomeLabel1=欢迎安装 [name] 桌面版
 cn.WelcomeLabel2=将把 [name] 安装到您的计算机。内置 Node 运行时与可自由升级的 dsh 内核，无需任何开发环境。
 
 [Code]
+{ 安装开始前先停掉"正在运行的旧 KK Go"，否则旧 exe 被占用，Inno 无法替换，
+  用户以为升级成功、实际双击的还是旧版（症状：升级后依旧 authentication required）。
+  对两个来源都尝试：① 已注册的安装目录；② 旧版本常见的默认目录。
+  --shutdown 会同时结束托盘进程和其 node 服务树，彻底释放 exe 句柄。 }
+procedure StopRunningKKGo;
+var
+  R: Integer;
+begin
+  // 注意：InitializeSetup 阶段 {app} 常量尚未初始化，绝不能 ExpandConstant('{app}...')，
+  // 否则抛 "an attempt was made to expand the app constant before it was initialized"，安装中止。
+  // 只按固定进程名结束本产品进程（含其 node 服务子进程树），不碰其他软件。
+  Exec(ExpandConstant('{sys}\taskkill.exe'), '/F /IM "{#MyAppExeName}" /T', '', SW_HIDE, ewWaitUntilTerminated, R);
+  Sleep(800);
+end;
+
+function InitializeSetup: Boolean;
+begin
+  Result := True;
+  StopRunningKKGo;
+end;
+
+{ 关键：PrepareToInstall 阶段安装目录常量已初始化。在这里用 PowerShell 脚本精确结束
+  "命令行里含本安装目录"的 dsh node.exe 服务进程——它们持有 runtime\node.exe
+  的句柄，不杀掉会导致覆盖升级时 exe 无法替换 / RestartManager Abort（exit=5）。
+  脚本只杀 KK Go 托盘 + 指向本目录的 node.exe，绝不误伤机器上其他 node 程序。 }
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  R: Integer;
+  Script: String;
+  Cmd: String;
+begin
+  Result := '';
+  NeedsRestart := False;
+  try
+    ExtractTemporaryFile('stop-before-upgrade.ps1');
+    Script := ExpandConstant('{tmp}\stop-before-upgrade.ps1');
+    Cmd := '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + Script + '" -InstallDir "' + ExpandConstant('{app}') + '"';
+    if Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'), Cmd, '', SW_HIDE, ewWaitUntilTerminated, R) then
+      Log('PrepareToInstall: stop-before-upgrade exit=' + IntToStr(R));
+  except
+    Log('PrepareToInstall: stop script failed (non-fatal)');
+  end;
+  Sleep(600);
+end;
+
+{ 安装结束后刷新桌面/任务栏的图标缓存，解决"桌面快捷方式仍显示旧图标"的问题。
+  用系统自带 ie4uinit.exe（Win10/11 内置），不依赖任何第三方工具。 }
+procedure RefreshIconCache;
+var R: Integer;
+begin
+  Exec(ExpandConstant('{sys}\ie4uinit.exe'), '-show', '', SW_HIDE, ewWaitUntilTerminated, R);
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+    RefreshIconCache;
+end;
+
 { 卸载时清理 HKCU Run 启动项（Icons 的 userstartup 一般由卸载器自动清理，这里兜底） }
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
