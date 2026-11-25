@@ -607,6 +607,14 @@ namespace DshGo
             }
             try
             {
+                // 启动前清掉上次崩溃留下的写锁。
+                // DSH 的 atomic-write 用 `<文件>.lock` 做写锁（内容是被占用的 pid），
+                // 正常流程结束会 rm 掉；但进程被强杀 / 删文件被宿主拦截时，锁会留在盘上。
+                // 留下的锁会让下一次启动一直「timed out waiting for the writer lock」，
+                // 表现为界面永远转圈 / 404，而真正的原因藏在日志深处。
+                // 这里只删「属主进程已经不在了」的锁 —— 还在跑的实例的锁必须留着，
+                // 否则两个进程同时写同一个凭据文件，那才是真的把数据写坏。
+                CleanStaleLocks(Program.DataDir);
                 // 关键：不能用 ProcessStartInfo。
                 // .NET Framework 的 ProcessStartInfo.EnvironmentVariables 是 StringDictionary
                 // （大小写不敏感），而 Windows 环境块常同时存在 Path / PATH / path 三个变体，
@@ -669,7 +677,9 @@ namespace DshGo
             Program.Log("服务启动失败 exit=" + code + " 日志: " + tail);
 
             string reason;
-            if (tail.IndexOf("required plugins did not activate", StringComparison.OrdinalIgnoreCase) >= 0)
+            if (tail.IndexOf("timed out waiting for the writer lock", StringComparison.OrdinalIgnoreCase) >= 0)
+                reason = "上次退出留下了没清掉的写锁，导致服务起不来。已尝试自动清理，请关闭 KK Go 后重新打开。";
+            else if (tail.IndexOf("required plugins did not activate", StringComparison.OrdinalIgnoreCase) >= 0)
                 reason = "本地端口被占用或服务组件启动失败（dsh 报 required plugins did not activate）。";
             else if (tail.IndexOf("EADDRINUSE", StringComparison.OrdinalIgnoreCase) >= 0)
                 reason = "本地端口被其他程序占用。";
@@ -711,6 +721,69 @@ namespace DshGo
                 }
             }
             catch (Exception ex) { return "(读取失败: " + ex.Message + ")"; }
+        }
+
+        /// <summary>
+        /// 清理上次异常退出留下的 DSH 写锁。
+        ///
+        /// DSH 的 @deepseek-ai/dsh-atomic-write 用 `&lt;文件&gt;.lock` 做写锁，锁文件里写的是
+        /// 占用的进程 pid，正常结束会删掉。但进程被强杀、或删除动作被宿主环境拦截时，
+        /// 锁会留在盘上；下一次启动就永远卡在
+        /// "atomic-write: timed out waiting for the writer lock at ..."，
+        /// 表现为服务起不来、界面只有 404，而真正原因埋在日志里。
+        ///
+        /// 判定规则（宁可漏删，绝不误删）：
+        ///   · 锁文件里必须是一个能解析成 pid 的整数；
+        ///   · 该 pid 必须已经不在运行（否则是活着的实例在持锁，碰它就是数据竞争）。
+        ///   · `.lock.takeover-*` 是 DSH 接管锁时的中间态，主人也是同一个 pid，一并清。
+        /// </summary>
+        static void CleanStaleLocks(string dataDir)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dataDir) || !Directory.Exists(dataDir)) return;
+                string[] locks = Directory.GetFiles(dataDir, "*.lock", SearchOption.TopDirectoryOnly);
+                string[] takeovers = Directory.GetFiles(dataDir, "*.lock.takeover-*", SearchOption.TopDirectoryOnly);
+                var all = new List<string>(locks);
+                all.AddRange(takeovers);
+                foreach (string path in all)
+                {
+                    string owner;
+                    try
+                    {
+                        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            byte[] buf = new byte[64];
+                            int n = fs.Read(buf, 0, buf.Length);
+                            owner = Encoding.UTF8.GetString(buf, 0, n).Trim();
+                        }
+                    }
+                    catch { continue; }
+
+                    int pid;
+                    if (!int.TryParse(owner, out pid) || pid <= 0) continue;   // 认不出主人 → 不碰
+                    if (IsProcessAlive(pid)) continue;                        // 主人还活着 → 不碰
+                    try
+                    {
+                        File.Delete(path);
+                        Program.Log("清理残留锁: " + Path.GetFileName(path) + " (pid " + pid + " 已退出)");
+                    }
+                    catch { }
+                }
+            }
+            catch (Exception ex) { Program.Log("清理残留锁异常: " + ex.Message); }
+        }
+
+        /// <summary>进程是否还在跑。开了 PROCESS_QUERY_LIMITED_INFORMATION 就够。</summary>
+        static bool IsProcessAlive(int pid)
+        {
+            try
+            {
+                using (var p = System.Diagnostics.Process.GetProcessById(pid))
+                    return !p.HasExited;
+            }
+            catch (ArgumentException) { return false; }   // pid 不存在 → 已退出
+            catch { return true; }                          // 查不到就保守当活着，别误删
         }
 
         // 在 UI 线程执行（托盘应用必须从 STA 线程弹窗）
