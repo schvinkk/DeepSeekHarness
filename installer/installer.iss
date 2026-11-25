@@ -4,7 +4,7 @@
 ;       卸载清理快捷方式与自启项，但保留 %USERPROFILE%\.dsh 用户数据。
 
 #define MyAppName "KK Go"
-#define MyAppVersion "3.1.4"
+#define MyAppVersion "3.1.5"
 #define MyAppPublisher "KK Go"
 #define MyAppExeName "KK Go.exe"
 #define MyAppId "{7B4E2C91-3F6A-4D28-9E15-A8C3B07D6F42}"
