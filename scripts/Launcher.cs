@@ -27,7 +27,7 @@ namespace DshGo
         internal const string AppName = "KK Go";
         // 版本信息：build.ps1 在出包前会把这一段同步为 build.config.json 的版本，
         // 供「关于」「检查更新」显示与比对，确保用户看到的就是实际安装的版本。
-        internal const string AppVersion = "3.1.3";
+        internal const string AppVersion = "3.1.5";
         internal const string KernelVersion = "0.2.2-rc.5";
         internal const string RepoLatestUrl = "https://api.github.com/repos/schvinkk/KK-GO-DSH-Desktop/releases/latest";
         internal const string RepoReleasesUrl = "https://github.com/schvinkk/KK-GO-DSH-Desktop/releases/latest";
@@ -1214,3 +1214,4 @@ namespace DshGo
         internal static extern IntPtr GetStdHandle(int nStdHandle);
     }
 }
+
