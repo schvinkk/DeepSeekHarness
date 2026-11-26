@@ -244,6 +244,16 @@ if (-not (Test-Path (Join-Path $APP "profiles\web\package.json"))) {
     New-Item -ItemType Directory -Force -Path (Join-Path $APP "profiles\web") | Out-Null
     Set-Content -Path (Join-Path $APP "profiles\web\package.json") -Value '{"name":"dsh-profile-web","private":true,"dependencies":{},"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base","@deepseek-ai/dsh-web-app"]}}}' -Encoding utf8
 }
+# ---------- 版本注入: 出包前把 build.config.json 的真实版本写进 Launcher.cs ----------
+# 背景: AppVersion/KernelVersion 是编译期常量, 历史上写死 3.1.3, 导致 exe「关于/检查更新」
+#       永远显示旧版本, 与 build.config.json 漂移。编译前用正则替换为 $VERSION/$DSH_VER,
+#       以后只要升 build.config.json, exe 版本号就自动跟上, 无需再手改 cs 源。
+$launcherCs = Join-Path $ROOT "scripts\Launcher.cs"
+$launcherText = [System.IO.File]::ReadAllText($launcherCs, [System.Text.Encoding]::UTF8)
+$launcherText = [regex]::Replace($launcherText, '(?<=AppVersion = ")[0-9][0-9.]*', $VERSION)
+$launcherText = [regex]::Replace($launcherText, '(?<=KernelVersion = ")[0-9A-Za-z.\-rc]+', $DSH_VER)
+[System.IO.File]::WriteAllText($launcherCs, $launcherText, (New-Object System.Text.UTF8Encoding $false))
+Write-Host "    版本注入: AppVersion -> $VERSION  KernelVersion -> $DSH_VER (scripts\Launcher.cs)" -ForegroundColor DarkGray
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001 `
     "/win32manifest:$ROOT\scripts\app.manifest" `
