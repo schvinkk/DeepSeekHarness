@@ -91,7 +91,7 @@ Node.js 运行时与全部依赖，无需用户安装任何开发环境；内置
 
 | 文件 | 说明 |
 |---|---|
-| `dist\KKGo-Setup-3.1.4.exe` | **最新正式安装包**（约 156MB，内置 Node 运行时 + dsh 内核 + 全部依赖 + 品牌层），发给用户直接安装。GitHub Release 同步提供，带 `.sha256` 校验文件 |
+| `dist\KKGo-Setup-3.1.5.exe` | **最新正式安装包**（约 156MB，内置 Node 运行时 + dsh 内核 + 全部依赖 + 品牌层），发给用户直接安装。GitHub Release 同步提供，带 `.sha256` 校验文件 |
 | `start-dsh-3080.bat` | 命令行/PWA 版启动脚本：用**全局 `dsh web`** 启动 3080 端口，避免 `npx` 导致的 profile bundle 解析失败 |
 | `app\KK Go.exe` | 托盘启动器 + 原生客户端窗口（无参=启动并打开窗口；`--startup`=静默常驻；`stop`=停止服务；`--shutdown`=彻底关闭） |
 | `app\Microsoft.Web.WebView2.*.dll` + `WebView2Loader.dll` | WebView2 SDK（承载原生窗口，随包分发） |
@@ -189,7 +189,8 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 
 ## 版本与注意事项
 
-- 桌面版版本 **3.1.4**（内置 `@deepseek-ai/dsh` **0.2.2-rc.5** + 10个内置插件 + KK Go 品牌插件），Node 运行时 **v24.22.1**
+- 桌面版版本 **3.1.5**（内置 `@deepseek-ai/dsh` **0.2.2-rc.5** + 10个内置插件 + KK Go 品牌插件），Node 运行时 **v24.22.1**
+  - **v3.1.5 修复**：服务起不来 / 界面 HTTP ERROR 404；同时修正版本号漂移，「关于 KK Go」与安装包、文档全部统一显示 3.1.5。
   - **v3.1.4 紧急修复**：① 数据目录必须用绝对路径（`D:KK Go Data` 这种驱动器相对路径会让 WebView2 弹「无法创建数据目录」、窗口直接废掉）；② 覆盖升级优先复用已有数据目录，不丢凭据/会话；③ 安装包本体补上官方鲸鱼图标（`SetupIconFile`）。从 3.1.3 直接覆盖安装即可，无需卸载。
   - **内核版本可自由指定/升级**：不与任何端硬绑定。默认 `0.2.2-rc.5`，可通过命令行 `-DshVer`、环境变量 `DSH_VER` 或 `build.config.json` 的 `dshVer` 任意指定/升级
   - build.ps1 会按指定版本 `npm install @deepseek-ai/dsh@<版本>` 固定内核，不依赖构建机全局 npm 版本；版本号不符会直接报错停止
