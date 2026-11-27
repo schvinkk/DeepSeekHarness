@@ -1,4 +1,4 @@
-﻿; KK Go 桌面版 — Inno Setup 安装脚本 (6.7+)
+; KK Go 桌面版 — Inno Setup 安装脚本 (6.7+)
 ; 与手机端同属一套「KK Go」品牌；内核版本可自由指定/升级（见 build.config.json / build.ps1 -DshVer）
 ; 特性：中文向导、自定义目录（默认用户目录，无需管理员）、开机自启选项、
 ;       卸载清理快捷方式与自启项，但保留 %USERPROFILE%\.dsh 用户数据。
@@ -53,7 +53,7 @@ Name: "firewallrule"; Description: "允许 KK Go 的本地服务通过 Windows �
 [Files]
 ; 整个 app 目录（含内置 node、dsh 内核、WebView2 DLL、运行时、文档）
 ; 排除构建期残留的测试日志（内含明文会话 token，绝不能进安装包）
-Source: "..\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "dsh_test_launch.log,service.log,desktop.log,desktop.log.*,dump-config-web.yml,dump-kkgo.yml,.kkgo\*,desktop.pid"
+Source: "..\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "dsh_test_launch.log,service.log,desktop.log,desktop.log.*,dump-config-web.yml,dump-kkgo.yml,.kkgo\*,desktop.pid,KK Go Data\*,KK Go Data"
 ; 升级前停进程脚本：dontcopy=只打包进安装器、不装到目标目录，安装早期即可 ExtractTemporaryFile 执行
 Source: "..\app\tools\stop-before-upgrade.ps1"; Flags: dontcopy
 
