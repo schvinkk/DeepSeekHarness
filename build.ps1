@@ -1,4 +1,4 @@
-# KK Go 桌面版 — 一键打包脚本 (PowerShell)
+﻿# KK Go 桌面版 — 一键打包脚本 (PowerShell)
 # 与手机端 dsh-Go 同属一套「KK Go」品牌；内核版本可自由指定/升级，不再与手机端硬绑定。
 # 用法:
 #   默认:              powershell -ExecutionPolicy Bypass -File .\build.ps1
@@ -21,7 +21,7 @@ $DIST = Join-Path $ROOT "dist"
 $DL   = Join-Path $ROOT "downloads"
 
 # ---------- 版本解析: 参数 > 环境变量 > build.config.json > 默认值 ----------
-$cfg = @{ version = "3.0.0"; dshVer = "0.2.2-rc.5"; nodeVer = "v24.22.1" }
+$cfg = @{ version = "3.1.5"; dshVer = "0.2.2-rc.5"; nodeVer = "v24.22.1" }
 $cfgPath = Join-Path $ROOT "build.config.json"
 if (Test-Path $cfgPath) {
     # 显式用 UTF-8 读取：PowerShell 5.1 的 Get-Content -Raw 默认按 ANSI(GBK) 解码，
@@ -32,7 +32,7 @@ if (Test-Path $cfgPath) {
 $VERSION = $Version
 if (-not $VERSION) { $VERSION = $env:APP_VERSION }
 if (-not $VERSION) { $VERSION = $cfg.version }
-if (-not $VERSION) { $VERSION = "3.0.0" }
+if (-not $VERSION) { $VERSION = "3.1.5" }
 
 $DSH_VER = $DshVer
 if (-not $DSH_VER) { $DSH_VER = $env:DSH_VER }
@@ -282,6 +282,26 @@ if ($launcherText -ne $before) {
     Write-Host "    版本注入: AppVersion=$VERSION  KernelVersion=$DSH_VER (写入 Launcher.cs)" -ForegroundColor DarkGray
 } else {
     Write-Host "    版本注入: Launcher.cs 已是 AppVersion=$VERSION / KernelVersion=$DSH_VER，无需改动" -ForegroundColor DarkGray
+}
+# ---------- 文档版本自动同步：README / 使用说明里的"桌面版版本"跟随 $VERSION ----------
+# 背景：README、app/docs/使用说明.md 里各有一处「桌面版版本 **X**」是当前版本声明，
+# 历史上多次迭代只改了 build.config.json，文档停在旧版本，用户看到的是自相矛盾的版本号。
+# 这里在每次构建时按 $VERSION 自动改写这两处声明，保证「源码/壳/文档/release」四处同源。
+$docVersionFiles = @(
+    (Join-Path $ROOT "README.md"),
+    (Join-Path $ROOT "app\docs\使用说明.md")
+)
+foreach ($df in $docVersionFiles) {
+    if (Test-Path $df) {
+        $dt = [System.IO.File]::ReadAllText($df, [System.Text.Encoding]::UTF8)
+        $d2 = [regex]::Replace($dt, '(?<=桌面版版本 \*\*)[0-9][0-9.]*(?=\*\*)', $VERSION)
+        $d2 = [regex]::Replace($d2, '(?<=桌面版版本：\*\*)[0-9][0-9.]*(?=\*\*)', $VERSION)
+        $d2 = [regex]::Replace($d2, '(?<=KKGo-Setup-)[0-9][0-9.]*(?=\.exe)', $VERSION)
+        if ($d2 -ne $dt) {
+            [System.IO.File]::WriteAllText($df, $d2, (New-Object System.Text.UTF8Encoding $false))
+            Write-Host "    文档版本同步: $(Split-Path $df -Leaf) -> $VERSION" -ForegroundColor DarkGray
+        }
+    }
 }
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001 `
