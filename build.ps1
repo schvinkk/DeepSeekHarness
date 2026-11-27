@@ -1,4 +1,4 @@
-﻿# KK Go 桌面版 — 一键打包脚本 (PowerShell)
+# KK Go 桌面版 — 一键打包脚本 (PowerShell)
 # 与手机端 dsh-Go 同属一套「KK Go」品牌；内核版本可自由指定/升级，不再与手机端硬绑定。
 # 用法:
 #   默认:              powershell -ExecutionPolicy Bypass -File .\build.ps1
@@ -65,10 +65,31 @@ function Read-SharedText($path) {
 }
 
 # ---------- 1. Icon ----------
-Step "1/8 Generate whale icon (zero-dependency ICO generator)"
+# 主路径：Pillow 从官方 DeepSeek Harness 图标源生成正确的 7 尺寸 ICO（纯官方像素，
+#         之前手绘的"简约鲸鱼"小尺寸下形似 QQ、辨识度差，已弃用为主路径）。
+# 兜底：  Pillow / 官方源不可用时回退到零依赖手绘（scripts\make-icon.cjs），保证 build 不中断。
+Step "1/8 Generate whale icon (official source, Pillow preferred)"
 $env:NODE_PATH = Join-Path $DSH_SRC "node_modules"
-& node (Join-Path $ROOT "scripts\make-icon.cjs")
-if ($LASTEXITCODE -ne 0) { throw "Icon generation failed" }
+$iconSrc = Join-Path $ROOT "icon\official-whale-512.png"
+$iconOk = $false
+if (Test-Path $iconSrc) {
+    foreach ($py in @("python", "py", "python3")) {
+        $cmd = Get-Command $py -ErrorAction SilentlyContinue
+        if (-not $cmd) { continue }
+        & $cmd.Source (Join-Path $ROOT "scripts\make-icon-from-official.py") 2>&1
+        $icoPath = Join-Path $ROOT "icon\whale.ico"
+        # Pillow 产物是 7 尺寸正确缩放（~59KB）；手绘兜底约 3KB。用体积区分是否官方生成成功。
+        if ($LASTEXITCODE -eq 0 -and (Test-Path $icoPath) -and ((Get-Item $icoPath).Length -ge 10000)) {
+            Write-Host "    Official whale ICO via $py ($((Get-Item $icoPath).Length) bytes)" -ForegroundColor DarkGray
+            $iconOk = $true; break
+        }
+    }
+}
+if (-not $iconOk) {
+    Write-Host "    Falling back to hand-drawn icon" -ForegroundColor Yellow
+    & node (Join-Path $ROOT "scripts\make-icon.cjs")
+    if ($LASTEXITCODE -ne 0) { throw "Icon generation failed" }
+}
 
 # ---------- 2. Portable Node Runtime ----------
 Step "2/8 Prepare Node runtime $NODE_VER"
@@ -244,16 +265,24 @@ if (-not (Test-Path (Join-Path $APP "profiles\web\package.json"))) {
     New-Item -ItemType Directory -Force -Path (Join-Path $APP "profiles\web") | Out-Null
     Set-Content -Path (Join-Path $APP "profiles\web\package.json") -Value '{"name":"dsh-profile-web","private":true,"dependencies":{},"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base","@deepseek-ai/dsh-web-app"]}}}' -Encoding utf8
 }
-# ---------- 版本注入: 出包前把 build.config.json 的真实版本写进 Launcher.cs ----------
-# 背景: AppVersion/KernelVersion 是编译期常量, 历史上写死 3.1.3, 导致 exe「关于/检查更新」
-#       永远显示旧版本, 与 build.config.json 漂移。编译前用正则替换为 $VERSION/$DSH_VER,
-#       以后只要升 build.config.json, exe 版本号就自动跟上, 无需再手改 cs 源。
+# ---------- 4.0 版本注入：把本次构建的真实版本写进桌面壳 Launcher.cs ----------
+# 壳 exe 的「关于 KK Go」「检查更新」显示的是 Launcher.cs 里编译期常量 AppVersion /
+# KernelVersion。若只改 build.config.json 而不把版本号注入进 .cs 再编译，就会出现
+# "内核 3.1.5、关于却显示 3.1.3" 的漂移（3.1.3 时代踩过：exe 是旧版编的、之后没重编）。
+# 这里用正则把两个字面量替换为 $VERSION / $DSH_VER，保证壳显示 = 实际安装版本。
 $launcherCs = Join-Path $ROOT "scripts\Launcher.cs"
 $launcherText = [System.IO.File]::ReadAllText($launcherCs, [System.Text.Encoding]::UTF8)
-$launcherText = [regex]::Replace($launcherText, '(?<=AppVersion = ")[0-9][0-9.]*', $VERSION)
-$launcherText = [regex]::Replace($launcherText, '(?<=KernelVersion = ")[0-9A-Za-z.\-rc]+', $DSH_VER)
+$before = $launcherText
+$launcherText = [regex]::Replace($launcherText,
+    '(?<=AppVersion = ")[0-9][0-9.]*', $VERSION)
+$launcherText = [regex]::Replace($launcherText,
+    '(?<=KernelVersion = ")[0-9A-Za-z.\-rc]+', $DSH_VER)
 [System.IO.File]::WriteAllText($launcherCs, $launcherText, (New-Object System.Text.UTF8Encoding $false))
-Write-Host "    版本注入: AppVersion -> $VERSION  KernelVersion -> $DSH_VER (scripts\Launcher.cs)" -ForegroundColor DarkGray
+if ($launcherText -ne $before) {
+    Write-Host "    版本注入: AppVersion=$VERSION  KernelVersion=$DSH_VER (写入 Launcher.cs)" -ForegroundColor DarkGray
+} else {
+    Write-Host "    版本注入: Launcher.cs 已是 AppVersion=$VERSION / KernelVersion=$DSH_VER，无需改动" -ForegroundColor DarkGray
+}
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /target:winexe /optimize+ /platform:x64 /codepage:65001 `
     "/win32manifest:$ROOT\scripts\app.manifest" `
@@ -316,7 +345,8 @@ try {
     }
     if (-not $ready) {
         $diag = ""
-        $desktopLog = Join-Path $env:USERPROFILE ".dsh\desktop.log"
+        # 日志/PID 已挪到安装目录 .kkgo（不再固定 %USERPROFILE%\.dsh）
+        $desktopLog = Join-Path $APP ".kkgo\desktop.log"
         if (Test-Path $desktopLog) {
             $diag = "`n--- desktop.log (tail) ---`n" + ((Get-Content $desktopLog -Tail 25) -join "`n")
         }
@@ -340,6 +370,22 @@ try {
 }
 
 # ---------- 5. Inno Setup Compiler ----------
+# 5.1 先签 app\KK Go.exe，让 Inno 打包进安装包里的是「已签名」的启动器
+# （外层安装包 exe 在 Inno 出包后再签，见 8.5 步）。
+# 签名失败不阻断出包；自签证书在本机可验证通过，跨机彻底消除 SmartScreen 需商业 OV/EV。
+# 注意：powershell -File 模式下不能用 -CertFile 等命名参数（会被当位置参数），
+# 直接调默认自签流程即可（sign.ps1 默认自动发现 app\KK Go.exe + dist\*.exe）。
+$signScript = Join-Path $ROOT "sign.ps1"
+$preSignExe = Join-Path $APP "KK Go.exe"
+if ((Test-Path $preSignExe) -and (Test-Path $signScript)) {
+    try {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $signScript 2>&1 | Out-Null
+        Write-Host "    app\KK Go.exe signed before packaging" -ForegroundColor DarkGray
+    } catch {
+        Write-Host "    WARN: app exe 签名失败（非致命）: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+
 Step "7/8 Prepare Inno Setup compiler"
 $innoDir = Join-Path $DL "inno"
 if (-not (Test-Path (Join-Path $innoDir "ISCC.exe"))) {
@@ -443,6 +489,11 @@ foreach ($junk in @("service.log", "desktop.log", "desktop.log.1", "dsh_test_lau
     $jp = Join-Path $APP $junk
     if (Test-Path $jp) { Remove-Item $jp -Force -ErrorAction SilentlyContinue }
 }
+# "KK Go Data" 是**运行时**生成的用户数据（.credentials.yaml 里的 secret、
+# .anonymous-user-id、profiles/storages 会话状态）。它绝不能随安装包分发给
+# 别的用户 —— 否则别人装完就继承构建机上的凭证/身份。构建期一律清掉。
+$runtimeData = Join-Path $APP "KK Go Data"
+if (Test-Path $runtimeData) { Remove-Item $runtimeData -Recurse -Force -ErrorAction SilentlyContinue }
 New-Item -ItemType Directory -Force -Path $DIST | Out-Null
 Push-Location (Join-Path $ROOT "installer")
 try {
@@ -474,4 +525,20 @@ try {
     }
 } finally { Pop-Location }
 Get-ChildItem $DIST | Select-Object Name, @{n="SizeMB";e={[math]::Round($_.Length/1MB,1)}}
+
+# ---------- 8.5 代码签名（非致命） ----------
+# 给 app\KK Go.exe 与 dist 安装包签名，降低 SmartScreen 拦截。
+# 证书准备/签名失败不阻断出包：未签名包仍可正常安装，只是首次安装可能被提示"未知发布者"。
+# ⚠ 用默认目标发现（sign.ps1 自己扫 app\KK Go.exe + dist\*.exe）。
+# 不要在这里传 -Targets：`powershell -File` 下数组参数按位置绑定，会被误塞进
+# sign.ps1 的第一个参数 $CertFile，触发"商业 PFX"分支报"不是有效的 PFX"。
+Step "8.5/8 Sign installer (non-fatal; self-signed by default)"
+if (Test-Path $signScript) {
+    try {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $signScript
+    } catch {
+        Write-Host "    WARN: 签名步骤失败，出包不阻断（安装包未签名仍可安装）: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+
 Write-Host "`nDone! KK Go installer located at: $DIST" -ForegroundColor Green
